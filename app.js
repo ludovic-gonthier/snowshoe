@@ -10,6 +10,8 @@ var morgan = require('morgan');
 var session = require('express-session');
 
 var config = require('./config');
+var controllers = require('./controllers');
+var passport = require('./controllers/passport');
 
 var app = express();
 var server = http.createServer(app);
@@ -28,7 +30,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(session({ secret: 'snowshoe cat, wilson\'s mustache rocks' }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(express.static('public'));
+app.use(controllers);
 
 app.use(livereload());
 
