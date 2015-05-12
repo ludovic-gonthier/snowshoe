@@ -23,6 +23,7 @@
     "nconf": "^0.7.1",
     "passport": "~0.1.17",
     "passport-github": "^0.1.5",
+    "promise": "^7.0.1",
     "react": "^0.13.2",
     "reactify": "^1.1.0",
     "request": "~2.55.0",

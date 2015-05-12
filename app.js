@@ -12,6 +12,7 @@ var session = require('express-session');
 var config = require('./config');
 var controllers = require('./controllers');
 var passport = require('./controllers/passport');
+var socket = require('./lib/socket');
 
 var app = express();
 var server = http.createServer(app);
@@ -54,3 +55,5 @@ server.listen(
   process.env.PORT || config.get('server:port'),
   process.env.ADRESS || config.get('server:hostname')
 );
+
+socket(server);

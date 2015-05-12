@@ -17,6 +17,19 @@ router.all(/^((?!\/(login|auth\/github)).)/, function (request, response, next) 
   response.redirect('/login');
 });
 
+router.get('/', function (request, response) {
+  var locals = {};
+
+  locals.authenticated = request.isAuthenticated();
+  locals.user = request.user._json;
+  locals.accessToken = request.user.accessToken;
+
+  // Setting cookie to retrieve data on the client side
+  response.cookie('locals', JSON.stringify(locals));
+
+  response.render('homepage', locals);
+});
+
 router.get('/login', function (request, response) {
   response.render('login');
 });
