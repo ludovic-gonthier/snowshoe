@@ -3,7 +3,7 @@
 var passport = require('passport');
 var Strategy = require('passport-github').Strategy;
 
-var config = require('../config');
+var config = require('config');
 
 module.exports = passport;
 
@@ -16,8 +16,8 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new Strategy({
-    clientID: config.get('github:token:public'),
-    clientSecret: config.get('github:token:secret'),
+    clientID: config.get('github.token.public'),
+    clientSecret: config.get('github.token.secret'),
     callbackURL: "http://127.0.0.1:8080/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {

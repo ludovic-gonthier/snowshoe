@@ -6,6 +6,7 @@
   "dependencies": {
     "async": "^0.9.0",
     "body-parser": "^1.12.3",
+    "config": "1.13.0",
     "connect-livereload": "0.5.3",
     "cookie": "0.1.2",
     "cookie-parser": "~1.0.0",
@@ -18,9 +19,9 @@
     "gulp-jslint": "^0.2.2",
     "gulp-live-server": "^0.0.14",
     "gulp-uglify": "^1.2.0",
+    "js-yaml": "^3.3.1",
     "lodash": "^3.2.0",
     "morgan": "~1.5.2",
-    "nconf": "^0.7.1",
     "passport": "~0.1.17",
     "passport-github": "^0.1.5",
     "promise": "^7.0.1",
