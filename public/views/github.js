@@ -38919,6 +38919,10 @@ var Github = React.createClass({displayName: "Github",
       accessToken: this.props.accessToken
     });
 
+    if (this.props.repositories_url) {
+      socket.emit('pulls', this.props.repositories_url);
+    }
+
     socket.on('pulls', function (pulls) {
       console.log(pulls);
       var ids = _.map(this.state.pulls, 'id');
@@ -39085,9 +39089,8 @@ var Navbar = React.createClass({displayName: "Navbar",
       React.createElement("div", {className: "col-lg-8 colg-lg-offset-1"}, 
         React.createElement("p", {className: "navbar-text"}, "PR to watch : "), 
         React.createElement("div", {className: "btn-group pull-left", role: "group"}, 
-          React.createElement("button", {type: "button", className: "btn btn-default navbar-btn", onClick: this.fetchPersonalPulls}, "Personal"), 
+          React.createElement("a", {type: "button", className: "btn btn-default navbar-btn", href: "/personal"}, "Personal"), 
 
-          React.createElement(Navbar.Organizations, {organizations: this.state.organizations}), 
           React.createElement(Navbar.Teams, {teams: this.state.teams})
         ), 
         !this.state.rate ? '' :
@@ -39105,61 +39108,32 @@ var Navbar = React.createClass({displayName: "Navbar",
   }
 });
 
-Navbar.Organizations = React.createClass({displayName: "Organizations",
-  render: function () {
-    return (
-      React.createElement("div", {className: "btn-group", role: "group"}, 
-        React.createElement("button", {type: "button", className: "btn btn-default navbar-btn dropdown-toggle", "data-toggle": "dropdown", "data-loading-text": "Loading..."}, 
-          "Organizations  ", React.createElement("span", {className: "caret"})
-        ), 
-          React.createElement("ul", {className: "dropdown-menu", role: "menu", "aria-labelledby": "dropdownMenu1"}, 
-            this.props.organizations.length == 0 ? React.createElement("li", null, React.createElement("a", null, "Loading...")) :
-              this.props.organizations.map(function (organization, index) {
-                return (
-                  React.createElement(Navbar.ListElement, {key: index, repositories: organization.repos_url}, organization.login)
-                );
-              })
-            
-          )
-      )
-    )
-  }
-});
-
 Navbar.Teams = React.createClass({displayName: "Teams",
   render: function () {
+    var dropdown = React.createElement("li", null, React.createElement("a", null, "Loading..."));
+
+    if (this.props.teams.length != 0) {
+      dropdown = this.props.teams.map(function (team, index) {
+        var href = '/teams/' + team.slug + '/' + team.id;
+
+        return (
+          React.createElement("li", {role: "presentation", key: index}, 
+            React.createElement("a", {role: "menuitem", href: href}, team.name)
+          )
+        );
+      });
+    }
+
     return (
       React.createElement("div", {className: "btn-group", role: "group"}, 
         React.createElement("button", {type: "button", className: "btn btn-default navbar-btn dropdown-toggle", "data-toggle": "dropdown", "data-loading-text": "Loading..."}, 
           "Teams  ", React.createElement("span", {className: "caret"})
         ), 
-          React.createElement("ul", {className: "dropdown-menu", role: "menu", "aria-labelledby": "dropdownMenu1"}, 
-            this.props.teams.length == 0 ? React.createElement("li", null, React.createElement("a", null, "Loading...")) :
-              this.props.teams.map(function (team, index) {
-                return (
-                  React.createElement(Navbar.ListElement, {key: index, repositories: team.repositories_url}, team.name)
-                );
-              })
-            
-          )
+        React.createElement("ul", {className: "dropdown-menu", role: "menu", "aria-labelledby": "dropdownMenu1"}, 
+          dropdown
+        )
       )
     )
-  }
-});
-
-Navbar.ListElement = React.createClass({displayName: "ListElement",
-  mixins: [mixin],
-  handleClick: function (event) {
-    event.preventDefault();
-
-    this.socket().emit('pulls', this.props.repositories);
-  },
-  render: function () {
-    return (
-      React.createElement("li", {role: "presentation"}, 
-        React.createElement("a", {role: "menuitem", onClick: this.handleClick}, this.props.children)
-      )
-    );
   }
 });
 

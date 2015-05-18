@@ -84,38 +84,30 @@ Navbar.Organizations = React.createClass({
 
 Navbar.Teams = React.createClass({
   render: function () {
+    var dropdown = <li><a>Loading...</a></li>;
+
+    if (this.props.teams.length != 0) {
+      dropdown = this.props.teams.map(function (team, index) {
+        var href = '/teams/' + team.slug + '/' + team.id;
+
+        return (
+          <li role="presentation" key={index}>
+            <a role="menuitem" href={href}>{team.name}</a>
+          </li>
+        );
+      });
+    }
+
     return (
       <div className="btn-group" role="group">
         <button type="button" className="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" data-loading-text="Loading...">
           Teams  <span className="caret"/>
         </button>
-          <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            {this.props.teams.length == 0 ? <li><a>Loading...</a></li> :
-              this.props.teams.map(function (team, index) {
-                return (
-                  <Navbar.ListElement key={index} repositories={team.repositories_url}>{team.name}</Navbar.ListElement>
-                );
-              })
-            }
-          </ul>
+        <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+          {dropdown}
+        </ul>
       </div>
     )
-  }
-});
-
-Navbar.ListElement = React.createClass({
-  mixins: [mixin],
-  handleClick: function (event) {
-    event.preventDefault();
-
-    this.socket().emit('pulls', this.props.repositories);
-  },
-  render: function () {
-    return (
-      <li role="presentation">
-        <a role="menuitem" onClick={this.handleClick}>{this.props.children}</a>
-      </li>
-    );
   }
 });
 

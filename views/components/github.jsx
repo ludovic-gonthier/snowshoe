@@ -18,6 +18,10 @@ var Github = React.createClass({
       accessToken: this.props.accessToken
     });
 
+    if (this.props.repositories_url) {
+      socket.emit('pulls', this.props.repositories_url);
+    }
+
     socket.on('pulls', function (pulls) {
       console.log(pulls);
       var ids = _.map(this.state.pulls, 'id');

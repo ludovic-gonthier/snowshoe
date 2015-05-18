@@ -14,10 +14,10 @@ module.exports = React.createClass({
           <Header authenticated={this.props.authenticated}/>
         </div>
         <div id="mount-github">
-          <Github user={this.props.user}/>
+          <Github user={this.props.user} repositories_url={this.props.repositories_url}/>
         </div>
 
-        <script src="views/github.js"></script>
+        <script src="/views/github.js"></script>
       </Layout>
     );
   }
