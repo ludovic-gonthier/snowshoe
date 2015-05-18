@@ -64,3 +64,10 @@ router.get('/logout', function (request, response) {
   request.logout();
   response.redirect('/');
 });
+
+/*
+ * Handle 404 errors
+ */
+router.get('*', function(request, response){
+  response.send('404 - Not Found', 404);
+});
