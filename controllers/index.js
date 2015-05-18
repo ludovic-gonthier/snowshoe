@@ -12,6 +12,9 @@ module.exports = router;
 
 router.post('/webhooks/payload', require('./github-event'));
 
+/*
+ * Simple firewall
+ */
 router.all(/^((?!\/(login|auth\/github)).)/, function (request, response, next) {
   if (request.isAuthenticated()) {
     return next();
