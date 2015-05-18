@@ -7,4 +7,5 @@ github:
     public: [GITHUB_CLIENT_ID]
     secret: [GITHUB_CLIENT_SECRET]
   scope: ["repo", "user"]
+  poll-timeout: 60
 

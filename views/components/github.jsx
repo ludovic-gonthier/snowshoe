@@ -19,14 +19,20 @@ var Github = React.createClass({
     });
 
     socket.on('pulls', function (pulls) {
+      console.log(pulls);
       var ids = _.map(this.state.pulls, 'id');
 
       _.forEach(pulls, function (pull) {
+        console.log('Comments pull for ' + pull.base.repo.name+ '#' + pull.number + ': ' + pull.comments);
         var index = ids.indexOf(pull.id);
 
         if (index === -1) {
           this.state.pulls.push(pull);
         } else {
+          // pull.labels = this.state.pulls[index].labels;
+          // pull.last_status = this.state.pulls[index].last_status;
+          // pull.comments = this.state.pulls[index].comments;
+
           this.state.pulls[index] = _.assign(this.state.pulls[index], pull);
         }
       }.bind(this));
@@ -50,6 +56,7 @@ var Github = React.createClass({
 
         if (index !== -1) {
           this.state.pulls[index].labels = issue.labels;
+          this.state.pulls[index].comments = issue.comments;
         }
       }.bind(this));
 
@@ -103,6 +110,10 @@ Github.PullsRequest = React.createClass({
     return (
         <div className="thumbnail">
           <header className="caption text-center"><strong>{this.props.pull.base.repo.name}</strong></header>
+            <span className="badge">
+              <span className="glyphicon glyphicon-comment"></span>
+              <span className="github-commemts-number">{this.props.pull.comments || 0}</span>
+            </span>
           <img className={classes.join(' ')} src={this.props.pull.user.avatar_url} alt={this.props.pull.user.login} width="100" height="100"/>
           <div className="caption text-center github-request-number"><a href={this.props.pull.html_url} target="_blank">#{this.props.pull.number}</a></div>
           {!this.props.pull.labels ? '' :

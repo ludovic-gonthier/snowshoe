@@ -9,6 +9,8 @@ var router = new express.Router();
 
 module.exports = router;
 
+router.post('/webhooks/payload', require('./github-event'));
+
 router.all(/^((?!\/(login|auth\/github)).)/, function (request, response, next) {
   if (request.isAuthenticated()) {
     return next();
