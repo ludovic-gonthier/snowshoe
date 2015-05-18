@@ -4,18 +4,14 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var express = require('express');
 var engine = require('express-react-views');
-var http = require('http');
 var livereload = require('connect-livereload');
 var morgan = require('morgan');
 var session = require('express-session');
 
-var config = require('./config');
-var controllers = require('./controllers');
 var passport = require('./controllers/passport');
-var socket = require('./lib/socket');
 
 var app = express();
-var server = http.createServer(app);
+module.exports = app;
 
 /*
  * Application configuration
@@ -36,24 +32,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static('public'));
-app.use(controllers);
+// app.use(require('./lib/middlewares/socket-aware'));
+app.use(require('./controllers'));
+app.use(require('express-error-handler'));
 
 app.use(livereload());
 
-/*
- * Server part
- */
-server.on('listening', function () {
-  var separator = new Array(81).join('=');
-
-  console.log(separator);
-  console.log('Server created at ' + server.address().address + ':' + server.address().port);
-  console.log(separator);
-});
-
-server.listen(
-  process.env.PORT || config.get('server:port'),
-  process.env.ADRESS || config.get('server:hostname')
-);
-
-socket(server);
+require('./server');
