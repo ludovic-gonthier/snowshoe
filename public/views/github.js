@@ -39061,16 +39061,11 @@ var Navbar = React.createClass({displayName: "Navbar",
   mixins: [mixin],
   getInitialState: function () {
     return {
-      organizations: [],
       teams: []
     };
   },
   componentDidMount: function () {
     var socket = this.socket();
-
-    socket.on('organizations', function (data) {
-      this.setState({organizations: data});
-    }.bind(this));
 
     socket.on('teams', function (data) {
       this.setState({teams: data});

@@ -13,16 +13,11 @@ var Navbar = React.createClass({
   mixins: [mixin],
   getInitialState: function () {
     return {
-      organizations: [],
       teams: []
     };
   },
   componentDidMount: function () {
     var socket = this.socket();
-
-    socket.on('organizations', function (data) {
-      this.setState({organizations: data});
-    }.bind(this));
 
     socket.on('teams', function (data) {
       this.setState({teams: data});
@@ -43,7 +38,6 @@ var Navbar = React.createClass({
         <div className="btn-group pull-left" role="group">
           <button type="button" className="btn btn-default navbar-btn" onClick={this.fetchPersonalPulls}>Personal</button>
 
-          <Navbar.Organizations organizations={this.state.organizations}/>
           <Navbar.Teams teams={this.state.teams}/>
         </div>
         {!this.state.rate ? '' :
@@ -58,27 +52,6 @@ var Navbar = React.createClass({
         }
       </div>
     );
-  }
-});
-
-Navbar.Organizations = React.createClass({
-  render: function () {
-    return (
-      <div className="btn-group" role="group">
-        <button type="button" className="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" data-loading-text="Loading...">
-          Organizations  <span className="caret"/>
-        </button>
-          <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            {this.props.organizations.length == 0 ? <li><a>Loading...</a></li> :
-              this.props.organizations.map(function (organization, index) {
-                return (
-                  <Navbar.ListElement key={index} repositories={organization.repos_url}>{organization.login}</Navbar.ListElement>
-                );
-              })
-            }
-          </ul>
-      </div>
-    )
   }
 });
 
