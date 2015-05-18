@@ -8,9 +8,12 @@ body {
   display: -ms-flexbox;
   display:         flex;
 }
-
+.navbar{
+  margin: 0;
+}
 .thumbnail {
     width: 12.5%;
+    margin: 0;
 }
 
 .github-label {
@@ -27,4 +30,27 @@ body {
     border-radius: 2px;
     font-weight: bold;
     line-height: 1;
+}
+.github-label+.github-label {
+  margin-top: 3px;
+}
+.github-request-number {
+    font-size: 36px;
+}
+.github-commemts-number {
+    display: block;
+    float: right;
+    margin-top: 1px;
+    margin-left: 5px;
+}
+
+.success {
+  border: 10px solid #6cc644;
+}
+.pending {
+  border: 10px solid #cea61b;
+}
+
+.failure {
+  border: 10px solid #bd2c00;
 }

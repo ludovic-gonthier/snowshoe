@@ -29,6 +29,7 @@ var Navbar = React.createClass({
     }.bind(this));
 
     socket.on('rate', function (data) {
+      data.reset = new Date(data.reset  * 1000);
       this.setState({rate: data});
     }.bind(this));
   },
@@ -37,8 +38,8 @@ var Navbar = React.createClass({
   },
   render: function () {
     return (
-      <div className="col-lg-7 colg-lg-offset-1">
-        <p className="navbar-text">PullRequests to watch : </p>
+      <div className="col-lg-8 colg-lg-offset-1">
+        <p className="navbar-text">PR to watch : </p>
         <div className="btn-group pull-left" role="group">
           <button type="button" className="btn btn-default navbar-btn" onClick={this.fetchPersonalPulls}>Personal</button>
 
@@ -48,6 +49,11 @@ var Navbar = React.createClass({
         {!this.state.rate ? '' :
         <span className="navbar-text">
           Rate : <span className="label label-info">{this.state.rate.remaining}/{this.state.rate.limit}</span>
+        </span>
+        }
+        {!this.state.rate ? '' :
+        <span className="navbar-text">
+          Reset at : <strong>{this.state.rate.reset.getHours()}:{this.state.rate.reset.getMinutes()}</strong>
         </span>
         }
       </div>
@@ -136,7 +142,7 @@ Header.AuthenticationButton = React.createClass({
     var classes;
 
     if (this.props.authenticated) {
-      classes = ['btn', 'navbar-btn', 'col-lg-1', 'col-lg-offset-2', 'btn-primary'];
+      classes = ['btn', 'navbar-btn', 'col-lg-1', 'col-lg-offset-1', 'btn-primary'];
     } else {
       classes = ['btn', 'navbar-btn', 'col-lg-1', 'col-lg-offset-9', 'btn-success'];
     }

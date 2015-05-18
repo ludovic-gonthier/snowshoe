@@ -27,8 +27,7 @@ var Github = React.createClass({
         if (index === -1) {
           this.state.pulls.push(pull);
         } else {
-          pull.labels = this.state.pulls[index].labels;
-          this.state.pulls[index] = pull;
+          this.state.pulls[index] = _.assign(this.state.pulls[index], pull);
         }
       }.bind(this));
 
@@ -53,6 +52,16 @@ var Github = React.createClass({
           this.state.pulls[index].labels = issue.labels;
         }
       }.bind(this));
+
+      this.setState({pulls: this.state.pulls});
+    }.bind(this));
+
+    socket.on('pulls:status', function (status) {
+      var index = _.map(this.state.pulls, 'id').indexOf(status.pull_request.id);
+
+      if (index !== -1) {
+        this.state.pulls[index].last_status = status;
+      }
 
       this.setState({pulls: this.state.pulls});
     }.bind(this));
@@ -86,13 +95,16 @@ Github.PullsRequests = React.createClass({
 
 Github.PullsRequest = React.createClass({
   render: function () {
+    var classes = ['img-circle'];
+    if (this.props.pull.last_status) {
+      classes.push(this.props.pull.last_status.state);
+    }
+
     return (
         <div className="thumbnail">
           <header className="caption text-center"><strong>{this.props.pull.base.repo.name}</strong></header>
-          <img className="img-circle" src={this.props.pull.user.avatar_url} alt={this.props.pull.user.login} width="100" height="100"/>
-          <div className="caption text-center">
-            <h2><a href={this.props.pull.html_url} target="_blank">#{this.props.pull.number}</a></h2>
-          </div>
+          <img className={classes.join(' ')} src={this.props.pull.user.avatar_url} alt={this.props.pull.user.login} width="100" height="100"/>
+          <div className="caption text-center github-request-number"><a href={this.props.pull.html_url} target="_blank">#{this.props.pull.number}</a></div>
           {!this.props.pull.labels ? '' :
             this.props.pull.labels.map(function (label, index) {
               var rgb = label.color.match(/.{2}/g).map(function (color) {
