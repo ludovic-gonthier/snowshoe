@@ -1,0 +1,56 @@
+body {
+    word-wrap: break-word;
+}
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+.navbar{
+  margin: 0;
+}
+.thumbnail {
+    width: 12.5%;
+    margin: 0;
+}
+
+.github-label {
+    font: 13px/1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+    display: block;
+    max-width: 100%;
+    padding: 6px 10px;
+    font-size: 13px;
+    box-shadow: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: top;
+    border-radius: 2px;
+    font-weight: bold;
+    line-height: 1;
+}
+.github-label+.github-label {
+  margin-top: 3px;
+}
+.github-request-number {
+    font-size: 36px;
+}
+.github-commemts-number {
+    display: block;
+    float: right;
+    margin-top: 1px;
+    margin-left: 5px;
+}
+
+.success {
+  border: 10px solid #6cc644;
+}
+.pending {
+  border: 10px solid #cea61b;
+}
+
+.failure {
+  border: 10px solid #bd2c00;
+}
