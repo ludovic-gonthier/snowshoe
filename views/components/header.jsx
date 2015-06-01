@@ -31,7 +31,21 @@ var Navbar = React.createClass({
   fetchPersonalPulls: function () {
     this.socket().emit('pulls');
   },
+  formatDate: function(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+
+    if (hours < 10) {
+      hours = '0' + hours;
+    }
+    if (minutes < 10) {
+      minutes = '0' + minutes;
+    }
+
+    return <strong>{hours}:{minutes}</strong>;
+  },
   render: function () {
+
     return (
       <div className="col-lg-8 colg-lg-offset-1">
         <p className="navbar-text">PR to watch : </p>
@@ -47,7 +61,7 @@ var Navbar = React.createClass({
         }
         {!this.state.rate ? '' :
         <span className="navbar-text">
-          Reset at : <strong>{this.state.rate.reset.getHours()}:{this.state.rate.reset.getMinutes()}</strong>
+          Reset at : {this.formatDate(this.state.rate.reset)}
         </span>
         }
       </div>
