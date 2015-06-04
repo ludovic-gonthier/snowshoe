@@ -2,6 +2,7 @@
 
 var express = require('express');
 var cookie = require('cookie');
+var config = require('config');
 
 var passport = require('./passport');
 var GITHUB_BASE_URL = require('../lib/github-request').GITHUB_BASE_URL;
@@ -54,7 +55,7 @@ router.get('/login', function (request, response) {
   response.render('login');
 });
 
-router.get('/auth/github', passport.authenticate('github'));
+router.get('/auth/github', passport.authenticate('github', {scope: config.get('github.scope')}));
 router.get(
   '/auth/github/callback',
   passport.authenticate('github', {failureRedirect: '/login'}),
