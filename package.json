@@ -12,6 +12,7 @@
     "cookie-parser": "~1.0.0",
     "express": "^4.11.0",
     "express-err": "^0.1.2",
+    "express-error-handler": "^1.0.1",
     "express-react-views": "^0.7.2",
     "express-session": "~1.0.0",
     "gulp": "~3.8.11",
