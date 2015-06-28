@@ -1,6 +1,6 @@
 server:
   port: 8080
-  hostname: localhost
+  hostname: 127.0.0.1
 
 github:
   token:

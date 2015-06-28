@@ -1,6 +1,7 @@
 'use strict';
 
 var passport = require('passport');
+var url = require('url');
 var Strategy = require('passport-github').Strategy;
 
 var config = require('config');
@@ -18,7 +19,12 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new Strategy({
     clientID: config.get('github.token.public'),
     clientSecret: config.get('github.token.secret'),
-    callbackURL: "http://127.0.0.1:8080/auth/github/callback"
+    callbackURL: url.format({
+      protocol: 'http',
+      hostname : config.get('server.hostname'),
+      port : config.get('server.port'),
+      pathname : '/auth/github/callback'
+    })
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
