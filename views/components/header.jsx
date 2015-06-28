@@ -31,7 +31,40 @@ var Navbar = React.createClass({
   fetchPersonalPulls: function () {
     this.socket().emit('pulls');
   },
+  formatDate: function(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+
+    if (hours < 10) {
+      hours = '0' + hours;
+    }
+    if (minutes < 10) {
+      minutes = '0' + minutes;
+    }
+
+    return <strong>{hours}:{minutes}</strong>;
+  },
+  computeRateCssColor: function(remaining, limit)
+  {
+    var percent = (remaining * 100) / limit;
+
+    if (percent <= 10) {
+      return "label-error";
+    }
+
+    if (percent <= 35) {
+      return 'label-warning'
+    }
+
+    return 'label-info';
+  },
   render: function () {
+    var labelClass;
+
+    if (this.state.rate) {
+      labelClass = "label " + this.computeRateCssColor(this.state.rate.remaining, this.state.rate.limit);
+    }
+
     return (
       <div className="col-lg-8 colg-lg-offset-1">
         <p className="navbar-text">PR to watch : </p>
@@ -42,12 +75,12 @@ var Navbar = React.createClass({
         </div>
         {!this.state.rate ? '' :
         <span className="navbar-text">
-          Rate : <span className="label label-info">{this.state.rate.remaining}/{this.state.rate.limit}</span>
+          Rate : <span className={labelClass}>{this.state.rate.remaining}/{this.state.rate.limit}</span>
         </span>
         }
         {!this.state.rate ? '' :
         <span className="navbar-text">
-          Reset at : <strong>{this.state.rate.reset.getHours()}:{this.state.rate.reset.getMinutes()}</strong>
+          Reset at : {this.formatDate(this.state.rate.reset)}
         </span>
         }
       </div>
