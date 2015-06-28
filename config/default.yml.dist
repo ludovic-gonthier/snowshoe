@@ -6,6 +6,6 @@ github:
   token:
     public: [GITHUB_CLIENT_ID]
     secret: [GITHUB_CLIENT_SECRET]
-  scope: ["repo", "user"]
+  scope: ["repo", "user", "read:org"]
   poll-timeout: 60
 
