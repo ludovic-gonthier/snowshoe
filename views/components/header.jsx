@@ -44,7 +44,26 @@ var Navbar = React.createClass({
 
     return <strong>{hours}:{minutes}</strong>;
   },
+  computeRateCssColor: function(remaining, limit)
+  {
+    var percent = (remaining * 100) / limit;
+
+    if (percent <= 10) {
+      return "label-error";
+    }
+
+    if (percent <= 35) {
+      return 'label-warning'
+    }
+
+    return 'label-info';
+  },
   render: function () {
+    var labelClass;
+
+    if (this.state.rate) {
+      labelClass = "label " + this.computeRateCssColor(this.state.rate.remaining, this.state.rate.limit);
+    }
 
     return (
       <div className="col-lg-8 colg-lg-offset-1">
@@ -56,7 +75,7 @@ var Navbar = React.createClass({
         </div>
         {!this.state.rate ? '' :
         <span className="navbar-text">
-          Rate : <span className="label label-info">{this.state.rate.remaining}/{this.state.rate.limit}</span>
+          Rate : <span className={labelClass}>{this.state.rate.remaining}/{this.state.rate.limit}</span>
         </span>
         }
         {!this.state.rate ? '' :
