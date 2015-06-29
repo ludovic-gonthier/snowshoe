@@ -21,8 +21,7 @@ passport.use(new Strategy({
     clientSecret: config.get('github.token.secret'),
     callbackURL: url.format({
       protocol: 'http',
-      hostname : config.get('server.hostname'),
-      port : config.get('server.port'),
+      host : config.get('server.host'),
       pathname : '/auth/github/callback'
     })
   },
