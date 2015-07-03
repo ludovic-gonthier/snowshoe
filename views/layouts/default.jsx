@@ -48,7 +48,7 @@ var Layout = React.createClass({
               <script key={index} {...script}/>
             );
           })}
-          <link rel="icon" type="image/png" href="favicon.png" />
+          <link rel="icon" type="image/png" href="/favicon.png" />
         </head>
         <body>
           {this.props.children}
