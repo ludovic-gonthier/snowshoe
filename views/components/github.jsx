@@ -23,14 +23,20 @@ var Github = React.createClass({
     }
 
     socket.on('pulls', function (pulls) {
+      console.log(pulls);
       var ids = _.map(this.state.pulls, 'id');
 
       _.forEach(pulls, function (pull) {
+        console.log('Comments pull for ' + pull.base.repo.name+ '#' + pull.number + ': ' + pull.comments);
         var index = ids.indexOf(pull.id);
 
         if (index === -1) {
           this.state.pulls.push(pull);
         } else {
+          // pull.labels = this.state.pulls[index].labels;
+          // pull.last_status = this.state.pulls[index].last_status;
+          // pull.comments = this.state.pulls[index].comments;
+
           this.state.pulls[index] = _.assign(this.state.pulls[index], pull);
         }
       }.bind(this));
