@@ -3,6 +3,8 @@ SnowShoe
 
 GitHub dashboard to keep tracks on your ongoing PR.
 
+![SnowShoe](docs/quick-glimpse.png "SnowShoe")
+
 ## Requirements
 
 - Node v0.12.2
