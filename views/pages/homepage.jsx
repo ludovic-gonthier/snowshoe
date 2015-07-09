@@ -3,7 +3,7 @@
 var React = require('react');
 
 var Layout = require('../layouts/default');
-var Github = require('../components/github');
+var Dashboard = require('../components/github/dashboard');
 var Header = require('../components/header');
 
 module.exports = React.createClass({
@@ -14,7 +14,7 @@ module.exports = React.createClass({
           <Header authenticated={this.props.authenticated}/>
         </div>
         <div id="mount-github">
-          <Github user={this.props.user} repositories_url={this.props.repositories_url}/>
+          <Dashboard user={this.props.user} repositories_url={this.props.repositories_url}/>
         </div>
 
         <script src="/views/github.js"></script>
