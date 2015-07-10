@@ -2,9 +2,9 @@
 
 var React = require('react');
 
-var Layout = require('../layouts/default');
-var Dashboard = require('../components/github/dashboard');
-var Header = require('../components/header');
+var Layout = require('../layouts/default.jsx');
+var Dashboard = require('../components/github/dashboard.jsx');
+var Header = require('../components/header.jsx');
 
 module.exports = React.createClass({
   render: function () {

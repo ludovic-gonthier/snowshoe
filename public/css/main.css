@@ -54,3 +54,8 @@ body {
 .failure {
   border: 10px solid #bd2c00;
 }
+
+#rate-limit .separator {
+  width: 15px;
+  display: inline-block;
+}
