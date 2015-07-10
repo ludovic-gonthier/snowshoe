@@ -8,10 +8,9 @@ var Login = require('../components/buttons/login.jsx');
 
 module.exports = React.createClass({
   render: function () {
-
     return (
       <Layout>
-        <Header/>
+        <Header />
         <div className="container">
           <div className="jumbotron col-lg-6 col-lg-offset-2">
             <h2>Welcome to <strong>SnowShoe</strong> Dashboards</h2>

@@ -8,7 +8,7 @@ body {
   display: -ms-flexbox;
   display:         flex;
 }
-.navbar{
+.navbar {
   margin: 0;
 }
 .thumbnail {
