@@ -54,7 +54,7 @@ var Navbar = React.createClass({
     var percent = (remaining * 100) / limit;
 
     if (percent <= 10) {
-      return "label-error";
+      return "label-danger";
     }
 
     if (percent <= 35) {
