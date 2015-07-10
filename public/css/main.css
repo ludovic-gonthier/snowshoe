@@ -59,3 +59,7 @@ body {
   width: 15px;
   display: inline-block;
 }
+
+#organizations-dropdown li a {
+  cursor: pointer;
+}
