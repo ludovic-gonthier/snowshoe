@@ -31,6 +31,15 @@ body {
     font-weight: bold;
     line-height: 1;
 }
+
+.github-title {
+  margin: auto;
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .github-label+.github-label {
   margin-top: 3px;
 }
