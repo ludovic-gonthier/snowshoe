@@ -46,7 +46,7 @@ module.exports = React.createClass({
     var hours = this.padTimeString(this.state.rate.reset.getHours());
 
     return (
-      <p id="rate-limit" className="navbar-text pull-right">
+      <p id="rate-limit" className="navbar-text">
         Rate : <span className={style}>{this.state.rate.remaining}/{this.state.rate.limit}</span>
         <span className="separator" />
         Reset at : <strong>{hours}:{minutes}</strong>

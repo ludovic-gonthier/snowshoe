@@ -32,11 +32,12 @@ module.exports = React.createClass({
 
             {this.props.authenticated ? <Navbar /> : ''}
 
-            <ul className="nav navbar-nav navbar-right">
-              {Authentification}
-            </ul>
-
-            <RateLimit />
+            <div className="navbar-right">
+              <RateLimit />
+              <ul className="nav navbar-nav">
+                {Authentification}
+              </ul>
+            </div>
 
           </div>
         </div>
