@@ -25,22 +25,24 @@ module.exports = React.createClass({
     }
 
     return (
-      <div id="organizations-dropdown" className="btn-group" role="group">
-        <button type="button" className="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {...attributes}>
-          Organizations  <span className="caret"/>
-        </button>
-          <ul className="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            {this.state.organizations.length == 0 ? null :
-              this.state.organizations.map(function (organization, index) {
-                return (
-                  <li role="presentation" key={index}>
-                    <a role="menuitem" onClick={this.loadTeams.bind(this, organization.login)}>{organization.login}</a>
-                  </li>
-                );
-              }.bind(this))
-            }
-          </ul>
-      </div>
+
+      <li className="dropdown">
+        <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {...attributes}>
+          Organizations
+          <span className="caret"></span>
+        </a>
+        <ul className="dropdown-menu">
+          {this.state.organizations.length == 0 ? null :
+            this.state.organizations.map(function (organization, index) {
+              return (
+                <li role="presentation" key={index}>
+                  <a role="menuitem" onClick={this.loadTeams.bind(this, organization.login)}>{organization.login}</a>
+                </li>
+              );
+            }.bind(this))
+          }
+        </ul>
+      </li>
     )
   }
 });
