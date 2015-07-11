@@ -14,7 +14,7 @@
     "express-error-handler": "^1.0.1",
     "express-react-views": "^0.7.2",
     "express-session": "~1.0.0",
-    "gulp": "~3.8.11",
+    "gulp": "~3.9.0",
     "gulp-browserify": "^0.5.1",
     "gulp-jslint": "^0.2.2",
     "gulp-live-server": "^0.0.14",
