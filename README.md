@@ -81,3 +81,7 @@ sed -i 's/\[GITHUB_CLIENT_SECRET\]/<your_application_client_secret>/' config/def
 gulp reactify
 gulp server
 ```
+
+## Heroku deployment
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
