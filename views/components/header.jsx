@@ -17,7 +17,7 @@ module.exports = React.createClass({
 
     return (
       <header className="navbar navbar-default navbar-fixed-top">
-        <div className="container">
+        <div className="container-fluid">
           <div className="navbar-header">
             <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-header" aria-expanded="false">
               <span className="sr-only">Toggle navigation</span>
