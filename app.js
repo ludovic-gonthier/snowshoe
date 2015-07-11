@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.use(session({ secret: 'snowshoe cat, wilson\'s mustache rocks' }));
+app.use(session({ secret: process.env.SERVER_SECRET }));
 
 app.use(passport.initialize());
 app.use(passport.session());

@@ -1,6 +1,5 @@
 'use strict';
 
-var config = require('config');
 var http = require('http');
 var io = require('socket.io');
 
@@ -26,8 +25,8 @@ server.on('listening', function () {
 });
 
 server.listen(
-  process.env.PORT || config.get('server.port'),
-  process.env.ADRESS || config.get('server.hostname')
+  process.env.PORT || 3000,
+  process.env.ADRESS || "localhost"
 );
 
 /*
