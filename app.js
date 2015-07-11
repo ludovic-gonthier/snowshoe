@@ -1,5 +1,10 @@
 'use strict';
 
+if (process.env.NODE_ENV == 'dev') {
+  var dotenv = require('dotenv');
+  dotenv.load();
+}
+
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var express = require('express');
