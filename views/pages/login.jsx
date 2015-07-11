@@ -9,7 +9,7 @@ var Login = require('../components/buttons/login.jsx');
 module.exports = React.createClass({
   render: function () {
     return (
-      <Layout>
+      <Layout stylesheets={[{href: '/css/homepage.css'}]}>
         <Header />
         <div className="container">
           <div className="jumbotron col-lg-6 col-lg-offset-2">
