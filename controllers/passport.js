@@ -18,7 +18,7 @@ passport.use(new Strategy({
     clientID: process.env.GITHUB_CLIENT_ID || "",
     clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
     callbackURL: url.format({
-      protocol: 'https',
+      protocol: process.env.APP_PROTOCOL || 'http',
       host : process.env.HOSTNAME || "",
       pathname : '/auth/github/callback'
     })
