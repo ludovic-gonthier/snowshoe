@@ -25,8 +25,7 @@ server.on('listening', function () {
 });
 
 server.listen(
-  process.env.PORT || 3000,
-  process.env.ADRESS || "localhost"
+  process.env.PORT || 3000
 );
 
 /*
