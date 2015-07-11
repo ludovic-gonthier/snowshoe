@@ -15,7 +15,6 @@ module.exports = React.createClass({
   render: function () {
     return (
       <span>
-        <p className="navbar-text">PR to watch : </p>
         <ul className="nav navbar-nav">
           <li>
             <a href="#" onClick={this.fetchPersonalPulls}>Personal</a>
