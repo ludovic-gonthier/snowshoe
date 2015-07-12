@@ -42,13 +42,19 @@ Then install the project dependencies:
 npm install
 ```
 
+### Github application
 While npm is installing dependencies, [create an application on Github](https://github.com/settings/applications/new).
 For the field `Authorization callback URL` follow this pattern: `<your.domain.com>/auth/github/callback`, for Snowshoe to be able to log in to github.
-After the application creation, note the **Client ID** and the **Client Secret** and copy them to the configuration file:
+After the application creation, note the **Client ID** and the **Client Secret** and set the environment variables in .env file:
+
+e.g.:
 ```
-cp config/default.yml.dist config/default.yml
-sed -i 's/\[GITHUB_CLIENT_ID\]/<your_application_client_id>/' config/default.yml
-sed -i 's/\[GITHUB_CLIENT_SECRET\]/<your_application_client_secret>/' config/default.yml
+SERVER_SECRET="xxxxx"
+GITHUB_CLIENT_ID="xxxx"
+GITHUB_CLIENT_SECRET="xxxxx"
+HOSTNAME="127.0.0.1:3000"
+GITHUB_POLL_TIMEOUT=60
+APP_PROTOCOL="http"
 ```
 
 Snowshoe uses Browserify to regroup all javascript used in a page in one file.
@@ -74,9 +80,13 @@ nvm install
 npm install -g gulp
 npm install
 
-cp config/default.yml.dist config/default.yml
-sed -i 's/\[GITHUB_CLIENT_ID\]/<your_application_client_id>/' config/default.yml
-sed -i 's/\[GITHUB_CLIENT_SECRET\]/<your_application_client_secret>/' config/default.yml
+# create a .env file with
+# SERVER_SECRET="xxxxx"
+# GITHUB_CLIENT_ID="xxxx"
+# GITHUB_CLIENT_SECRET="xxxxx"
+# HOSTNAME="127.0.0.1:3000"
+# GITHUB_POLL_TIMEOUT=60
+# APP_PROTOCOL="http"
 
 gulp reactify
 gulp server
@@ -85,3 +95,11 @@ gulp server
 ## Heroku deployment
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+### Environment variables definition
+SERVER_SECRET: secret used for sessions, set it to a long random string
+GITHUB_CLIENT_ID: github client id you got from creating the app on github (see [above](#github-application))
+GITHUB_CLIENT_SECRET: github secret from last step
+HOSTNAME: heroku application name (e.g.: morning-ligh-8678)
+GITHUB_POLL_TIMEOUT: control timeout when calling out github api (default: 60 seconds)
+APP_PROTOCOL: "https" or "http", on heroku you can safely use https
