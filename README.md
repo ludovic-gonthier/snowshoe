@@ -102,9 +102,11 @@ In order to set the environment variables properly you need to [create an applic
 Once it is created update the heroku environment variables, you will find more information below.
 
 ### Environment variables definition
-SERVER_SECRET: secret used for sessions, set it to a long random string
-GITHUB_CLIENT_ID: github client id you got from creating the app on github (see [above](#github-application))
-GITHUB_CLIENT_SECRET: github secret from last step
-HOSTNAME: heroku application name (e.g.: morning-ligh-8678)
-GITHUB_POLL_TIMEOUT: control timeout when calling out github api (default: 60 seconds)
-APP_PROTOCOL: "https" or "http", on heroku you can safely use https
+Exhaustive list of variables:
+
+- SERVER_SECRET: secret used for sessions, set it to a long random string
+- GITHUB_CLIENT_ID: github client id you got from creating the app on github (see [above](#github-application))
+- GITHUB_CLIENT_SECRET: github secret from last step
+- HOSTNAME: heroku application name (e.g.: morning-ligh-8678)
+- GITHUB_POLL_TIMEOUT: control timeout when calling out github api (default: 60 seconds)
+- APP_PROTOCOL: "https" or "http", on heroku you can safely use https
