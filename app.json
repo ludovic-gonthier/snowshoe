@@ -13,7 +13,7 @@
     "GITHUB_CLIENT_ID": "ID_HERE",
     "GITHUB_CLIENT_SECRET": "SECRET_HERE",
     "HOSTNAME": "HOST",
-    "GITHUB_POLL_TIMEOUT": 60,
+    "GITHUB_POLL_TIMEOUT": "60",
     "APP_PROTOCOL": "https"
   },
   "scripts": {
