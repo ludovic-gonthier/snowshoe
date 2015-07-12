@@ -3,6 +3,9 @@ server:
   hostname: 127.0.0.1
   host: 127.0.0.1:8080
 
+app:
+  is-title-displayed: false
+
 github:
   token:
     public: [GITHUB_CLIENT_ID]
