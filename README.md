@@ -12,13 +12,13 @@ GitHub dashboard to keep tracks on your ongoing PR.
 
 ## Install
 
-Firstly clone the repo:
+First clone the repo:
 
 ``` sh
 git clone git@github.com:ludovic-gonthier/snowshoe.git
 ```
 
-If you have not NodeJS installed yet, we recommend to use [Nvm](https://github.com/creationix/nvm) :
+If you do not have NodeJS installed yet, we recommend you use [Nvm](https://github.com/creationix/nvm) :
 
 ``` sh
 cd snowshoe
@@ -43,17 +43,17 @@ npm install
 ```
 
 While npm is installing dependencies, [create an application on Github](https://github.com/settings/applications/new).
-For the field `Authorization callback URL` follow this pattern: `<your.domain.com>/auth/github/callback`, for Snowshoe to be able to log you with github.
-After the application creation, note the **Client ID** and the **Client Secret** and copy them on the configuration file:
+For the field `Authorization callback URL` follow this pattern: `<your.domain.com>/auth/github/callback`, for Snowshoe to be able to log in to github.
+After the application creation, note the **Client ID** and the **Client Secret** and copy them to the configuration file:
 ```
 cp config/default.yml.dist config/default.yml
 sed -i 's/\[GITHUB_CLIENT_ID\]/<your_application_client_id>/' config/default.yml
 sed -i 's/\[GITHUB_CLIENT_SECRET\]/<your_application_client_secret>/' config/default.yml
 ```
 
-Snowshoe is using Browserify to regroup each javascript use in a page in one file.
+Snowshoe uses Browserify to regroup all javascript used in a page in one file.
 In addition to that, we transform the JSX files into plain javascript.
-To generate those file run:
+To generate the file run:
 ```
 gulp reactify
 ```

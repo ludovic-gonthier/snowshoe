@@ -1,0 +1,8 @@
+#!/bin/bash
+cp config/default.yml.dist config/default.yml
+sed -i 's/\[GITHUB_CLIENT_ID\]/'$GITHUB_CLIENT_ID'/' config/default.yml
+sed -i 's/\[GITHUB_CLIENT_SECRET\]/'$GITHUB_CLIENT_SECRET'/' config/default.yml
+sed -i 's/host: 127.0.0.1:8080/host: '$SERVER_HOST'/' config/default.yml
+sed -i 's/hostname: 127.0.0.1/hostname: null/' config/default.yml
+
+gulp server
