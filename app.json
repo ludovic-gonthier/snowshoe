@@ -16,9 +16,6 @@
     "GITHUB_POLL_TIMEOUT": "60",
     "APP_PROTOCOL": "https"
   },
-  "scripts": {
-    "postdeploy": "gulp reactify"
-  },
   "buildpacks" : [
     {
       "url": "https://github.com/heroku/heroku-buildpack-nodejs"
