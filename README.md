@@ -66,7 +66,7 @@ gulp reactify
 
 An finally run the server:
 ```
-gulp server
+NODE_ENV="dev" gulp server
 ```
 
 ### Full installation instructions
@@ -89,12 +89,17 @@ npm install
 # APP_PROTOCOL="http"
 
 gulp reactify
-gulp server
+NODE_ENV="dev" gulp server
 ```
 
 ## Heroku deployment
 
+You can deploy a sandbox or production instance using the following button.
+
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+In order to set the environment variables properly you need to [create an application on github](#github-application).
+Once it is created update the heroku environment variables, you will find more information below.
 
 ### Environment variables definition
 SERVER_SECRET: secret used for sessions, set it to a long random string
