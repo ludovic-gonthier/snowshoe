@@ -16,6 +16,11 @@ body {
     margin: 0;
 }
 
+.thumbnail .badge {
+    float: left;
+    position: absolute;
+}
+
 .github-label {
     font: 13px/1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
     display: block;
@@ -33,6 +38,7 @@ body {
 }
 
 .github-title {
+  padding: 10px 0 0 0;
   margin: auto;
   width: 90%;
   white-space: nowrap;

@@ -17,8 +17,9 @@ module.exports = React.createClass({
               <span className="github-commemts-number">{this.props.pull.comments || 0}</span>
             </span>
           <img className={classes.join(' ')} src={this.props.pull.user.avatar_url} title={this.props.pull.user.login} alt={this.props.pull.user.login} width="100" height="100"/>
-          <div className="caption text-center github-request-number"><a href={this.props.pull.html_url} target="_blank">#{this.props.pull.number}</a></div>
+
           <div className="text-center github-title">{this.props.pull.title}</div>
+          <div className="caption text-center github-request-number"><a href={this.props.pull.html_url} target="_blank">#{this.props.pull.number}</a></div>
           {!this.props.pull.labels ? '' :
             this.props.pull.labels.map(function (label, index) {
               var rgb = label.color.match(/.{2}/g).map(function (color) {
