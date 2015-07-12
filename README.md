@@ -45,7 +45,7 @@ npm install
 ### Github application
 While npm is installing dependencies, [create an application on Github](https://github.com/settings/applications/new).
 For the field `Authorization callback URL` follow this pattern: `<your.domain.com>/auth/github/callback`, for Snowshoe to be able to log in to github.
-After the application creation, note the **Client ID** and the **Client Secret** and set the environment variables in .env file:
+After the application creation, note the **Client ID** and the **Client Secret** and set the environment variables in .env (we use [dotenv](https://github.com/motdotla/dotenv)) file:
 
 e.g.:
 ```
@@ -107,6 +107,6 @@ Exhaustive list of variables:
 - SERVER_SECRET: secret used for sessions, set it to a long random string
 - GITHUB_CLIENT_ID: github client id you got from creating the app on github (see [above](#github-application))
 - GITHUB_CLIENT_SECRET: github secret from last step
-- HOSTNAME: heroku application name (e.g.: morning-ligh-8678)
+- HOSTNAME: heroku application name (e.g.: morning-light-8678)
 - GITHUB_POLL_TIMEOUT: control timeout when calling out github api (default: 60 seconds)
 - APP_PROTOCOL: "https" or "http", on heroku you can safely use https
