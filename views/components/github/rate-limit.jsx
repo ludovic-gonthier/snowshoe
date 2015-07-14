@@ -9,7 +9,7 @@ module.exports = React.createClass({
     };
   },
   handleRate: function (data) {
-    data.reset = new Date(data.reset  * 1000);
+    data.reset = new Date(data.reset * 1000);
 
     this.setState({rate: data});
   },
@@ -27,23 +27,27 @@ module.exports = React.createClass({
     var percent = (this.state.rate.remaining * 100) / this.state.rate.limit;
 
     if (percent <= 10) {
-      return "label-danger";
+      return 'label-danger';
     }
 
     if (percent <= 35) {
-      return 'label-warning'
+      return 'label-warning';
     }
 
     return 'label-info';
   },
   render: function () {
+    var style;
+    var minutes;
+    var hours;
+
     if (!this.state.rate) {
       return null;
     }
 
-    var style = 'label ' + this.computeRateCssColor();
-    var minutes = this.padTimeString(this.state.rate.reset.getMinutes());
-    var hours = this.padTimeString(this.state.rate.reset.getHours());
+    style = 'label ' + this.computeRateCssColor();
+    minutes = this.padTimeString(this.state.rate.reset.getMinutes());
+    hours = this.padTimeString(this.state.rate.reset.getHours());
 
     return (
       <p id="rate-limit" className="navbar-text">

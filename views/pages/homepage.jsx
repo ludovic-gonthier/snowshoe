@@ -14,7 +14,7 @@ module.exports = React.createClass({
           <Header authenticated={this.props.authenticated}/>
         </div>
         <div id="mount-github">
-          <Dashboard user={this.props.user} repositories_url={this.props.repositories_url}/>
+          <Dashboard user={this.props.user} repositories_url={this.props.repositoriesUrl}/>
         </div>
 
         <script src="/views/github.js"></script>

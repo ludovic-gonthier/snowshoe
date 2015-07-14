@@ -1,6 +1,6 @@
 'use strict';
 
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV === 'development') {
   var dotenv = require('dotenv');
   dotenv.load();
 }
@@ -11,7 +11,7 @@ var express = require('express');
 var engine = require('express-react-views');
 var session = require('express-session');
 
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV === 'development') {
   var livereload = require('connect-livereload');
   var morgan = require('morgan');
 }
@@ -25,10 +25,10 @@ module.exports = app;
  * Application configuration
  */
 app.set('view engine', 'jsx');
-app.set('views', __dirname + '/views/pages');
+app.set('views', [__dirname, 'views/pages'].join('/'));
 app.engine('jsx', engine.createEngine());
 
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
@@ -46,7 +46,7 @@ app.use(express.static('public'));
 app.use(require('./controllers'));
 app.use(require('express-error-handler'));
 
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV === 'development') {
   app.use(livereload());
 }
 

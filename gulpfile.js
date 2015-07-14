@@ -39,7 +39,10 @@ gulp.task('reactify', function () {
     }))
     .pipe(gulp.dest('public/views'))
     .on('end', function () {
-      console.log('Complete!', (Date.now() - start) / 1000 + 's');
+      console.log( // eslint-disable-line no-console
+        'reactify: complete after %s!',
+        (Date.now() - start) / 1000 + 's'
+      );
     });
 
   // gulp.watch('views/{components,bridges}/**.{js,jsx}', ['reactify']);s
@@ -48,7 +51,7 @@ gulp.task('reactify', function () {
 gulp.task('server', function () {
   var server = gls('app.js', {
     env: {
-      NODE_ENV: process.env.NODE_ENV || "development"
+      NODE_ENV: process.env.NODE_ENV || 'development'
     }
   });
 
@@ -58,7 +61,7 @@ gulp.task('server', function () {
 gulp.task('server:watch', function () {
   var server = gls('app.js', {
     env: {
-      NODE_ENV: process.env.NODE_ENV || "development"
+      NODE_ENV: process.env.NODE_ENV || 'development'
     }
   });
 

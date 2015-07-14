@@ -6,7 +6,7 @@ var io = require('socket.io-client');
 module.exports = React.createClass({
   getInitialState: function () {
     return {
-      organizations: [],
+      organizations: []
     };
   },
   componentDidMount: function () {
@@ -17,32 +17,52 @@ module.exports = React.createClass({
   loadTeams: function (organizationLogin) {
     io().emit('team', organizationLogin);
   },
+  buildDropdown: function () {
+    if (this.state.organizations.length === 0) {
+      return null;
+    }
+
+    return this.state.organizations.map(function (organization, index) {
+      return (
+        <li role="presentation" key={index}>
+          <a role="menuitem" onClick={this.loadTeams.bind(this, organization.login)}>{organization.login}</a>
+        </li>
+      );
+    }.bind(this));
+  },
   render: function () {
     var attributes = {};
 
     if (this.state.organizations.length === 0) {
-      attributes['disabled'] = 'disabled';
+      attributes.disabled = 'disabled';
     }
 
     return (
-
       <li className="dropdown">
-        <a href="#" className="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {...attributes}>
+        <a href="#"
+           className="dropdown-toggle btn"
+           data-toggle="dropdown"
+           role="button"
+           aria-haspopup="true"
+           aria-expanded="false"
+           {...attributes}>
           Organizations
           <span className="caret"></span>
         </a>
         <ul className="dropdown-menu">
-          {this.state.organizations.length == 0 ? null :
+          {this.state.organizations.length === 0 ? null :
             this.state.organizations.map(function (organization, index) {
               return (
                 <li role="presentation" key={index}>
-                  <a role="menuitem" onClick={this.loadTeams.bind(this, organization.login)}>{organization.login}</a>
+                  <a role="menuitem" onClick={this.loadTeams.bind(this, organization.login)}>
+                    {organization.login}
+                  </a>
                 </li>
               );
             }.bind(this))
           }
         </ul>
       </li>
-    )
+    );
   }
 });

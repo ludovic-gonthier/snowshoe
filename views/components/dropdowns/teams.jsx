@@ -14,36 +14,44 @@ module.exports = React.createClass({
       this.setState({teams: data});
     }.bind(this));
   },
+  buildDropdown: function () {
+    if (this.state.teams.length === 0) {
+      return null;
+    }
+
+    return this.state.teams.map(function (team, index) {
+      var href = '/teams/' + team.slug + '/' + team.id;
+
+      return (
+        <li role="presentation" key={index}>
+          <a role="menuitem" href={href}>{team.name}</a>
+        </li>
+      );
+    });
+  },
   render: function () {
-    var dropdown;
     var attributes = {};
 
     if (this.state.teams.length === 0) {
-      attributes['disabled'] = 'disabled';
-    }
-
-    if (this.state.teams.length != 0) {
-      dropdown = this.state.teams.map(function (team, index) {
-        var href = '/teams/' + team.slug + '/' + team.id;
-
-        return (
-          <li role="presentation" key={index}>
-            <a role="menuitem" href={href}>{team.name}</a>
-          </li>
-        );
-      });
+      attributes.disabled = 'disabled';
     }
 
     return (
       <li className="dropdown">
-        <a href="#" className="btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {...attributes}>
+        <a href="#"
+           className="btn dropdown-toggle"
+           data-toggle="dropdown"
+           role="button"
+           aria-haspopup="true"
+           aria-expanded="false"
+           {...attributes}>
           Teams
           <span className="caret"></span>
         </a>
         <ul className="dropdown-menu">
-          {dropdown}
+          {this.buildDropdown()}
         </ul>
       </li>
-    )
+    );
   }
 });
