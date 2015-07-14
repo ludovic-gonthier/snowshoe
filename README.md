@@ -52,9 +52,10 @@ e.g.:
 SERVER_SECRET="xxxxx"
 GITHUB_CLIENT_ID="xxxx"
 GITHUB_CLIENT_SECRET="xxxxx"
-HOSTNAME="127.0.0.1:3000"
 GITHUB_POLL_TIMEOUT=60
-APP_PROTOCOL="http"
+SNOWSHOE_HOSTNAME="127.0.0.1:3000"
+SNOWSHOE_APP_PROTOCOL="http"
+PORT=3000
 ```
 
 Snowshoe uses Browserify to regroup all javascript used in a page in one file.
@@ -66,7 +67,13 @@ gulp reactify
 
 An finally run the server:
 ```
-NODE_ENV="dev" gulp server
+gulp server
+```
+
+You can change the port on which the application runs by changing the ``PORT`` environment variable.
+e.g.
+```
+PORT=8500
 ```
 
 ### Full installation instructions
@@ -84,12 +91,12 @@ npm install
 # SERVER_SECRET="xxxxx"
 # GITHUB_CLIENT_ID="xxxx"
 # GITHUB_CLIENT_SECRET="xxxxx"
-# HOSTNAME="127.0.0.1:3000"
 # GITHUB_POLL_TIMEOUT=60
-# APP_PROTOCOL="http"
+# SNOWSHOE_HOSTNAME="127.0.0.1:3000"
+# SNOWSHOE_APP_PROTOCOL="http"
 
 gulp reactify
-NODE_ENV="dev" gulp server
+gulp server
 ```
 
 ## Heroku deployment
@@ -107,6 +114,7 @@ Exhaustive list of variables:
 - SERVER_SECRET: secret used for sessions, set it to a long random string
 - GITHUB_CLIENT_ID: github client id you got from creating the app on github (see [above](#github-application))
 - GITHUB_CLIENT_SECRET: github secret from last step
-- HOSTNAME: heroku application name (e.g.: morning-light-8678)
 - GITHUB_POLL_TIMEOUT: control timeout when calling out github api (default: 60 seconds)
-- APP_PROTOCOL: "https" or "http", on heroku you can safely use https
+- SNOWSHOE_HOSTNAME: heroku application name (e.g.: morning-light-8678)
+- SNOWSHOE_APP_PROTOCOL: "https" or "http", on heroku you can safely use https
+- PORT: do not set this variable, Heroku sets it for you
