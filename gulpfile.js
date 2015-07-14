@@ -3,37 +3,30 @@
 var gulp = require('gulp');
 var browserify = require('gulp-browserify');
 var gls = require('gulp-live-server');
-var jslint = require('gulp-jslint');
+var eslint = require('gulp-eslint');
 var uglify = require('gulp-uglify');
 
 gulp.task('lint', function () {
-  var files = [
-    '*.js',
-    'views/bridges/**.js'
-  ];
-
-  return gulp.src(files)
-    .pipe(jslint({
-      "es6": true,
-      "strict": true,
-      "node": true,
-
-      "indent": 2,
-      "trailing": true,
-      "white": false,
-      "maxerr": 50,
-
-      "debug": false,
-      "devel": false,
-
-      "newcap": true,
-      "noempty": true,
-      "nomen": true,
-      "unparam": true
-    }))
-    .on('error', function (error) {
-      console.error(String(error));
-    });
+  return gulp.src([
+      '*.js',
+      'controllers/**/*.js',
+      'lib/**/*.js',
+      'views/**/*.jsx'
+    ])
+    .pipe(eslint())
+    .pipe(eslint.formatEach())
+    .pipe(eslint.failAfterError());
+});
+gulp.task('lint:watch', function () {
+  return gulp.watch([
+      '*.js',
+      'controllers/**/*.js',
+      'lib/**/*.js',
+      'views/**/*.jsx'
+    ])
+    .pipe(eslint())
+    .pipe(eslint.formatEach())
+    .pipe(eslint.failAfterError());
 });
 
 gulp.task('reactify', function () {
