@@ -16,6 +16,11 @@ module.exports = React.createClass({
   },
   render: function () {
     var dropdown;
+    var attributes = {};
+
+    if (this.state.teams.length === 0) {
+      attributes['disabled'] = 'disabled';
+    }
 
     if (this.state.teams.length != 0) {
       dropdown = this.state.teams.map(function (team, index) {
@@ -31,7 +36,7 @@ module.exports = React.createClass({
 
     return (
       <li className="dropdown">
-        <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <a href="#" className="btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {...attributes}>
           Teams
           <span className="caret"></span>
         </a>

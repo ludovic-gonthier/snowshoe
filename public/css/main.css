@@ -12,6 +12,15 @@ body {
 .navbar {
   margin: 0;
 }
+.navbar .dropdown .btn {
+  border-top: 0;
+  border-bottom: 0;
+  text-align: left;
+}
+.navbar .dropdown .btn .caret {
+  margin-left: 5px;
+}
+
 .thumbnail {
     width: 12.5%;
     margin: 0;

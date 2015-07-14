@@ -27,7 +27,7 @@ module.exports = React.createClass({
     return (
 
       <li className="dropdown">
-        <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {...attributes}>
+        <a href="#" className="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" {...attributes}>
           Organizations
           <span className="caret"></span>
         </a>
