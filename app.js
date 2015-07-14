@@ -10,9 +10,12 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var express = require('express');
 var engine = require('express-react-views');
-var livereload = require('connect-livereload');
-var morgan = require('morgan');
 var session = require('express-session');
+
+if (process.env.NODE_ENV == 'development') {
+  var livereload = require('connect-livereload');
+  var morgan = require('morgan');
+}
 
 var passport = require('./controllers/passport');
 
@@ -26,7 +29,9 @@ app.set('view engine', 'jsx');
 app.set('views', __dirname + '/views/pages');
 app.engine('jsx', engine.createEngine());
 
-app.use(morgan('dev'));
+if (process.env.NODE_ENV == 'development') {
+  app.use(morgan('dev'));
+}
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -42,6 +47,8 @@ app.use(express.static('public'));
 app.use(require('./controllers'));
 app.use(require('express-error-handler'));
 
-app.use(livereload());
+if (process.env.NODE_ENV == 'development') {
+  app.use(livereload());
+}
 
 require('./server');
