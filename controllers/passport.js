@@ -18,8 +18,8 @@ passport.use(new Strategy({
     clientID: process.env.GITHUB_CLIENT_ID || "",
     clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
     callbackURL: url.format({
-      protocol: process.env.APP_PROTOCOL || 'http',
-      host : process.env.HOSTNAME || "",
+      protocol: process.env.SNOWSHOE_APP_PROTOCOL || 'http',
+      host : process.env.SNOWSHOE_HOSTNAME || "",
       pathname : '/auth/github/callback'
     })
   },

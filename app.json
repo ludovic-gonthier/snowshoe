@@ -12,9 +12,9 @@
     "SERVER_SECRET": "SERVER_SECRET_HERE",
     "GITHUB_CLIENT_ID": "ID_HERE",
     "GITHUB_CLIENT_SECRET": "SECRET_HERE",
-    "HOSTNAME": "HOST",
     "GITHUB_POLL_TIMEOUT": "60",
-    "APP_PROTOCOL": "https"
+    "SNOWSHOE_HOSTNAME": "HOST",
+    "SNOWSHOE_APP_PROTOCOL": "https"
   },
   "scripts": {
     "postdeploy": "gulp reactify"
