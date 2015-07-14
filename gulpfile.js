@@ -64,4 +64,10 @@ gulp.task('server', function () {
   ], server.start);
 });
 
+gulp.task('server-prod', function () {
+  var server = gls('app.js', {env: {NODE_ENV: "production"}});
+
+  server.start();
+});
+
 gulp.task('default', ['reactify', 'server']);

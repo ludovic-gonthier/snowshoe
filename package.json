@@ -36,6 +36,6 @@
   },
   "scripts": {
     "install": "./node_modules/.bin/gulp reactify",
-    "start": "./node_modules/.bin/gulp server"
+    "start": "./node_modules/.bin/gulp server-prod"
   }
 }
