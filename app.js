@@ -1,6 +1,5 @@
 'use strict';
 
-console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV == 'development') {
   var dotenv = require('dotenv');
   dotenv.load();
