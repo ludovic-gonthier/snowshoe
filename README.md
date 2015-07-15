@@ -42,13 +42,20 @@ Then install the project dependencies:
 npm install
 ```
 
+### Github application
 While npm is installing dependencies, [create an application on Github](https://github.com/settings/applications/new).
 For the field `Authorization callback URL` follow this pattern: `<your.domain.com>/auth/github/callback`, for Snowshoe to be able to log in to github.
-After the application creation, note the **Client ID** and the **Client Secret** and copy them to the configuration file:
+After the application creation, note the **Client ID** and the **Client Secret** and set the environment variables in .env (we use [dotenv](https://github.com/motdotla/dotenv)) file:
+
+e.g.:
 ```
-cp config/default.yml.dist config/default.yml
-sed -i 's/\[GITHUB_CLIENT_ID\]/<your_application_client_id>/' config/default.yml
-sed -i 's/\[GITHUB_CLIENT_SECRET\]/<your_application_client_secret>/' config/default.yml
+SERVER_SECRET="xxxxx"
+GITHUB_CLIENT_ID="xxxx"
+GITHUB_CLIENT_SECRET="xxxxx"
+GITHUB_POLL_TIMEOUT=60
+SNOWSHOE_HOSTNAME="127.0.0.1:3000"
+SNOWSHOE_APP_PROTOCOL="http"
+PORT=3000
 ```
 
 Snowshoe uses Browserify to regroup all javascript used in a page in one file.
@@ -63,6 +70,12 @@ An finally run the server:
 gulp server
 ```
 
+You can change the port on which the application runs by changing the ``PORT`` environment variable.
+e.g.
+```
+PORT=8500
+```
+
 ### Full installation instructions
 ```
 git clone git@github.com:ludovic-gonthier/snowshoe.git
@@ -74,10 +87,34 @@ nvm install
 npm install -g gulp
 npm install
 
-cp config/default.yml.dist config/default.yml
-sed -i 's/\[GITHUB_CLIENT_ID\]/<your_application_client_id>/' config/default.yml
-sed -i 's/\[GITHUB_CLIENT_SECRET\]/<your_application_client_secret>/' config/default.yml
+# create a .env file with
+# SERVER_SECRET="xxxxx"
+# GITHUB_CLIENT_ID="xxxx"
+# GITHUB_CLIENT_SECRET="xxxxx"
+# GITHUB_POLL_TIMEOUT=60
+# SNOWSHOE_HOSTNAME="127.0.0.1:3000"
+# SNOWSHOE_APP_PROTOCOL="http"
 
 gulp reactify
 gulp server
 ```
+
+## Heroku deployment
+
+You can deploy a sandbox or production instance using the following button.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
+In order to set the environment variables properly you need to [create an application on github](#github-application).
+Once it is created update the heroku environment variables, you will find more information below.
+
+### Environment variables definition
+Exhaustive list of variables:
+
+- SERVER_SECRET: secret used for sessions, set it to a long random string
+- GITHUB_CLIENT_ID: github client id you got from creating the app on github (see [above](#github-application))
+- GITHUB_CLIENT_SECRET: github secret from last step
+- GITHUB_POLL_TIMEOUT: control timeout when calling out github api (default: 60 seconds)
+- SNOWSHOE_HOSTNAME: heroku application name (e.g.: morning-light-8678)
+- SNOWSHOE_APP_PROTOCOL: "https" or "http", on heroku you can safely use https
+- PORT: do not set this variable, Heroku sets it for you

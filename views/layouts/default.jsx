@@ -7,7 +7,7 @@ var defaults = {
     href: 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/slate/bootstrap.min.css'
   }],
   scripts: [{
-    src: 'http://code.jquery.com/jquery-2.1.4.min.js'
+    src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js'
   }, {
     src: '//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'
   }],

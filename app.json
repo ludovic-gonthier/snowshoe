@@ -1,0 +1,27 @@
+{
+  "name": "Snowshoe",
+  "description": "Track your ongoing Github Pull Requests.",
+  "keywords": [
+    "github",
+    "pr",
+    "pull-requests"
+  ],
+  "addons": [
+  ],
+  "env": {
+    "SERVER_SECRET": "SERVER_SECRET_HERE",
+    "GITHUB_CLIENT_ID": "ID_HERE",
+    "GITHUB_CLIENT_SECRET": "SECRET_HERE",
+    "GITHUB_POLL_TIMEOUT": "60",
+    "SNOWSHOE_HOSTNAME": "HOST",
+    "SNOWSHOE_APP_PROTOCOL": "https"
+  },
+  "scripts": {
+    "postdeploy": "gulp reactify"
+  },
+  "buildpacks" : [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-nodejs"
+    }
+  ]
+}

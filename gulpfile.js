@@ -53,9 +53,21 @@ gulp.task('reactify', function () {
 });
 
 gulp.task('server', function () {
-  var server = gls.new('app.js');
+  var server = gls('app.js', {
+    env: {
+      NODE_ENV: process.env.NODE_ENV || "development"
+    }
+  });
 
   server.start();
+});
+
+gulp.task('server:watch', function () {
+  var server = gls('app.js', {
+    env: {
+      NODE_ENV: process.env.NODE_ENV || "development"
+    }
+  });
 
   gulp.watch([
     'app.js',
@@ -64,4 +76,4 @@ gulp.task('server', function () {
   ], server.start);
 });
 
-gulp.task('default', ['reactify', 'server']);
+gulp.task('default', ['reactify', 'server', 'server:watch']);

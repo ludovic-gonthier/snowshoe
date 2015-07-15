@@ -4,8 +4,6 @@ var passport = require('passport');
 var url = require('url');
 var Strategy = require('passport-github').Strategy;
 
-var config = require('config');
-
 module.exports = passport;
 
 passport.serializeUser(function(user, done) {
@@ -17,11 +15,11 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new Strategy({
-    clientID: config.get('github.token.public'),
-    clientSecret: config.get('github.token.secret'),
+    clientID: process.env.GITHUB_CLIENT_ID || "",
+    clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
     callbackURL: url.format({
-      protocol: 'http',
-      host : config.get('server.host'),
+      protocol: process.env.SNOWSHOE_APP_PROTOCOL || 'http',
+      host : process.env.SNOWSHOE_HOSTNAME || "",
       pathname : '/auth/github/callback'
     })
   },
