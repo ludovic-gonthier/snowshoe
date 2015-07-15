@@ -43,7 +43,7 @@ app.use(passport.session());
 
 app.use(express.static('public'));
 // app.use(require('./lib/middlewares/socket-aware'));
-app.use(require('./controllers'));
+app.use(require('./controllers').Router);
 app.use(require('express-error-handler'));
 
 if (process.env.NODE_ENV === 'development') {
