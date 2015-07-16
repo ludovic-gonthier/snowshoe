@@ -66,9 +66,9 @@ gulp.task('server:watch', function () {
   });
 
   gulp.watch([
-    'app.js',
-    '{lib,config,controllers}/**.js',
-    'views{components,pages}/**.jsx'
+    '{app,server}.js',
+    '{lib,controllers}/**.js',
+    'views/{components,pages}/**.jsx'
   ], server.start);
 });
 
