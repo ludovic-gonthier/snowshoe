@@ -4,7 +4,6 @@ var React = require('react');
 
 var Layout = require('../layouts/default.jsx');
 var Header = require('../components/header.jsx');
-var Login = require('../components/buttons/login.jsx');
 
 module.exports = React.createClass({
   render: function () {

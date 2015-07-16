@@ -20,7 +20,7 @@ var Layout = React.createClass({
       stylesheets: [],
       scripts: [],
       metas: [],
-      title: "SnowShoe - Github Dashboards"
+      title: 'SnowShoe - Github Dashboards'
     };
   },
   render: function () {

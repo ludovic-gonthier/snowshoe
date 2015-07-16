@@ -1,8 +1,25 @@
 {
   "name": "snowshoe",
-  "version": "0.1.0",
-  "description": "SnowShoe",
+  "version": "0.1.1",
+  "description": "GitHub dashboard to keep tracks on your ongoing PR",
+  "author": {
+    "name": "Ludovic Gonthier",
+    "email": "gonthier.ludovic@gmail.com"
+  },
+  "license": "MIT License",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ludovic-gonthier/snowshoe"
+  },
   "main": "app.js",
+  "bugs": {
+    "url": "https://github.com/ludovic-gonthier/snowshoe/issues"
+  },
+  "scripts": {
+    "lint": "./node_modules/.bin/gulp lint",
+    "install": "./node_modules/.bin/gulp reactify",
+    "start": "./node_modules/.bin/gulp server"
+  },
   "dependencies": {
     "async": "^0.9.0",
     "body-parser": "^1.12.3",
@@ -13,11 +30,6 @@
     "express-error-handler": "^1.0.1",
     "express-react-views": "^0.7.2",
     "express-session": "~1.0.0",
-    "gulp": "~3.9.0",
-    "gulp-browserify": "^0.5.1",
-    "gulp-jslint": "^0.2.2",
-    "gulp-live-server": "^0.0.23",
-    "gulp-uglify": "^1.2.0",
     "js-yaml": "^3.3.1",
     "lodash": "^3.2.0",
     "passport": "~0.1.17",
@@ -32,10 +44,18 @@
   "devDependencies": {
     "dotenv": "^1.2.0",
     "connect-livereload": "0.5.3",
-    "morgan": "~1.5.2"
+    "morgan": "~1.5.2",
+    "end-of-stream": "^1.1.0",
+    "eslint": "^0.24.1",
+    "eslint-plugin-react": "^2.7.0",
+    "esprima-fb": "^15001.1.0-dev-harmony-fb",
+    "gulp": "~3.8.11",
+    "gulp-browserify": "^0.5.1",
+    "gulp-eslint": "^0.15.0",
+    "gulp-live-server": "^0.0.14",
+    "gulp-uglify": "^1.2.0"
   },
-  "scripts": {
-    "install": "./node_modules/.bin/gulp reactify",
-    "start": "./node_modules/.bin/gulp server"
+  "engines": {
+    "node": ">= 0.12.2"
   }
 }

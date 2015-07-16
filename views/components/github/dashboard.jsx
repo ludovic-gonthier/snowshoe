@@ -10,7 +10,7 @@ module.exports = React.createClass({
   getInitialState: function () {
     return {
       pulls: []
-    }
+    };
   },
   handlePulls: function (pulls) {
     var ids = _.map(this.state.pulls, 'id');
@@ -52,7 +52,7 @@ module.exports = React.createClass({
     var index = _.map(this.state.pulls, 'id').indexOf(status.pull_request.id);
 
     if (index !== -1) {
-      this.state.pulls[index].last_status = status;
+      this.state.pulls[index].lastStatus = status;
     }
 
     this.setState({pulls: this.state.pulls});

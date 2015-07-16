@@ -3,77 +3,69 @@
 var gulp = require('gulp');
 var browserify = require('gulp-browserify');
 var gls = require('gulp-live-server');
-var jslint = require('gulp-jslint');
+var eslint = require('gulp-eslint');
 var uglify = require('gulp-uglify');
 
+var files = [
+  '{app,server}.js',
+  '{lib,controllers}/**.js',
+  'views/{components,pages}/**.jsx'
+];
+
 gulp.task('lint', function () {
-  var files = [
-    '*.js',
-    'views/bridges/**.js'
-  ];
-
   return gulp.src(files)
-    .pipe(jslint({
-      "es6": true,
-      "strict": true,
-      "node": true,
-
-      "indent": 2,
-      "trailing": true,
-      "white": false,
-      "maxerr": 50,
-
-      "debug": false,
-      "devel": false,
-
-      "newcap": true,
-      "noempty": true,
-      "nomen": true,
-      "unparam": true
-    }))
-    .on('error', function (error) {
-      console.error(String(error));
-    });
+    .pipe(eslint())
+    .pipe(eslint.formatEach())
+    .pipe(eslint.failAfterError());
+});
+gulp.task('lint:watch', function () {
+  return gulp.watch(files)
+    .pipe(eslint())
+    .pipe(eslint.formatEach())
+    .pipe(eslint.failAfterError());
 });
 
 gulp.task('reactify', function () {
   var start = Date.now();
 
   gulp.src(['views/bridges/**.js'])
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(browserify({
       transform: [ 'reactify' ]
     }))
     .pipe(gulp.dest('public/views'))
     .on('end', function () {
-      console.log('Complete!', (Date.now() - start) / 1000 + 's');
+      console.log( // eslint-disable-line no-console
+        'reactify: complete after %s!',
+        (Date.now() - start) / 1000 + 's'
+      );
     });
-
-  // gulp.watch('views/{components,bridges}/**.{js,jsx}', ['reactify']);s
 });
 
 gulp.task('server', function () {
   var server = gls('app.js', {
     env: {
-      NODE_ENV: process.env.NODE_ENV || "development"
+      NODE_ENV: process.env.NODE_ENV || 'development'
     }
   });
 
   server.start();
 });
-
 gulp.task('server:watch', function () {
   var server = gls('app.js', {
     env: {
-      NODE_ENV: process.env.NODE_ENV || "development"
+      NODE_ENV: process.env.NODE_ENV || 'development'
     }
   });
 
-  gulp.watch([
-    'app.js',
-    '{lib,config,controllers}/**.js',
-    'views{components,pages}/**.jsx'
-  ], server.start);
+  server.start();
+
+  gulp.watch(files, function () {
+    server.start();
+  });
 });
 
-gulp.task('default', ['reactify', 'server', 'server:watch']);
+gulp.task('default', [
+  'reactify',
+  'server'
+]);

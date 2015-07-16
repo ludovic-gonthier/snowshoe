@@ -15,12 +15,12 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new Strategy({
-    clientID: process.env.GITHUB_CLIENT_ID || "",
-    clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
+    clientID: process.env.GITHUB_CLIENT_ID || '',
+    clientSecret: process.env.GITHUB_CLIENT_SECRET || '',
     callbackURL: url.format({
       protocol: process.env.SNOWSHOE_APP_PROTOCOL || 'http',
-      host : process.env.SNOWSHOE_HOST || "",
-      pathname : '/auth/github/callback'
+      host: process.env.SNOWSHOE_HOST || '',
+      pathname: '/auth/github/callback'
     })
   },
   function(accessToken, refreshToken, profile, done) {
