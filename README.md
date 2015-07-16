@@ -53,7 +53,8 @@ SERVER_SECRET="xxxxx"
 GITHUB_CLIENT_ID="xxxx"
 GITHUB_CLIENT_SECRET="xxxxx"
 GITHUB_POLL_TIMEOUT=60
-SNOWSHOE_HOSTNAME="127.0.0.1:3000"
+SNOWSHOE_HOST="127.0.0.1:3000"
+SNOWSHOE_HOSTNAME="127.0.0.1"
 SNOWSHOE_APP_PROTOCOL="http"
 PORT=3000
 ```
@@ -92,8 +93,10 @@ npm install
 # GITHUB_CLIENT_ID="xxxx"
 # GITHUB_CLIENT_SECRET="xxxxx"
 # GITHUB_POLL_TIMEOUT=60
-# SNOWSHOE_HOSTNAME="127.0.0.1:3000"
+# SNOWSHOE_HOST="127.0.0.1:3000"
+# SNOWSHOE_HOSTNAME="127.0.0.1"
 # SNOWSHOE_APP_PROTOCOL="http"
+# PORT=3000
 
 gulp reactify
 gulp server
@@ -115,6 +118,7 @@ Exhaustive list of variables:
 - GITHUB_CLIENT_ID: github client id you got from creating the app on github (see [above](#github-application))
 - GITHUB_CLIENT_SECRET: github secret from last step
 - GITHUB_POLL_TIMEOUT: control timeout when calling out github api (default: 60 seconds)
+- SNOWSHOE_HOST: Host used in the Github Oauth callback (can contain the port as much as the hostname)
 - SNOWSHOE_HOSTNAME: heroku application name (e.g.: morning-light-8678)
 - SNOWSHOE_APP_PROTOCOL: "https" or "http", on heroku you can safely use https
 - PORT: do not set this variable, Heroku sets it for you

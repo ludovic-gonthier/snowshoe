@@ -25,7 +25,8 @@ server.on('listening', function () {
 });
 
 server.listen(
-  process.env.PORT || 3000
+  process.env.PORT || 3000,
+  process.env.SNOWSHOE_HOSTNAME || "127.0.0.1"
 );
 
 /*
