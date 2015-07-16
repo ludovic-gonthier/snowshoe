@@ -19,7 +19,7 @@ passport.use(new Strategy({
     clientSecret: process.env.GITHUB_CLIENT_SECRET || "",
     callbackURL: url.format({
       protocol: process.env.SNOWSHOE_APP_PROTOCOL || 'http',
-      host : process.env.SNOWSHOE_HOSTNAME || "",
+      host : process.env.SNOWSHOE_HOST || "",
       pathname : '/auth/github/callback'
     })
   },
