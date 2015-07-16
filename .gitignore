@@ -1,4 +1,3 @@
 node_modules
-config/default.yml
 .env
 public/views
