@@ -6,24 +6,20 @@ var gls = require('gulp-live-server');
 var eslint = require('gulp-eslint');
 var uglify = require('gulp-uglify');
 
+var files = [
+  '{app,server}.js',
+  '{lib,controllers}/**.js',
+  'views/{components,pages}/**.jsx'
+];
+
 gulp.task('lint', function () {
-  return gulp.src([
-      '*.js',
-      'controllers/**/*.js',
-      'lib/**/*.js',
-      'views/**/*.jsx'
-    ])
+  return gulp.src(files)
     .pipe(eslint())
     .pipe(eslint.formatEach())
     .pipe(eslint.failAfterError());
 });
 gulp.task('lint:watch', function () {
-  return gulp.watch([
-      '*.js',
-      'controllers/**/*.js',
-      'lib/**/*.js',
-      'views/**/*.jsx'
-    ])
+  return gulp.watch(files)
     .pipe(eslint())
     .pipe(eslint.formatEach())
     .pipe(eslint.failAfterError());
@@ -33,7 +29,7 @@ gulp.task('reactify', function () {
   var start = Date.now();
 
   gulp.src(['views/bridges/**.js'])
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(browserify({
       transform: [ 'reactify' ]
     }))
@@ -44,8 +40,6 @@ gulp.task('reactify', function () {
         (Date.now() - start) / 1000 + 's'
       );
     });
-
-  // gulp.watch('views/{components,bridges}/**.{js,jsx}', ['reactify']);s
 });
 
 gulp.task('server', function () {
@@ -57,7 +51,6 @@ gulp.task('server', function () {
 
   server.start();
 });
-
 gulp.task('server:watch', function () {
   var server = gls('app.js', {
     env: {
@@ -65,11 +58,14 @@ gulp.task('server:watch', function () {
     }
   });
 
-  gulp.watch([
-    '{app,server}.js',
-    '{lib,controllers}/**.js',
-    'views/{components,pages}/**.jsx'
-  ], server.start);
+  server.start();
+
+  gulp.watch(files, function () {
+    server.start();
+  });
 });
 
-gulp.task('default', ['reactify', 'server', 'server:watch']);
+gulp.task('default', [
+  'reactify',
+  'server'
+]);
