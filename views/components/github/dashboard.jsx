@@ -65,8 +65,8 @@ module.exports = React.createClass({
       accessToken: this.props.accessToken
     });
 
-    if (this.props.repositories_url) {
-      socket.emit('pulls', this.props.repositories_url);
+    if (this.props.repositoriesUrl) {
+      socket.emit('pulls', this.props.repositoriesUrl);
     }
 
     socket.on('pulls', this.handlePulls);
