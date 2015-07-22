@@ -13,14 +13,22 @@ module.exports = React.createClass({
     io().emit('pulls');
   },
   render: function () {
+    var personnalButton = '';
+
+    if (this.props.hasUser) {
+      personnalButton = (
+        <li>
+          <a href="#" onClick={this.fetchPersonalPulls}>Personal</a>
+        </li>
+      );
+    }
+
     return (
       <span>
         <ul className="nav navbar-nav">
-          <li>
-            <a href="#" onClick={this.fetchPersonalPulls}>Personal</a>
-          </li>
+          {personnalButton}
           <Dropdown.Organizations />
-          <Dropdown.Teams />
+          <Dropdown.Teams accessToken={this.props.accessToken} />
         </ul>
       </span>
     );

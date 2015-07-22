@@ -22,12 +22,16 @@ module.exports = React.createClass({
     return this.state.teams.map(function (team, index) {
       var href = '/teams/' + team.slug + '/' + team.id;
 
+      if (this.props.accessToken) {
+        href += '?access_token=' + this.props.accessToken;
+      }
+
       return (
         <li role="presentation" key={index}>
           <a role="menuitem" href={href}>{team.name}</a>
         </li>
       );
-    });
+    }.bind(this));
   },
   render: function () {
     var attributes = {};

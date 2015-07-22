@@ -34,7 +34,7 @@ module.exports = React.createClass({
 
           <div className="collapse navbar-collapse" id="nav-header">
 
-            {this.props.authenticated ? <Navbar /> : ''}
+            {this.props.accessToken || this.props.authenticated ? <Navbar hasUser={!!this.props.user} accessToken={this.props.accessToken} /> : ''}
 
             <div className="navbar-right">
               <RateLimit />
