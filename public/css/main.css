@@ -3,6 +3,12 @@ body {
     word-wrap: break-word;
 }
 
+.ellipsis {
+    text-overflow: ellipsis;
+    cursor: context-menu;
+    white-space: nowrap;
+    overflow: hidden;
+}
 .row-eq-height {
   display: -webkit-box;
   display: -webkit-flex;

@@ -24,7 +24,10 @@ module.exports = React.createClass({
 
     return (
         <div className="thumbnail">
-          <header className="caption text-center"><strong>{this.props.pull.base.repo.name}</strong></header>
+          <header className="caption text-center ellipsis"
+                  title={this.props.pull.base.repo.name}>
+              <strong>{this.props.pull.base.repo.name}</strong>
+          </header>
             <span className="badge">
               <span className="glyphicon glyphicon-comment pull-left"></span>
               <span className="github-commemts-number">{this.props.pull.comments || 0}</span>
