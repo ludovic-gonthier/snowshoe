@@ -47,9 +47,6 @@ body {
     padding: 6px 10px;
     font-size: 13px;
     box-shadow: none;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     vertical-align: top;
     border-radius: 2px;
     font-weight: bold;
@@ -60,9 +57,6 @@ body {
   padding: 10px 0 0 0;
   margin: auto;
   width: 90%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .github-label+.github-label {
@@ -92,6 +86,9 @@ body {
 #rate-limit .separator {
   width: 15px;
   display: inline-block;
+}
+#rate-limit span:not(.separator) {
+    cursor: context-menu;
 }
 
 #organizations-dropdown li a {

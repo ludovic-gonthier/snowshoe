@@ -39,7 +39,7 @@ module.exports = React.createClass({
                width="100"
                height="100"/>
 
-          <div className="text-center github-title">
+          <div className="text-center github-title ellipsis" title={this.props.pull.title}>
             { this.props.pull.isTitleDisplayed ? this.props.pull.title : '' }
           </div>
           <div className="caption text-center github-request-number">
@@ -52,7 +52,8 @@ module.exports = React.createClass({
               return (
                 <div key={index}
                      style={this.computeLabelStyle(label.color)}
-                     className="github-label text-center"
+                     className="github-label text-center ellipsis"
+                     title={label.name}
                 >
                   {label.name}
                 </div>
