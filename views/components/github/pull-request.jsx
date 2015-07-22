@@ -28,10 +28,10 @@ module.exports = React.createClass({
                   title={this.props.pull.base.repo.name}>
               <strong>{this.props.pull.base.repo.name}</strong>
           </header>
-            <span className="badge">
-              <span className="glyphicon glyphicon-comment pull-left"></span>
-              <span className="github-commemts-number">{this.props.pull.comments || 0}</span>
-            </span>
+          <span className="badge">
+            <span className="glyphicon glyphicon-comment pull-left"></span>
+            <span className="github-commemts-number">{this.props.pull.comments || 0}</span>
+          </span>
           <img className={classes.join(' ')}
                src={this.props.pull.user.avatar_url}
                title={this.props.pull.user.login}
