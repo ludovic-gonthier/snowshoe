@@ -11,10 +11,10 @@ module.exports = React.createClass({
     return (
       <Layout className="page-container" stylesheets={[{href: '/css/main.css'}]}>
         <div id="mount-header">
-          <Header authenticated={this.props.authenticated}/>
+          <Header user={this.props.user} authenticated={this.props.authenticated} accessToken={this.props.accessToken}/>
         </div>
         <div id="mount-github">
-          <Dashboard user={this.props.user} repositoriesUrl={this.props.repositoriesUrl}/>
+          <Dashboard user={this.props.user} accessToken={this.props.accessToken} repositoriesUrl={this.props.repositoriesUrl}/>
         </div>
 
         <script src="/views/github.js"></script>
