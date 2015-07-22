@@ -125,3 +125,17 @@ Exhaustive list of variables:
 - SNOWSHOE_APP_PROTOCOL: "https" or "http", on heroku you can safely use https
 - SNOWSHOE_APP_DISPLAY_PR_TITLE: Weither the application should display the PR titles
 - PORT: do not set this variable, Heroku sets it for you
+
+## Personnal Access Token
+
+You can use [Github generated personnal Token](https://github.com/settings/tokens/new) to access your dashboard.
+Simply add the `access_token` to the url:
+```
+http://<application_domain_name>/?access_token=<your_personnal_token>
+```
+
+Make sure the token has access to these scopes:
+
+- **repo**
+- **user**
+- **read:org**
