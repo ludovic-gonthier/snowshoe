@@ -51,9 +51,13 @@ module.exports = React.createClass({
 
     return (
       <p id="rate-limit" className="navbar-text">
-        Rate : <span className={style}>{this.state.rate.remaining}/{this.state.rate.limit}</span>
+        <span title="The Github API calls you are still available to do">
+          Rate : <span className={style}>{this.state.rate.remaining}/{this.state.rate.limit}</span>
+        </span>
         <span className="separator" />
-        Reset at : <strong>{hours}:{minutes}</strong>
+        <span title="Time when your rate limit will be reset">
+          Reset at : <strong>{hours}:{minutes}</strong>
+        </span>
       </p>
     );
   }
