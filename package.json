@@ -32,6 +32,7 @@
     "express-react-views": "^0.7.2",
     "express-session": "~1.0.0",
     "js-yaml": "^3.3.1",
+    "jsonpack": "^1.1.4",
     "lodash": "^3.2.0",
     "passport": "~0.1.17",
     "passport-github": "^0.1.5",
