@@ -10,6 +10,7 @@ var cookieParser = require('cookie-parser');
 var express = require('express');
 var engine = require('express-react-views');
 var session = require('express-session');
+var compress = require('compression');
 
 if (process.env.NODE_ENV === 'development') {
   var livereload = require('connect-livereload');
@@ -32,6 +33,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+app.use(compress());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
