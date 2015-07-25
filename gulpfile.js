@@ -8,8 +8,10 @@ var uglify = require('gulp-uglify');
 
 var files = [
   '{app,server}.js',
-  '{lib,controllers}/**.js',
-  'views/{components,pages}/**.jsx'
+  '{lib,controllers}/*.js',
+  '{lib,controllers}/**/*.js',
+  'views/{components,pages}/*.jsx',
+  'views/{components,pages}/**/*.jsx'
 ];
 
 gulp.task('lint', function () {
