@@ -1,16 +1,27 @@
 'use strict';
 
-var gulp = require('gulp');
 var browserify = require('gulp-browserify');
-var gls = require('gulp-live-server');
+var clean = require('gulp-clean');
 var eslint = require('gulp-eslint');
+var gls = require('gulp-live-server');
+var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 
 var files = [
   '{app,server}.js',
-  '{lib,controllers}/**.js',
-  'views/{components,pages}/**.jsx'
+  '{lib,controllers}/*.js',
+  '{lib,controllers}/**/*.js',
+  'views/{components,pages}/*.jsx',
+  'views/{components,pages}/**/*.jsx'
 ];
+
+gulp.task('clean', function () {
+  return gulp.src([
+    'cache/',
+    'public/views/'
+    ], {read: false})
+    .pipe(clean());
+});
 
 gulp.task('lint', function () {
   return gulp.src(files)
@@ -66,6 +77,7 @@ gulp.task('server:watch', function () {
 });
 
 gulp.task('default', [
+  'clean',
   'reactify',
   'server'
 ]);
