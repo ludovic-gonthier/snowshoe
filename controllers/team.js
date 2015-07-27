@@ -17,8 +17,6 @@ router.get('/teams/:team/:id', function (request, response) {
   }
 
   locals.authenticated = request.isAuthenticated();
-  locals.user = request.user._json; // eslint-disable-line no-underscore-dangle
-  locals.accessToken = request.user.accessToken;
   locals.repositoriesUrl = '/teams/' + request.params.id + '/repos';
 
   // Setting cookie to retrieve data on the client side
