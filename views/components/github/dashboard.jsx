@@ -23,7 +23,7 @@ module.exports = React.createClass({
         } else {
           this.state.pulls[index] = _.assign(this.state.pulls[index], pull);
         }
-      }.bind(this));
+      }, this);
 
       this.setState({pulls: _.sortByOrder(this.state.pulls, 'updated_at', [true, false])});
   },
@@ -44,7 +44,7 @@ module.exports = React.createClass({
         this.state.pulls[index].labels = issue.labels;
         this.state.pulls[index].comments = issue.comments;
       }
-    }.bind(this));
+    }, this);
 
     this.setState({pulls: this.state.pulls});
   },

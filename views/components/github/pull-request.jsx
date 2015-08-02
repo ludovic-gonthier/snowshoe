@@ -58,7 +58,7 @@ module.exports = React.createClass({
                   {label.name}
                 </div>
               );
-            }.bind(this))
+            }, this)
           }
         </div>
     );

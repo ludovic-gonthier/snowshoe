@@ -31,7 +31,7 @@ module.exports = React.createClass({
           <a role="menuitem" href={href}>{team.name}</a>
         </li>
       );
-    }.bind(this));
+    }, this);
   },
   render: function () {
     var attributes = {};
