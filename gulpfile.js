@@ -4,6 +4,7 @@ var browserify = require('gulp-browserify');
 var clean = require('gulp-clean');
 var eslint = require('gulp-eslint');
 var gls = require('gulp-live-server');
+var mocha = require('gulp-mocha');
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 
@@ -74,6 +75,20 @@ gulp.task('server:watch', function () {
   gulp.watch(files, function () {
     server.start();
   });
+});
+
+gulp.task('test', function () {
+  return gulp.src('tests/**/*.js')
+    .pipe(mocha({
+      growl: true
+    }))
+    .once('error', function (error) {
+        console.log(error);
+        process.exit(1);
+    })
+    .once('end', function () {
+        process.exit();
+  })
 });
 
 gulp.task('default', [

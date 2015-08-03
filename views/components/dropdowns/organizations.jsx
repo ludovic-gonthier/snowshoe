@@ -28,7 +28,7 @@ module.exports = React.createClass({
           <a role="menuitem" onClick={this.loadTeams.bind(this, organization.login)}>{organization.login}</a>
         </li>
       );
-    }.bind(this));
+    }, this);
   },
   render: function () {
     var attributes = {};
@@ -59,7 +59,7 @@ module.exports = React.createClass({
                   </a>
                 </li>
               );
-            }.bind(this))
+            }, this)
           }
         </ul>
       </li>
