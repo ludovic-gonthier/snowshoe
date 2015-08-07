@@ -26,6 +26,11 @@ body {
 .navbar .dropdown .btn .caret {
   margin-left: 5px;
 }
+.alert.socket-closed {
+  margin-bottom: 0;
+  bottom: 0;
+  position: fixed;
+}
 
 .thumbnail {
     width: 12.5%;
