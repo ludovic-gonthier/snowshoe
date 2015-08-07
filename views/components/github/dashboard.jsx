@@ -9,7 +9,8 @@ var Container = require('./container.jsx');
 module.exports = React.createClass({
   getInitialState: function () {
     return {
-      pulls: []
+      pulls: [],
+      alert: ''
     };
   },
   handlePulls: function (pulls) {
@@ -60,6 +61,13 @@ module.exports = React.createClass({
   componentDidMount: function () {
     var socket = io();
 
+    socket.on('disconnect', function () {
+      var message = 'Connection to the server lost. Refresh the page to have fresh data again!';
+
+      this.setState({alert: message});
+      socket.close();
+    }.bind(this));
+
     socket.emit('user', {
       user: this.props.user,
       accessToken: this.props.accessToken
@@ -78,6 +86,7 @@ module.exports = React.createClass({
     return (
       <section className="dashboard clearfix">
         <Container pulls={this.state.pulls} />
+        {this.state.alert && <div className="alert alert-danger socket-closed" role="alert">{this.state.alert}</div>}
       </section>
     );
   }
