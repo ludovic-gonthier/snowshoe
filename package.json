@@ -18,7 +18,8 @@
   "scripts": {
     "lint": "./node_modules/.bin/gulp lint",
     "install": "./node_modules/.bin/gulp reactify",
-    "start": "./node_modules/.bin/gulp server"
+    "start": "./node_modules/.bin/gulp server",
+    "test": "./node_modules/.bin/gulp test"
   },
   "dependencies": {
     "async": "^0.9.0",
