@@ -1,5 +1,4 @@
-SnowShoe
-========
+# SnowShoe [![Build Status](https://travis-ci.org/ludovic-gonthier/snowshoe.svg)](https://travis-ci.org/ludovic-gonthier/snowshoe)
 
 GitHub dashboard to keep tracks on your ongoing PR.
 
