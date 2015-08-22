@@ -5,6 +5,7 @@ var clean = require('gulp-clean');
 var eslint = require('gulp-eslint');
 var gls = require('gulp-live-server');
 var mocha = require('gulp-mocha');
+var istanbul = require('gulp-istanbul');
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 
