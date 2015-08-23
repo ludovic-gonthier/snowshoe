@@ -1,4 +1,4 @@
-# SnowShoe [![Build Status](https://travis-ci.org/ludovic-gonthier/snowshoe.svg)](https://travis-ci.org/ludovic-gonthier/snowshoe)
+# SnowShoe [![Build Status](https://travis-ci.org/ludovic-gonthier/snowshoe.svg)](https://travis-ci.org/ludovic-gonthier/snowshoe) [![Coverage Status](https://coveralls.io/repos/ludovic-gonthier/snowshoe/badge.svg?branch=master&service=github)](https://coveralls.io/github/ludovic-gonthier/snowshoe?branch=master)
 
 GitHub dashboard to keep tracks on your ongoing PR.
 
