@@ -89,7 +89,7 @@ gulp.task('test', function () {
         }))
         .pipe(istanbul.writeReports({
           dir: './build/unit-test-coverage',
-          reporters: [ 'lcov', 'text', 'text-summary' ],
+          reporters: process.env.TRAVIS ? [ 'lcov'] : [ 'lcov', 'text', 'text-summary' ],
           reportOpts: { lcov: {
             dir: './build/unit-test-coverage'
           }}
