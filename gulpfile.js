@@ -5,6 +5,7 @@ var clean = require('gulp-clean');
 var eslint = require('gulp-eslint');
 var gls = require('gulp-live-server');
 var mocha = require('gulp-mocha');
+var istanbul = require('gulp-istanbul');
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 
@@ -78,17 +79,22 @@ gulp.task('server:watch', function () {
 });
 
 gulp.task('test', function () {
-  return gulp.src('tests/**/*.js')
-    .pipe(mocha({
-      growl: true
-    }))
-    .once('error', function (error) {
-        console.log(error);
-        process.exit(1);
-    })
-    .once('end', function () {
-        process.exit();
-  })
+  gulp.src(['lib/**/*.js', 'app.js'])
+    .pipe(istanbul({includeUntested: true}))
+    .pipe(istanbul.hookRequire()) // Force `require` to return covered files
+    .on('finish', function () {
+      gulp.src('tests/**/*.js')
+        .pipe(mocha({
+          growl: true
+        }))
+        .pipe(istanbul.writeReports({
+          dir: './assets/unit-test-coverage',
+          reporters: [ 'lcov', 'text', 'text-summary' ],
+          reportOpts: { lcov: {
+            dir: './assets/unit-test-coverage'
+          }}
+        }));
+    });
 });
 
 gulp.task('default', [
