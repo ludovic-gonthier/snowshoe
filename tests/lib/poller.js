@@ -3,21 +3,29 @@
 var Poller = require(ROOT_PATH + '/lib/poller');
 
 describe('poller', function () {
+  describe('#construct', function () {
+    it('should instantiate a poller when called as a function', function () {
+      var poller = Poller(1);
+
+      expect(poller).to.be.an.instanceof(Poller);
+    });
+  });
+
   describe('#start', function () {
     it('should start the polling', function (done) {
       var poller = new Poller(1);
 
-      poller.callback = sinon.stub();
-      poller.start();
+      poller.registered = [
+        {data: 42, socket: 45}
+      ];
 
-      setTimeout(function () {
+      poller.callback = function () {
         clearInterval(poller.interval);
-
-        expect(poller.callback).to.be.called;
         expect(poller.started).to.be.true;
 
         done();
-      });
+      };
+      poller.start();
     });
   });
   describe('#stop', function () {
