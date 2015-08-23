@@ -88,10 +88,10 @@ gulp.task('test', function () {
           growl: true
         }))
         .pipe(istanbul.writeReports({
-          dir: './assets/unit-test-coverage',
+          dir: './build/unit-test-coverage',
           reporters: [ 'lcov', 'text', 'text-summary' ],
           reportOpts: { lcov: {
-            dir: './assets/unit-test-coverage'
+            dir: './build/unit-test-coverage'
           }}
         }));
     });
