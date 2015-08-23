@@ -16,7 +16,7 @@ describe('url-formatter', function () {
       expect(formatter('/user/orgs', {foobar: 'baz'})).to.eq('https://api.github.com/user/orgs');
     });
 
-    it('should return full url when it already egins with "http".', function () {
+    it('should return full url when it already begins with "http".', function () {
       expect(formatter('http://api.foobar.com/user/orgs', {})).to.eq('http://api.foobar.com/user/orgs');
     });
 
