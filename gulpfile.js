@@ -93,7 +93,9 @@ gulp.task('test', function () {
           reportOpts: { lcov: {
             dir: './build/unit-test-coverage'
           }}
-        }));
+        })).once('end', function () {
+          process.exit();
+        });
     });
 });
 
