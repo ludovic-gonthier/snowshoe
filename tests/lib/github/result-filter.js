@@ -7,7 +7,7 @@ var filter = proxyquire(ROOT_PATH + '/lib/github/result-filter', {
 });
 
 describe('result-filter', function () {
-  describe('#filter', function () {
+  describe('.filter()', function () {
     it('should throws error if no schema type defined.', function () {
       expect(filter.bind(filter, {}, 'undefined')).to.throw(Error);
     });
