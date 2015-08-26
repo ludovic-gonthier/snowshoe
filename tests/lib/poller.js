@@ -3,24 +3,32 @@
 var Poller = require(ROOT_PATH + '/lib/poller');
 
 describe('poller', function () {
-  describe('#start', function () {
+  describe('constructor', function () {
+    it('should instantiate a poller when called as a function', function () {
+      var poller = Poller(1);
+
+      expect(poller).to.be.an.instanceof(Poller);
+    });
+  });
+
+  describe('.start()', function () {
     it('should start the polling', function (done) {
       var poller = new Poller(1);
 
-      poller.callback = sinon.stub();
-      poller.start();
+      poller.registered = [
+        {data: 42, socket: 45}
+      ];
 
-      setTimeout(function () {
+      poller.callback = function () {
         clearInterval(poller.interval);
-
-        expect(poller.callback).to.be.called;
         expect(poller.started).to.be.true;
 
         done();
-      });
+      };
+      poller.start();
     });
   });
-  describe('#stop', function () {
+  describe('.stop()', function () {
     it('should stop the polling', function () {
       var poller = new Poller(10);
       poller.started = true;
@@ -31,7 +39,7 @@ describe('poller', function () {
       expect(poller.started).to.be.false;
     });
   });
-  describe('#execute', function () {
+  describe('.execute()', function () {
     it('should execute the callback', function () {
       var poller = new Poller(10);
 
@@ -47,7 +55,7 @@ describe('poller', function () {
       expect(poller.callback).to.be.calledTwice;
     });
   });
-  describe('#register', function () {
+  describe('.register()', function () {
     it('should register the socket', function () {
       var poller = new Poller(10);
 
@@ -67,7 +75,7 @@ describe('poller', function () {
       expect(poller.started).to.be.true;
     });
   });
-  describe('#unregister', function () {
+  describe('.unregister()', function () {
     it('should unregister the socket', function () {
       var poller = new Poller(10);
 

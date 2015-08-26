@@ -3,7 +3,7 @@
 var formatter = require(ROOT_PATH + '/lib/github/url-formatter');
 
 describe('url-formatter', function () {
-  describe('#format', function () {
+  describe('.format()', function () {
     it('should build full url with empty options.', function () {
       expect(formatter('/user/orgs', {})).to.eq('https://api.github.com/user/orgs');
     });

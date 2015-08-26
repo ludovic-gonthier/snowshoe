@@ -3,7 +3,7 @@
 var picker = require(ROOT_PATH + '/lib/github/object-picker');
 
 describe('object-picker', function () {
-  describe('#pick', function () {
+  describe('.pick()', function () {
     it('should return the keys present in a single depth map.', function () {
       var object = {
         'a': 42,
