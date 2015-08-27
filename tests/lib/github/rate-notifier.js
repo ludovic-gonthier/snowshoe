@@ -28,7 +28,20 @@ describe('rate-notifier', function () {
       });
     });
     it('should send no informations if missing one header key', function () {
+      var socket = {
+        emit: sinon.stub()
+      };
+      var notify = notifier(socket);
 
+      return new Promise(function (resolve, reject) {
+        notify(fixtures.missing_headers)
+          .then(function (data) {
+            expect(data).to.eql(fixtures.missing_headers);
+            expect(socket.emit).to.have.not.been.called;
+            resolve();
+          })
+          .catch(reject);
+      });
     });
   });
 });
