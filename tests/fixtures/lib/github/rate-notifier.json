@@ -1,0 +1,15 @@
+{
+  "complete_headers": {
+    "headers" : {
+      "x-ratelimit-limit": 5000,
+      "x-ratelimit-remaining": 4568,
+      "x-ratelimit-reset": 123456789
+    }
+  },
+  "missing_headers": {
+    "headers": {
+      "x-ratelimit-limit": 5000,
+      "x-ratelimit-remaining": 4568
+    }
+  }
+}
