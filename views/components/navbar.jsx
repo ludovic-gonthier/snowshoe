@@ -12,6 +12,9 @@ module.exports = React.createClass({
   fetchPersonalPulls: function () {
     io().emit('pulls');
   },
+  fetchContributingPulls: function () {
+    io().emit('pulls', '/user/repos?affiliation=collaborator,organization_member');
+  },
   render: function () {
     return (
       <span>
@@ -19,6 +22,11 @@ module.exports = React.createClass({
           {this.props.hasUser &&
             <li>
               <a href="#" onClick={this.fetchPersonalPulls}>My Repositories</a>
+            </li>
+          }
+          {this.props.hasUser &&
+            <li>
+              <a href="#" onClick={this.fetchContributingPulls}>Contributing to</a>
             </li>
           }
           <Dropdown.Organizations />
