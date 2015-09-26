@@ -28,7 +28,7 @@ module.exports = React.createClass({
         <ul className="nav navbar-nav">
           {personnalButton}
           <Dropdown.Organizations />
-          <Dropdown.Teams accessToken={this.props.accessToken} />
+          <Dropdown.Teams hasUser={this.props.hasUser} accessToken={this.props.accessToken} />
         </ul>
       </span>
     );

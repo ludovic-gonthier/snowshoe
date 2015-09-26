@@ -22,7 +22,7 @@ module.exports = React.createClass({
     return this.state.teams.map(function (team, index) {
       var href = '/teams/' + team.slug + '/' + team.id;
 
-      if (this.props.accessToken) {
+      if (!this.props.hasUser && this.props.accessToken) {
         href += '?access_token=' + this.props.accessToken;
       }
 
