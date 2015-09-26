@@ -1,0 +1,16 @@
+h2 {
+    margin-bottom: 20px;
+}
+
+.jumbotron {
+    margin-top: 100px;
+}
+
+.github,
+.token {
+    padding-left: 0;
+}
+.github h3 {
+    text-align: right;
+    width: 100%;
+}
