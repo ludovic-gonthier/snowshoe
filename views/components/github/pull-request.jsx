@@ -23,7 +23,7 @@ module.exports = React.createClass({
     }
 
     return (
-        <div className="thumbnail">
+        <div className="pull-request thumbnail">
           <header className="caption text-center ellipsis"
                   title={this.props.pull.base.repo.name}>
               <strong>{this.props.pull.base.repo.name}</strong>

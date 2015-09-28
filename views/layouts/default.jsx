@@ -33,6 +33,7 @@ var Layout = React.createClass({
         <head>
           <title>{this.props.title}</title>
 
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
           {metas.map(function (meta, index) {
             return (
               <meta key={index} {...meta}/>
