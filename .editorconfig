@@ -6,6 +6,6 @@ root = true
     charset = utf-8
     trim_trailing_whitespace = true
 
-[*.{js,jsx,json,yml}]
+[*.{css,js,jsx,json,yml}]
     indent_style = space
     indent_size = 2
