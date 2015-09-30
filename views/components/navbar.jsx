@@ -9,24 +9,18 @@ var Dropdown = {
 };
 
 module.exports = React.createClass({
-  fetchPersonalPulls: function () {
-    io().emit('pulls');
-  },
-  fetchContributingPulls: function () {
-    io().emit('pulls', '/user/repos?affiliation=collaborator,organization_member');
-  },
   render: function () {
     return (
       <span>
         <ul className="nav navbar-nav">
           {this.props.hasUser &&
             <li>
-              <a href="#" onClick={this.fetchPersonalPulls}>My Repositories</a>
+              <a href="/user/personal/">My Repositories</a>
             </li>
           }
           {this.props.hasUser &&
             <li>
-              <a href="#" onClick={this.fetchContributingPulls}>Contributing to</a>
+              <a href="/user/contributing/">Contributing to</a>
             </li>
           }
           <Dropdown.Organizations />

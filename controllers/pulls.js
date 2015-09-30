@@ -37,5 +37,17 @@ router.get('/teams/:team/:id',function (request, response, next) {
 
   next();
 });
+router.get('/user/personal/', function (request, response, next) {
+  if (response.locals.user) {
+    response.locals.repositoriesUrl = response.locals.user.repos_url; // eslint-disable-line no-underscore-dangle
+  }
+
+  next();
+});
+router.get('/user/contributing/', function (request, response, next) {
+  response.locals.repositoriesUrl = '/user/repos?affiliation=collaborator,organization_member';
+
+  next();
+});
 
 router.get(regex, render);
