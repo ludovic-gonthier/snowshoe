@@ -5,7 +5,8 @@ var io = require('socket.io-client');
 
 var Dropdown = {
   Teams: require('./dropdowns/teams.jsx'),
-  Organizations: require('./dropdowns/organizations.jsx')
+  Organizations: require('./dropdowns/organizations.jsx'),
+  User: require('./dropdowns/user.jsx'),
 };
 
 module.exports = React.createClass({
@@ -13,18 +14,11 @@ module.exports = React.createClass({
     return (
       <span>
         <ul className="nav navbar-nav">
-          {this.props.hasUser &&
-            <li>
-              <a href="/user/personal/">My Repositories</a>
-            </li>
-          }
-          {this.props.hasUser &&
-            <li>
-              <a href="/user/contributing/">Contributing to</a>
-            </li>
+          {this.props.user &&
+            <Dropdown.User user={this.props.user}/>
           }
           <Dropdown.Organizations />
-          <Dropdown.Teams hasUser={this.props.hasUser} accessToken={this.props.accessToken} />
+          <Dropdown.Teams hasUser={!!this.props.user} accessToken={this.props.accessToken} />
         </ul>
       </span>
     );
