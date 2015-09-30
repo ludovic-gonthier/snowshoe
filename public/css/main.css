@@ -134,6 +134,6 @@ body {
     cursor: context-menu;
 }
 
-#organizations-dropdown li a {
+ul li a {
   cursor: pointer;
 }
