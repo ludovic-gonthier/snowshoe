@@ -5,30 +5,20 @@ var io = require('socket.io-client');
 
 var Dropdown = {
   Teams: require('./dropdowns/teams.jsx'),
-  Organizations: require('./dropdowns/organizations.jsx')
+  Organizations: require('./dropdowns/organizations.jsx'),
+  User: require('./dropdowns/user.jsx'),
 };
 
 module.exports = React.createClass({
-  fetchPersonalPulls: function () {
-    io().emit('pulls');
-  },
   render: function () {
-    var personnalButton = '';
-
-    if (this.props.hasUser) {
-      personnalButton = (
-        <li>
-          <a href="#" onClick={this.fetchPersonalPulls}>Personal</a>
-        </li>
-      );
-    }
-
     return (
       <span>
         <ul className="nav navbar-nav">
-          {personnalButton}
+          {this.props.user &&
+            <Dropdown.User user={this.props.user}/>
+          }
           <Dropdown.Organizations />
-          <Dropdown.Teams accessToken={this.props.accessToken} />
+          <Dropdown.Teams hasUser={!!this.props.user} accessToken={this.props.accessToken} />
         </ul>
       </span>
     );

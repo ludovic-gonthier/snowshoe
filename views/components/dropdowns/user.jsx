@@ -4,16 +4,6 @@ var React = require('react');
 var io = require('socket.io-client');
 
 module.exports = React.createClass({
-  getInitialState: function () {
-    return {
-      teams: []
-    };
-  },
-  componentDidMount: function () {
-    io().on('teams', function (data) {
-      this.setState({teams: data});
-    }.bind(this));
-  },
   buildDropdown: function () {
     if (this.state.teams.length === 0) {
       return null;
@@ -34,12 +24,6 @@ module.exports = React.createClass({
     }, this);
   },
   render: function () {
-    var attributes = {};
-
-    if (this.state.teams.length === 0) {
-      attributes.disabled = 'disabled';
-    }
-
     return (
       <li className="dropdown">
         <a href="#"
@@ -47,13 +31,17 @@ module.exports = React.createClass({
            data-toggle="dropdown"
            role="button"
            aria-haspopup="true"
-           aria-expanded="false"
-           {...attributes}>
-          Teams
+           aria-expanded="false">
+          {this.props.user.login}
           <span className="caret"></span>
         </a>
         <ul className="dropdown-menu">
-          {this.buildDropdown()}
+          <li>
+            <a href="/user/personal/">My Repositories</a>
+          </li>
+          <li>
+            <a href="/user/contributing/">Contributing to</a>
+          </li>
         </ul>
       </li>
     );
