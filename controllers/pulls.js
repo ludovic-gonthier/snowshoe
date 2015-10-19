@@ -8,7 +8,7 @@ var tokenAccess =  function (request, response, next) {
   response.locals = {};
 
   if (request.query.access_token) { // eslint-disable-line no-underscore-dangle
-    locals.accessToken = request.query.access_token; // eslint-disable-line no-underscore-dangle
+    response.locals.accessToken = request.query.access_token; // eslint-disable-line no-underscore-dangle
   }
 
   next();
