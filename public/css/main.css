@@ -48,6 +48,7 @@ body {
   width: 50%;
   margin: 0;
   box-sizing: border-box;
+  float: left;
 }
 @media (min-width: 515px) and (max-width: 767px) {
   .thumbnail {
