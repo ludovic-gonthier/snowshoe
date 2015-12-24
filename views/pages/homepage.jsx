@@ -2,9 +2,10 @@
 
 var React = require('react');
 
-var Layout = require('../layouts/default.jsx');
 var Dashboard = require('../components/github/dashboard.jsx');
 var Header = require('../components/header.jsx');
+var HomepageJumbotron = require('../components/homepage-jumbotron.jsx');
+var Layout = require('../layouts/default.jsx');
 
 module.exports = React.createClass({
   render: function () {
@@ -14,8 +15,13 @@ module.exports = React.createClass({
           <Header user={this.props.user} authenticated={this.props.authenticated} accessToken={this.props.accessToken}/>
         </div>
         <div id="mount-github">
-          <Dashboard user={this.props.user} accessToken={this.props.accessToken} repositoriesUrl={this.props.repositoriesUrl}/>
+            <Dashboard accessToken={this.props.accessToken} repositoriesUrl={this.props.repositoriesUrl}/>
         </div>
+        {this.props.isHomepage &&
+        <div id="mount-jumbotron">
+            <HomepageJumbotron />
+        </div>
+        }
 
         <script src="/views/github.js"></script>
       </Layout>
