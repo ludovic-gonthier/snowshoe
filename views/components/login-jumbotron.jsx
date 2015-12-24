@@ -20,7 +20,7 @@ module.exports = React.createClass({
               <h3>Use an Access Token</h3>
               <form onSubmit={this.handleSubmit}>
                 <div className="input-group pull-left col-lg-8 col-md-8">
-                  <input type="text" className="form-control pull-right" ref="access_token" placeholder="Acess token ..."/>
+                  <input type="text" className="form-control pull-right" ref="access_token" placeholder="Access token ..."/>
                 </div>
                 <input className="btn btn-success pull-right" type="submit" value="Use it"/>
               </form>
