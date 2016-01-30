@@ -17,6 +17,7 @@ router.get('/', function (request, response) {
   }
 
   locals.authenticated = request.isAuthenticated();
+  locals.isHomepage = true;
 
   // Setting cookie to retrieve data on the client side
   response.cookie('locals', JSON.stringify(locals));
