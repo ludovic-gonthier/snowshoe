@@ -1,0 +1,30 @@
+application:
+  image: ludovicgonthier/snowshoe:1.0.0
+  env_file: .env
+  links:
+    - rabbitmq:mq.snowshoe.dev
+    - redis:redis.snowshoe.dev
+  ports:
+    - 3000:3000
+  volumes:
+    - .:/opt/snowshoe
+
+worker:
+  image: ludovicgonthier/snowshoe:1.0.0
+  command: npm run worker
+  env_file: .env
+  links:
+    - rabbitmq:mq.snowshoe.dev
+    - redis:redis.snowshoe.dev
+  volumes:
+    - .:/opt/snowshoe
+
+redis:
+  image: redis:3.0
+
+rabbitmq:
+  image: rabbitmq:3-management
+  ports:
+    - 15672:15672
+    - 5672:5672
+
