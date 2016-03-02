@@ -62,9 +62,7 @@ export default function (token) {
           options.headers['If-None-Match'] = etag.etag;
         }
 
-        process.nextTick(() => {
-          request(options, onResponse);
-        });
+        request(options, onResponse);
       });
     });
   }
@@ -75,7 +73,6 @@ export default function (token) {
         call(pageUrl, pageType)
           .then(data => {
             const resolved = Object.assign({}, result);
-            let next;
 
             if (!resolved.headers) {
               resolved.headers = data.headers;
@@ -83,7 +80,7 @@ export default function (token) {
             resolved.json = resolved.json.concat(data.json);
 
             if (data.headers && data.headers.link) {
-              next = regexp.pagination.exec(data.headers.link);
+              const next = regexp.pagination.exec(data.headers.link);
               if (next) {
                 return pager(next[1], pageType, resolved);
               }

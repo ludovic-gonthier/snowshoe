@@ -35,7 +35,8 @@ poller.callback = (data) => {
 
           return Promise.resolve();
         });
-    });
+    })
+    .catch((error) => console.error(error));
 };
 
 export default function (socket) {

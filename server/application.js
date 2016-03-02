@@ -8,6 +8,7 @@ import express from 'express';
 import http from 'http';
 import morgan from 'morgan';
 import session from 'express-session';
+import redisStore from 'connect-redis';
 
 import { default as passport } from './controllers/passport';
 import { default as controllers } from './controllers';
@@ -31,8 +32,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
   secret: config.get('server.secret'),
-  resave: true,
-  saveUninitialized: true,
+  store: new (redisStore(session))({
+    host: config.get('redis.host'),
+    port: config.get('redis.port'),
+    db: 2,
+  }),
 }));
 
 app.use(passport.initialize());

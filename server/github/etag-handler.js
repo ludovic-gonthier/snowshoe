@@ -1,36 +1,19 @@
-import Nedb from 'nedb';
+import Redis from 'ioredis';
 import path from 'path';
 
 import { config } from '../../config';
 
-const file = path.join(__dirname, '..', '..', 'cache', 'etags.db');
+let storage;
 
-const db = new Nedb({ filename: file, autoload: true });
+if (process.env.NODE_ENV !== 'test') {
+  storage = new Redis({ port: config.get('redis.port'),
+    host: config.get('redis.host'),
+    password: config.get('redis.password'),
+    db: 1,
+  });
 
-db.ensureIndex({ fieldname: '_id', unique: true });
-
-// Compact database every 10 poll
-db.persistence.setAutocompactionInterval(config.get('snowshoe.refresh.rate') * 10);
-
-/**
- * Purge db from inserted value of the last day
- */
-function purge() {
-  const now = new Date();
-  const dayBefore = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() - 1
-  );
-
-  db.remove({ $where() {
-    return this.inserted_at <= dayBefore.getTime();
-  } }, { multi: true });
-
-  setTimeout(purge, 3600000); // Poll every hour
+  storage.on('error', (error) => console.error(error.stack)); // eslint-disable-line no-console
 }
-
-purge();
 
 export default {
   /**
@@ -41,22 +24,16 @@ export default {
    * @param  array  headers   The response headers
    */
   store(id, json, headers) {
-    let object;
-
     if (headers.etag) {
-      object = {
+      const object = {
         _id: id,
         etag: headers.etag,
         json,
         inserted_at: Date.now(),
       };
 
-      db.remove({ _id: id });
-      db.insert(object, error => {
-        if (error) {
-          throw error;
-        }
-      });
+      storage.set(id, JSON.stringify(object))
+        .catch((error) => console.error('redis.set') || console.error(error));
     }
   },
 
@@ -67,12 +44,11 @@ export default {
    * @return json|undefined      The requested ETag object or undefined
    */
   getEtag(id, callback) {
-    db.findOne({ _id: id }, (error, object) => {
-      if (error) {
-        throw error;
-      }
-
-      callback(object);
-    });
+    storage
+      .get(id)
+      .then(object => {
+        callback(JSON.parse(object));
+      })
+      .catch(error => console.error('redis.get') || console.error(error));
   },
 };

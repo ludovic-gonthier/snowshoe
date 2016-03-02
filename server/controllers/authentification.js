@@ -21,6 +21,7 @@ export default (router) => {
   );
 
   router.get('/logout', (request, response) => {
+    request.session.destroy();
     request.logout();
     response.redirect('/');
   });
