@@ -13,6 +13,14 @@ module.exports = React.createClass({
       alert: ''
     };
   },
+  getDefaultProps: function () {
+    return {
+      pulls_sorts: {
+        key: 'updated_at',
+        direction: 'asc'
+      }
+    };
+  },
   handlePulls: function (pulls) {
     var ids = _.map(this.state.pulls, 'id');
 
@@ -26,7 +34,11 @@ module.exports = React.createClass({
         }
       }, this);
 
-      this.setState({pulls: _.sortByOrder(this.state.pulls, 'updated_at', [true, false])});
+      this.setState({pulls: _.sortByOrder(
+        this.state.pulls,
+        this.props.pulls_sort.key,
+        this.props.pulls_sort.direction
+      )});
   },
   handlePullsDelete: function (deleted) {
     if (deleted.length) {

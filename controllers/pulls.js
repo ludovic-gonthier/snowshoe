@@ -25,6 +25,10 @@ var authenticated = function (request, response, next) {
 };
 
 var render = function (request, response) {
+  response.locals.pulls_sort = {
+    key: process.env.SNOWSHOE_PR_SORT_KEY || 'updated_at',
+    direction: process.env.SNOWSHOE_PR_SORT_DIRECTION || 'asc',
+  };
   // Setting cookie to retrieve data on the client side
   response.cookie('locals', JSON.stringify(response.locals));
   response.render('homepage', response.locals);
