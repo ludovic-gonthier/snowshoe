@@ -1,6 +1,6 @@
 /* global describe, expect, it, proxyquire, ROOT_PATH, sinon */
 const objectsTub = sinon.stub();
-const filter = proxyquire(`${ROOT_PATH}/server/github/result-filter`, {
+const filter = proxyquire(`${ROOT_PATH}/common/github/result-filter`, {
   './object-picker': objectsTub,
 }).default;
 

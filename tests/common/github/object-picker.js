@@ -1,5 +1,5 @@
 /* global describe, expect, it, proxyquire, ROOT_PATH, sinon */
-import picker from '../../../server/github/object-picker';
+import picker from '../../../common/github/object-picker';
 
 describe('object-picker', () => {
   describe('.pick()', () => {

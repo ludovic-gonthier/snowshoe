@@ -38,7 +38,6 @@ export default function (token) {
 
             return reject(message);
           }
-
           // Store the results
           result.headers = response.headers;
 

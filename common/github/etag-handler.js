@@ -1,6 +1,4 @@
 import Redis from 'ioredis';
-import path from 'path';
-
 import { config } from '../../config';
 
 let storage;
@@ -32,8 +30,8 @@ export default {
         inserted_at: Date.now(),
       };
 
-      storage.set(id, JSON.stringify(object))
-        .catch((error) => console.error('redis.set') || console.error(error));
+      storage.set(id, JSON.stringify(object), 'EX', 3600)
+        .catch((error) => console.error(error));
     }
   },
 
@@ -46,9 +44,7 @@ export default {
   getEtag(id, callback) {
     storage
       .get(id)
-      .then(object => {
-        callback(JSON.parse(object));
-      })
-      .catch(error => console.error('redis.get') || console.error(error));
+      .then((object) => callback(JSON.parse(object)))
+      .catch((error) => console.error(error));
   },
 };

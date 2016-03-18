@@ -1,5 +1,5 @@
 /* global describe, expect, it */
-import formatter from '../../../server/github/url-formatter';
+import formatter from '../../../common/github/url-formatter';
 
 describe('url-formatter', () => {
   describe('.format()', () => {

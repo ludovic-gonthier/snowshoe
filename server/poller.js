@@ -29,7 +29,7 @@ export default class Poller {
     }
 
     this.processing = true;
-    executors = this.registered.map((item) => this.callback(item.data, item.socket));
+    executors = this.registered.map(item => this.callback(item));
 
     Promise.all(executors)
       .catch(console.error.bind(console)) // eslint-disable-line no-console
@@ -38,21 +38,22 @@ export default class Poller {
       });
   }
 
-  register(data, socket) {
+  register(data) {
     // Register the socket
-    this.registered.push({
-      data,
-      socket,
-    });
+    this.registered.push(data);
 
     if (!this.started) {
       this.start();
     }
   }
 
-  unregister(socket) {
+  has(token) {
+    return !! this.registered.filter(register => register.token === token).length;
+  }
+
+  unregister(token) {
     // Unregister the socket
-    this.registered = this.registered.filter((item) => (socket !== item.socket));
+    this.registered = this.registered.filter(item => (token !== item.token));
 
     if (this.registered.length === 0) {
       this.stop();

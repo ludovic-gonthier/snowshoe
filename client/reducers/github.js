@@ -29,7 +29,7 @@ function pulls(state = initialState.pulls, action) {
 
   switch (type) {
     case 'add':
-      return ((ids) => {
+      return (() => {
         const updated = _.filter(state, (stpull) => {
           if (action.data.repo !== stpull.base.repo.full_name) {
             return true;
@@ -37,6 +37,7 @@ function pulls(state = initialState.pulls, action) {
 
           return !!_.filter(action.data.pulls, (acpull) => acpull.id === stpull.id).length;
         });
+        const ids = _.map(updated, 'id');
 
         _.forEach(action.data.pulls, (pull) => {
           const index = ids.indexOf(pull.id);

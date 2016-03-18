@@ -25,7 +25,7 @@ config.set('snowshoe.pulls.sort.direction', 'asc');
 config.set('rabbitmq.host', 'mq.snowshoe.dev');
 config.set('rabbitmq.port', 5672);
 config.set('rabbitmq.user', 'guest');
-config.set('rabbitmq.password', process.env.RABBITWQ_PASSWORD);
+config.set('rabbitmq.password', process.env.RABBITMQ_PASSWORD);
 
 config.set('redis.host', 'redis.snowshoe.dev');
 config.set('redis.port', 6379);

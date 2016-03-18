@@ -31,6 +31,7 @@ gulp.task('lint', () => {
 gulp.task('lint:watch', () => gulp.watch(files, ['lint']));
 
 gulp.task('test', () => {
+  process.env.NODE_ENV = 'test';
   gulp.src(tests)
     .pipe(mocha({
       growl: true,

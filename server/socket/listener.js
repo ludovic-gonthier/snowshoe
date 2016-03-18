@@ -1,51 +1,43 @@
-import async from 'async';
-import Promise from 'promise';
+import _ from 'lodash';
 
 import { config } from '../../config';
-import fetcher from '../github/fetcher';
 import Poller from '../poller';
+import { rabbit } from '../../common/rabbit';
+
+const registry = new Map();
+const producer = _.curry(rabbit.produce)('request', 'snowshoe.request');
+
+rabbit.consume(
+  'response',
+  'snowshoe.response',
+  (message) => {
+    const { data, type, token } = JSON.parse(message.content.toString());
+
+    if (registry.has(token)) {
+      registry.get(token).forEach((socket) => socket.emit(type, data));
+    }
+  }
+);
 
 const poller = new Poller(config.get('snowshoe.refresh.rate'));
 poller.callback = (data) => {
-  const github = data.fetcher;
-
-  return github
-    .repositories(data.url)
-    .then(repositories => {
-      async
-        .each(repositories, (repository, callback) => {
-          github.pulls(repository)
-            .then(pulls => {
-              callback();
-
-              if (pulls.length) {
-                github.statuses(pulls).catch(callback);
-                github.issues(repository).catch(callback);
-              }
-            }).catch(error => {
-              console.error(error); // eslint-disable-line no-console
-              callback();
-            });
-        }, error => {
-          if (error) {
-            return console.error(error); // eslint-disable-line no-console
-          }
-
-          github.removeClosedPulls();
-
-          return Promise.resolve();
-        });
-    })
-    .catch((error) => console.error(error));
+  producer(JSON.stringify({
+    data: data.url,
+    token: data.token,
+    type: 'pulls',
+  }));
 };
 
 export default function (socket) {
-  let github;
-
   socket.on('disconnect', () => {
-    poller.unregister(socket);
+    registry.set(socket.token, _.filter(registry.get(socket.token), (soc) => socket.id !== soc.id));
+
+    if (!registry.get(socket.token).length) {
+      registry.delete(socket.token);
+      poller.unregister(socket.token);
+    }
+
     socket = null; // eslint-disable-line no-param-reassign
-    github = null;
   });
 
   socket.on('error', (error) => {
@@ -58,25 +50,38 @@ export default function (socket) {
 
   socket.on('user', data => {
     const token = data.accessToken;
-    github = fetcher(socket, token);
 
+    if (!registry.has(token)) {
+      registry.set(token, []);
+    }
+
+    registry.get(token).push(socket);
+
+    socket.token = token; // eslint-disable-line no-param-reassign
     socket.on('pulls', url => {
       const object = {
         url,
-        fetcher: github,
+        token,
       };
 
-      poller.register(object, socket);
-      poller.callback(object, socket);
+      if (!poller.has(token)) {
+        poller.register(object);
+      }
+
+      poller.callback(object);
     });
 
-    github.organizations()
-      .catch(error => {
-        console.error(error); // eslint-disable-line no-console
-      });
+    producer(JSON.stringify({
+      token,
+      type: 'organizations',
+    }));
 
-    socket.on('team', organizationLogin => {
-      github.teams(organizationLogin);
+    socket.on('teams', organizationLogin => {
+      producer(JSON.stringify({
+        data: organizationLogin,
+        token,
+        type: 'teams',
+      }));
     });
   });
 }

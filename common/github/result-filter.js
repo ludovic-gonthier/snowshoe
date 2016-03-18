@@ -3,7 +3,7 @@ import _ from 'lodash';
 import picker from './object-picker';
 
 const schemas = {
-  repository: ['pulls_url', 'issues_url'],
+  repository: ['pulls_url', 'full_name', 'issues_url'],
   team: ['id', 'slug', 'name'],
   organization: ['login'],
   status: ['state'],
@@ -22,7 +22,7 @@ const schemas = {
     'statuses_url',
     {
       base: [{
-        repo: 'name',
+        repo: ['name', 'full_name'],
       }],
     },
     {

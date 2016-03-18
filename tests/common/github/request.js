@@ -11,7 +11,7 @@ const stubs = {
   result_filter: sinon.stub(),
 };
 
-const request = proxyquire(`${ROOT_PATH}/server/github/request`, {
+const request = proxyquire(`${ROOT_PATH}/common/github/request`, {
   request: stubs.request,
   './etag-handler': { default: stubs.etag_handler },
   './result-filter': { default: stubs.result_filter },

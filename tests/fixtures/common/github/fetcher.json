@@ -8,6 +8,7 @@
           }
         },
         "id": 36567206,
+        "isTitleDisplayed": true,
         "locked": false,
         "number": 1,
         "title": "refactor: compact the code",
@@ -25,6 +26,7 @@
           }
         },
         "id": 36567207,
+        "isTitleDisplayed": true,
         "locked": false,
         "number": 3,
         "title": "refactor: remove dead code",
@@ -48,6 +50,7 @@
           }
         },
         "id": 36567206,
+        "isTitleDisplayed": true,
         "locked": true,
         "number": 1,
         "title": "refactor: compact the code",
@@ -65,6 +68,7 @@
           }
         },
         "id": 36567207,
+        "isTitleDisplayed": true,
         "locked": false,
         "number": 3,
         "title": "refactor: remove dead code",

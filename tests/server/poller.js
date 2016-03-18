@@ -8,7 +8,7 @@ describe('poller', () => {
       const poller = new Poller(1);
 
       poller.registered = [
-        { data: 42, socket: 45 },
+        { token: 42 },
       ];
 
       poller.callback = () => {
@@ -36,8 +36,8 @@ describe('poller', () => {
       const poller = new Poller(10);
 
       poller.registered = [
-        { data: 42, socket: 45 },
-        { data: 1337, socket: 2 },
+        { token: 42 },
+        { token: 1337 },
       ];
 
       poller.callback = sinon.stub();
@@ -52,16 +52,16 @@ describe('poller', () => {
       const poller = new Poller(10);
 
       poller.callback = sinon.stub();
-      poller.register(42, 45);
+      poller.register({ token: 42 });
       clearInterval(poller.interval);
 
-      expect(poller.registered).to.eql([{ data: 42, socket: 45 }]);
+      expect(poller.registered).to.eql([{ token: 42 }]);
     });
     it('should start the polling if more than 0 registered elements', () => {
       const poller = new Poller(10);
 
       poller.callback = sinon.stub();
-      poller.register(42, 45);
+      poller.register({ token: 42 });
       clearInterval(poller.interval);
 
       expect(poller.started).to.be.true;
@@ -72,25 +72,25 @@ describe('poller', () => {
       const poller = new Poller(10);
 
       poller.registered = [
-        { data: 42, socket: 45 },
-        { data: 1337, socket: 2 },
+        { token: 45 },
+        { token: 1337 },
       ];
 
       poller.callback = sinon.stub();
       poller.unregister(45);
       clearInterval(poller.interval);
 
-      expect(poller.registered).to.eql([{ data: 1337, socket: 2 }]);
+      expect(poller.registered).to.eql([{ token: 1337 }]);
     });
     it('should stop the polling if 0 registered elements', () => {
       const poller = new Poller(10);
 
       poller.registered = [
-        { data: 42, socket: 45 },
+        { token: 42 },
       ];
 
       poller.callback = sinon.stub();
-      poller.unregister(45);
+      poller.unregister(42);
       clearInterval(poller.interval);
 
       expect(poller.registered).to.eql([]);
