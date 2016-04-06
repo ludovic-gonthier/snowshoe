@@ -32,9 +32,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
   secret: config.get('server.secret'),
+  resave: true,
+  saveUninitialized: true,
   store: new (redisStore(session))({
     host: config.get('redis.host'),
     port: config.get('redis.port'),
+    pass: config.get('redis.password'),
     db: 2,
   }),
 }));
