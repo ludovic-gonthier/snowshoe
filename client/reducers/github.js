@@ -3,7 +3,7 @@ import {
   SOCKET_DATA_RECEIVED,
 } from '../constants';
 
-const initialState = {
+export const initialState = {
   organizations: [],
   pulls: [],
   rate: {},
@@ -104,10 +104,10 @@ function teams(state = initialState, action) {
     }
 
     return Object.assign(
-        {},
-        team,
-        { href }
-        );
+      {},
+      team,
+      { href }
+    );
   });
 }
 
