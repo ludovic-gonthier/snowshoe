@@ -39,7 +39,7 @@ export class Header extends Component {
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <a className="navbar-brand" href="/">SnowShoe</a>
+            <a className="navbar-brand" href="/"><img src="/img/logo.svg" role="presentation" width="40" height="40" /></a>
           </div>
 
           <div className="collapse navbar-collapse" id="nav-header">

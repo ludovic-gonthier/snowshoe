@@ -20,6 +20,9 @@ body {
 .navbar {
   margin: 0;
 }
+.navbar-brand {
+  padding: 5px 15px;
+}
 .navbar .dropdown .btn {
   border-top: 0;
   border-bottom: 0;
