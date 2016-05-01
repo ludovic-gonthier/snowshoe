@@ -56,7 +56,7 @@ export const rabbit = {
 
           channel.bindQueue(mq.queue, exchange, queue);
 
-          return channel.consume(mq.queue, callback, { noAck: true });
+          return channel.consume(mq.queue, message => callback(channel, message));
         });
       })
       .catch((error) => console.error(error)); // eslint-disable-line no-console

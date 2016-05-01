@@ -10,12 +10,14 @@ const producer = _.curry(rabbit.produce)('snowshoe', 'request');
 rabbit.consume(
   'snowshoe',
   'response',
-  (message) => {
+  (channel, message) => {
     const { data, type, token } = JSON.parse(message.content.toString());
 
     if (registry.has(token)) {
       registry.get(token).forEach((socket) => socket.emit(type, data));
     }
+
+    channel.ack(message);
   }
 );
 
