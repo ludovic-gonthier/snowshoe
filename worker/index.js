@@ -11,7 +11,7 @@ import {
   teams,
 } from '../common/github/fetcher';
 
-const producer = _.curry(rabbit.produce)('response', 'snowshoe.response');
+const producer = _.curry(rabbit.produce)('snowshoe', 'response');
 
 const errorHandler = (error) => console.dir(error);
 

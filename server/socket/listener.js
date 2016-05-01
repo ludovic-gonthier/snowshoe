@@ -5,11 +5,11 @@ import Poller from '../poller';
 import { rabbit } from '../../common/rabbit';
 
 const registry = new Map();
-const producer = _.curry(rabbit.produce)('request', 'snowshoe.request');
+const producer = _.curry(rabbit.produce)('snowshoe', 'request');
 
 rabbit.consume(
+  'snowshoe',
   'response',
-  'snowshoe.response',
   (message) => {
     const { data, type, token } = JSON.parse(message.content.toString());
 
