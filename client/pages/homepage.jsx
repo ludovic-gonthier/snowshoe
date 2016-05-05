@@ -20,7 +20,10 @@ export default class Homepage extends Component {
   render() {
     const { initialState } = this.props;
     const { authenticated, page } = initialState;
-    const store = configureStore(_.omit(['authenticated', 'page', 'repositoriesUrl']));
+    const store = configureStore(_.omit(
+      initialState,
+      ['authenticated', 'page', 'repositoriesUrl']
+    ));
 
     let Module = (
       <Provider store={ store }>

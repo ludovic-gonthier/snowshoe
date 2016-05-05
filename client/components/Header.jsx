@@ -61,11 +61,11 @@ export class Header extends Component {
 }
 
 Header.propTypes = {
-  authenticated: PropTypes.bool.isRequired,
-  emitDataToSocket: PropTypes.func.isRequired,
-  organizations: PropTypes.array.isRequired,
+  authenticated: PropTypes.bool,
+  emitDataToSocket: PropTypes.func,
+  organizations: PropTypes.array,
   rate: PropTypes.object,
-  teams: PropTypes.array.isRequired,
-  token: PropTypes.string.isRequired,
+  teams: PropTypes.array,
+  token: PropTypes.string,
   user: PropTypes.object,
 };
