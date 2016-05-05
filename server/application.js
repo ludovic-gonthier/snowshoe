@@ -21,7 +21,7 @@ const app = express();
  */
 app.set('view engine', 'jsx');
 app.set('views', [__dirname, '../client'].join('/'));
-app.engine('jsx', engine.createEngine());
+app.engine('jsx', engine.createEngine({ transformViews: false }));
 
 app.use(morgan('dev'));
 
