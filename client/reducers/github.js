@@ -1,7 +1,7 @@
 import { default as _ } from 'lodash';
 import {
   SOCKET_DATA_RECEIVED,
-} from '../constants';
+} from '../actions';
 
 export const initialState = {
   organizations: [],

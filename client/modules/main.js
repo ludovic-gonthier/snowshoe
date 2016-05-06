@@ -6,7 +6,7 @@ import { render } from 'react-dom';
 import { default as Application } from '../containers/Application';
 import { default as DevTools } from '../containers/DevTools';
 import { default as configureStore } from '../stores';
-import { listen } from '../socket';
+import { listen } from '../middlewares/socket';
 import * as actions from '../actions';
 
 const state = window.__INITIAL_STATE__;
