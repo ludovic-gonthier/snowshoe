@@ -11,7 +11,7 @@ application:
 
 worker:
   image: ludovicgonthier/snowshoe:1.0.0
-  command: npm run worker
+  command: npm run nodemon:worker
   env_file: .env
   links:
     - rabbitmq:mq.snowshoe.dev

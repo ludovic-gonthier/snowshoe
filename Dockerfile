@@ -8,4 +8,4 @@ ADD . /opt/snowshoe
 WORKDIR /opt/snowshoe
 RUN npm run build
 
-CMD npm run nodemon
+CMD npm run nodemon:application
