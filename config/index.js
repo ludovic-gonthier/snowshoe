@@ -26,6 +26,8 @@ config.set('rabbitmq.host', process.env.RABBITMQ_HOST);
 config.set('rabbitmq.port', process.env.RABBITMQ_PORT);
 config.set('rabbitmq.user', process.env.RABBITMQ_USER);
 config.set('rabbitmq.password', process.env.RABBITMQ_PASSWORD);
+config.set('rabbitmq.retry.interval', 1000); // One second interval
+config.set('rabbitmq.retry.max_retry', 10);
 
 config.set('redis.host', process.env.REDIS_HOST);
 config.set('redis.port', process.env.REDIS_PORT);
