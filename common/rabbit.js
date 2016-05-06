@@ -54,6 +54,7 @@ export const rabbit = {
     connect()
       .then(createChannel)
       .then((channel) => {
+        channel.prefetch(10);
         channel.assertExchange(exchange, 'direct', { durable: true });
 
         channel.assertQueue(queue, {}, (error, mq) => {
