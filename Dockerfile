@@ -1,23 +1,11 @@
-FROM library/node
+FROM node:6.0.0
 
-ENV NODE_ENV="development"
-ENV PORT=3000
-ENV SERVER_SECRET="This is not secret, you should change it"
-ENV SNOWSHOE_HOSTNAME="127.0.0.1:3000"
-ENV SNOWSHOE_APP_PROTOCOL="http"
-ENV SNOWSHOE_APP_DISPLAY_PR_TITLE=true
-ENV GITHUB_POLL_TIMEOUT=60
+ADD package.json /tmp/package.json
+RUN cd /tmp && npm install
+RUN mkdir -p /opt/snowshoe && cp -a /tmp/node_modules /opt/snowshoe/
 
-RUN mkdir /sources
+ADD . /opt/snowshoe
+WORKDIR /opt/snowshoe
+RUN npm run build
 
-COPY package.json /sources/package.json
-
-WORKDIR /sources
-
-RUN npm install
-
-COPY . /sources
-
-# Manually call reactify
-CMD /sources/node_modules/.bin/gulp reactify
-CMD /sources/node_modules/.bin/gulp server
+CMD npm run nodemon:application

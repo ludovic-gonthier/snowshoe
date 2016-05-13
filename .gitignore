@@ -1,5 +1,6 @@
 node_modules
 .env
-public/views
+client/public/main.js*
+client/public/login.js*
 cache
-build
+*.orig
