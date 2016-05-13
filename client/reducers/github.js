@@ -1,9 +1,9 @@
 import { default as _ } from 'lodash';
 import {
   SOCKET_DATA_RECEIVED,
-} from '../constants';
+} from '../actions';
 
-const initialState = {
+export const initialState = {
   organizations: [],
   pulls: [],
   rate: {},
@@ -104,10 +104,10 @@ function teams(state = initialState, action) {
     }
 
     return Object.assign(
-        {},
-        team,
-        { href }
-        );
+      {},
+      team,
+      { href }
+    );
   });
 }
 

@@ -1,6 +1,6 @@
 import {
   SOCKET_DATA_RECEIVED,
-} from 'constants';
+} from '../actions';
 
 const initialState = {
   connected: true,

@@ -1,4 +1,4 @@
-FROM node:4.4.0
+FROM node:6.0.0
 
 ADD package.json /tmp/package.json
 RUN cd /tmp && npm install
@@ -8,4 +8,4 @@ ADD . /opt/snowshoe
 WORKDIR /opt/snowshoe
 RUN npm run build
 
-CMD npm run nodemon
+CMD npm run nodemon:application

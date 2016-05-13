@@ -15,20 +15,27 @@ const connect = () => new Promise((resolve) => {
     return null;
   }
 
-  return amqp.connect(format({
-    protocol: 'amqp',
-    hostname: config.get('rabbitmq.host'),
-    port: config.get('rabbitmq.port'),
-    auth: `${config.get('rabbitmq.user')}:${config.get('rabbitmq.password')}`,
-  }), (error, con) => {
-    if (error) {
-      throw error;
-    }
+  let retries = 0;
+  return (function retry() {
+    return amqp.connect(format({
+      protocol: 'amqp',
+      hostname: config.get('rabbitmq.host'),
+      port: config.get('rabbitmq.port'),
+      auth: `${config.get('rabbitmq.user')}:${config.get('rabbitmq.password')}`,
+    }), (error, con) => {
+      if (error) {
+        if (retries++ >= config.get('rabbitmq.retry.max_retry')) {
+          throw error;
+        }
 
-    connection = con;
+        return setTimeout(retry, config.get('rabbitmq.retry.interval'));
+      }
 
-    return resolve(connection);
-  });
+      connection = con;
+
+      return resolve(connection);
+    });
+  }());
 });
 
 
@@ -47,6 +54,7 @@ export const rabbit = {
     connect()
       .then(createChannel)
       .then((channel) => {
+        channel.prefetch(10);
         channel.assertExchange(exchange, 'direct', { durable: true });
 
         channel.assertQueue(queue, {}, (error, mq) => {
@@ -56,7 +64,7 @@ export const rabbit = {
 
           channel.bindQueue(mq.queue, exchange, queue);
 
-          return channel.consume(mq.queue, callback, { noAck: true });
+          return channel.consume(mq.queue, message => callback(channel, message));
         });
       })
       .catch((error) => console.error(error)); // eslint-disable-line no-console

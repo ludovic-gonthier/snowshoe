@@ -1,12 +1,16 @@
 import express from 'express';
 
+import { default as storeMiddleware } from '../middlewares/store';
+
 import { default as firewall } from './firewall';
 import { default as homepage } from './homepage';
 import { default as pulls } from './pulls';
 import { default as authentification } from './authentification';
 import { default as error } from './error';
 
-const Router = new express.Router();
+const router = new express.Router();
+
+router.use(storeMiddleware);
 
 [
   firewall,
@@ -14,6 +18,6 @@ const Router = new express.Router();
   pulls,
   authentification,
   error,
-].forEach((callback) => callback(Router));
+].forEach((callback) => callback(router));
 
-export default Router;
+export default router;

@@ -20,8 +20,8 @@ const app = express();
  * Application configuration
  */
 app.set('view engine', 'jsx');
-app.set('views', [__dirname, '../client'].join('/'));
-app.engine('jsx', engine.createEngine());
+app.set('views', [__dirname, '../client/containers'].join('/'));
+app.engine('jsx', engine.createEngine({ transformViews: false }));
 
 app.use(morgan('dev'));
 

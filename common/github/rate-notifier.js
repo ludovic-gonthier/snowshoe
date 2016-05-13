@@ -1,7 +1,7 @@
 import { curry } from 'lodash';
 import { rabbit } from '../rabbit';
 
-const producer = curry(rabbit.produce)('response', 'snowshoe.response');
+const producer = curry(rabbit.produce)('snowshoe', 'response');
 
 export function notifier(token, data) {
   if (data.headers['x-ratelimit-limit']

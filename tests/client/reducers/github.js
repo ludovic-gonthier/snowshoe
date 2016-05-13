@@ -3,7 +3,7 @@
 import { default as reducer } from '../../../client/reducers/github';
 import {
   SOCKET_DATA_RECEIVED,
-} from '../../../client/constants';
+} from '../../../client/actions';
 
 describe('reducer', () => {
   describe('.pulls()', () => {

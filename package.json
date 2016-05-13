@@ -22,7 +22,8 @@
     "build:development": "webpack -d --progress --devtool source-map --watch",
     "start": "babel-node --presets es2015 --presets react -- server/application.js",
     "worker": "babel-node --presets es2015 --presets react -- worker/index.js",
-    "nodemon": "nodemon --exec npm run start"
+    "nodemon:application": "nodemon --exec npm run start",
+    "nodemon:worker": "nodemon --exec npm run worker"
   },
   "dependencies": {
     "amqplib": "^0.4.1",

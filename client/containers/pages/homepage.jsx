@@ -2,11 +2,11 @@ import { default as _ } from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { Provider } from 'react-redux';
 
-import { Layout } from '../layouts/Default.jsx';
+import { Layout } from '../../components/layouts/Default.jsx';
 
-import { default as Application } from '../containers/Application';
-import { default as DevTools } from '../containers/DevTools.jsx';
-import { default as configureStore } from '../stores';
+import { default as Application } from '../Application';
+import { default as DevTools } from '../DevTools.jsx';
+import { default as configureStore } from '../../stores';
 
 export default class Homepage extends Component {
   injectInitialState(state) {
@@ -20,7 +20,10 @@ export default class Homepage extends Component {
   render() {
     const { initialState } = this.props;
     const { authenticated, page } = initialState;
-    const store = configureStore(_.omit(['authenticated', 'page', 'repositoriesUrl']));
+    const store = configureStore(_.omit(
+      initialState,
+      ['authenticated', 'page', 'repositoriesUrl']
+    ));
 
     let Module = (
       <Provider store={ store }>
