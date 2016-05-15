@@ -384,34 +384,30 @@ describe('fetcher', () => {
     });
   });
 
-  describe('.statuses()', () => {
+  describe.only('.statuses()', () => {
     it('should returns the list of the last pulls statuses', () => {
       const fpulls = [{
         id: 1,
-        statuses_url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe/statuses/0',
+        base: { repo: { url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe' } },
+        head: { sha: '67sd687ad4adsd6' },
         stub: fixtures.status_1,
       }, {
         id: 2,
-        statuses_url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe/statuses/1',
+        base: { repo: { url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe' } },
+        head: { sha: '09u1423knwe0' },
         stub: fixtures.status_2,
       }, {
         id: 3,
-        statuses_url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe/statuses/2',
+        base: { repo: { url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe' } },
+        head: { sha: '09123231m813209n' },
         stub: fixtures.status_3,
       }];
 
-      fpulls.forEach((item, index) => {
-        stubs.url_formatter
-          .withArgs(
-            `https://api.github.com/repos/ludovic-gonthier/snowshoe/statuses/${index}`,
-            { per_page: 1 }
-          )
-          .returns(
-            `https://api.github.com/repos/ludovic-gonthier/snowshoe/statuses/${index}?per_page=1`
-          );
-        stubs.request.call
-          .withArgs(`https://api.github.com/repos/ludovic-gonthier/snowshoe/statuses/${index}?per_page=1`, 'status')
-          .returns(Promise.resolve(item.stub));
+      fpulls.forEach((item) => {
+        stubs.request.call.withArgs(
+            `https://api.github.com/repos/ludovic-gonthier/snowshoe/commits/${item.head.sha}/status`,
+            'status'
+          ).returns(Promise.resolve(item.stub));
         stubs.rate_notifier
           .withArgs('test_token', item.stub)
           .returns(item.stub);
@@ -426,32 +422,28 @@ describe('fetcher', () => {
           .then((data) => {
             expect(stubs.rate_notifier).to.be.calledThrice;
             expect(data).to.eql([{
-              state: 'success_1',
+              statuses: [{ state: 'success' }],
               pull_request: { id: 1 },
             }, {
-              state: 'success_2',
+              statuses: [{ state: 'success' }],
               pull_request: { id: 2 },
             }]);
 
             resolve();
           })
-          .catch(error => {reject(error.stack.split(`\n`)); });
+          .catch(error => { reject(error.stack.split(`\n`)); });
       });
     });
     it('should reject the promise on error', () => {
       const fpulls = [{
-        statuses_url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe/statuses/',
+        base: { repo: { url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe' } },
+        head: { sha: '67sd687ad4adsd6' },
       }];
-      stubs.url_formatter
-        .withArgs(
-          'https://api.github.com/repos/ludovic-gonthier/snowshoe/statuses/',
-          { per_page: 1 }
-        )
-        .returns(
-          'https://api.github.com/repos/ludovic-gonthier/snowshoe/statuses/?per_page=1'
-        );
       stubs.request.call
-        .withArgs('https://api.github.com/repos/ludovic-gonthier/snowshoe/statuses/?per_page=1', 'status')
+        .withArgs(
+          'https://api.github.com/repos/ludovic-gonthier/snowshoe/commits/67sd687ad4adsd6/status',
+          'status'
+        )
         .returns(Promise.reject(new Error('Pagination error')));
 
       requestStub

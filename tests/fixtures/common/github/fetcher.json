@@ -114,24 +114,25 @@
     }]
   },
   "status_1": {
-    "json": [
-      {
-        "state": "success_1"
-      }
-    ],
+    "json": {
+      "statuses": [{
+        "state": "success"
+      }]
+    },
     "header": {}
   },
   "status_2": {
-    "json": [
-      {
-        "state": "success_2"
-      }
-    ],
+    "json": {
+      "statuses": [{
+        "state": "success"
+      }]
+    },
     "header": {}
   },
   "status_3": {
-    "json": [
-    ],
+    "json": {
+      "statuses": []
+    },
     "header": {}
   }
 }

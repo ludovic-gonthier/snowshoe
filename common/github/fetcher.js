@@ -51,12 +51,12 @@ export function statuses(token, pullsObject) {
   return new Promise((resolve, reject) => {
     async.each(pullsObject, (pull, callback) => {
       requester(token)
-        .call(formatter(`${pull.base.repo.url}/commits/${pull.head.sha}/status`), 'status')
+        .call(`${pull.base.repo.url}/commits/${pull.head.sha}/status`, 'status')
         .then(data => Promise.resolve(notifier(token, data)))
         .then(data => {
           const status = data.json;
 
-          if (status && status.statuses.length) {
+          if (_.has(status, 'statuses') && status.statuses.length) {
             results.push(Object.assign({}, status, { pull_request: { id: pull.id } }));
           }
 
