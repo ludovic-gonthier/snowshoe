@@ -6,7 +6,12 @@ const schemas = {
   repository: ['pulls_url', 'full_name', 'issues_url'],
   team: ['id', 'slug', 'name'],
   organization: ['login'],
-  status: ['state'],
+  status: [
+    'state',
+    {
+      statuses: ['state', 'target_url', 'context'],
+    },
+  ],
   issue: [
     'id',
     'comments',
@@ -19,14 +24,16 @@ const schemas = {
   ],
   pull: [
     'id',
-    'statuses_url',
     {
       base: [{
-        repo: ['name', 'full_name'],
+        repo: ['url', 'name', 'full_name'],
       }],
     },
     {
       user: ['avatar_url', 'login'],
+    },
+    {
+      head: ['sha'],
     },
     'title',
     'html_url',
