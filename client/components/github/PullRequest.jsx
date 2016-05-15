@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { PullRequestStatuses } from './PullRequestStatuses';
 
 export class PullRequest extends Component {
   computeLabelStyle(labelColor) {
@@ -31,13 +32,7 @@ export class PullRequest extends Component {
           <span className="glyphicon glyphicon-comment pull-left"></span>
           <span className="github-commemts-number">{pull.comments || 0}</span>
         </span>
-        <img className={classes.join(' ')}
-          src={pull.user.avatar_url}
-          title={pull.user.login}
-          alt={pull.user.login}
-          width="100"
-          height="100"
-        />
+        <PullRequestStatuses pull={ pull }/>
 
         <div className="text-center github-title ellipsis" title={pull.title}>
           { pull.isTitleDisplayed ? pull.title : '' }

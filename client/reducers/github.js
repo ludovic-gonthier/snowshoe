@@ -73,7 +73,7 @@ function pulls(state = initialState.pulls, action) {
         const index = ids.indexOf(pull.id);
 
         if (index !== -1) {
-          return Object.assign({}, pull, { lastStatus: action.data[index] });
+          return Object.assign({}, pull, { status: action.data[index] });
         }
 
         return pull;
