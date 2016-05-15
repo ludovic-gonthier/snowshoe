@@ -128,7 +128,7 @@ describe('fetcher', () => {
       stubs.request.paginate
         .withArgs('https://api.github.com/orgs/snowshoe/teams?per_page=100', 'team')
         .returns(Promise.reject(new Error('Pagination error')));
-      console.error = sinon.stub();
+      console.error = sinon.stub(); // eslint-disable-line no-console
 
       requestStub
         .withArgs('test_token')
