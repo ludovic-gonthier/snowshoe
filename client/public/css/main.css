@@ -108,6 +108,17 @@ body {
     font-weight: bold;
     line-height: 1;
 }
+li > .github-label {
+  margin: 4px;
+  cursor: pointer;
+}
+li > .github-label[disabled] {
+  text-decoration: line-through;
+}
+
+.dropdown li.selected > a {
+  font-weight: bold;
+}
 
 .github-title {
   padding: 10px 0 0 0;

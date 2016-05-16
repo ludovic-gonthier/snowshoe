@@ -1,3 +1,4 @@
+import { receivedTeams } from '../../client/actions';
 import { rabbit } from '../../common/rabbit';
 import { teams as fetchTeams } from '../../common/github/fetcher';
 import { rateNotifier } from '../../common/github/rate-notifier';
@@ -8,11 +9,7 @@ export function teamsConsumer(token, login) {
       rabbit.produce(
         'snowshoe',
         'response',
-        JSON.stringify({
-          type: 'teams',
-          token,
-          data: data.json,
-        })
+        JSON.stringify(receivedTeams(data.json, token))
       );
 
       return data;

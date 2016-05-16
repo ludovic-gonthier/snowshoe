@@ -1,5 +1,10 @@
 import _ from 'lodash';
 
+import {
+  receivedPulls,
+  receivedPullsIssues,
+  receivedPullsStatuses,
+} from '../../client/actions';
 import { rabbit } from '../../common/rabbit';
 import { config } from '../../config';
 import {
@@ -23,15 +28,11 @@ function handleRepositoriesAndPulls(repositories, token) {
       (repository) => fetchPulls(token, repository.pulls_url)
         .then((data) => {
           if (data.json.length) {
-            producer(JSON.stringify({
-              type: 'pulls',
-              token,
-              data: {
-                pulls: data.json,
-                repo: repository.full_name,
-                sort: pullSortConfiguration,
-              },
-            }));
+            producer(JSON.stringify(receivedPulls({
+              pulls: data.json,
+              repo: repository.full_name,
+              sort: pullSortConfiguration,
+            }, token)));
           }
 
           return data.json;
@@ -45,11 +46,10 @@ function handleStatuses(statuses, token) {
   const filtered = statuses.filter((value) => !!value);
 
   if (filtered.length) {
-    producer(JSON.stringify({
-      type: 'pulls:status',
-      token,
-      data: filtered.map((status) => status.json),
-    }));
+    producer(JSON.stringify(receivedPullsStatuses(
+      filtered.map((status) => status.json),
+      token
+    )));
   }
 
   return filtered[filtered.length - 1];
@@ -57,11 +57,7 @@ function handleStatuses(statuses, token) {
 
 function handleIssues(issues, token) {
   if (issues.json.length) {
-    producer(JSON.stringify({
-      type: 'pulls:issues',
-      token,
-      data: issues.json,
-    }));
+    producer(JSON.stringify(receivedPullsIssues(issues.json, token)));
   }
 
   return issues;

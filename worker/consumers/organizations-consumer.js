@@ -1,3 +1,4 @@
+import * as actions from '../../client/actions';
 import { rabbit } from '../../common/rabbit';
 import { organizations as fetchOrganizations } from '../../common/github/fetcher';
 import { rateNotifier } from '../../common/github/rate-notifier';
@@ -8,11 +9,7 @@ export function organizationsConsumer(token) {
       rabbit.produce(
         'snowshoe',
         'response',
-        JSON.stringify({
-          type: 'organizations',
-          token,
-          data: data.json,
-        })
+        JSON.stringify(actions.receivedOrgnizations(data.json, token))
       );
 
       return data;

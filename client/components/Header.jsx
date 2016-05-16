@@ -9,6 +9,7 @@ export class Header extends Component {
   render() {
     const {
       authenticated,
+      pulls,
       organizations,
       rate,
       teams,
@@ -21,7 +22,7 @@ export class Header extends Component {
     let Navigation = '';
 
     if (token || authenticated) {
-      Navigation = <Navbar {...{ emitDataToSocket, organizations, teams, token, user }} />;
+      Navigation = <Navbar {...{ emitDataToSocket, pulls, organizations, teams, token, user }} />;
     }
 
     return (

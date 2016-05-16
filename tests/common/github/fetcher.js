@@ -5,7 +5,6 @@ import sinon from 'sinon';
 import fixtures from '../../fixtures/common/github/fetcher.json';
 
 const stubs = {
-  rate_notifier: sinon.stub(),
   request: {
     paginate: sinon.stub(),
     call: sinon.stub(),
@@ -26,7 +25,6 @@ const {
   issues,
   statuses,
 } = proxyquire(`${ROOT_PATH}/common/github/fetcher`, {
-  './rate-notifier': { notifier: stubs.rate_notifier },
   './request': { default: requestStub },
   './url-formatter': { default: stubs.url_formatter },
 });
@@ -35,7 +33,6 @@ describe('fetcher', () => {
   beforeEach(() => {
     stubs.socket.emit.reset();
     stubs.url_formatter.reset();
-    stubs.rate_notifier.reset();
     stubs.request.paginate.reset();
     stubs.request.call.reset();
   });
@@ -50,9 +47,6 @@ describe('fetcher', () => {
       stubs.request.paginate
         .withArgs('https://api.github.com/user/orgs?per_page=100', 'organization')
         .returns(Promise.resolve(object));
-      stubs.rate_notifier
-        .withArgs('test_token', object)
-        .returns(object);
 
       requestStub
         .withArgs('test_token')
@@ -61,8 +55,7 @@ describe('fetcher', () => {
       return new Promise((resolve, reject) => {
         organizations('test_token')
           .then((data) => {
-            expect(stubs.rate_notifier).to.have.been.called;
-            expect(data).to.eql({ test: 'succeed' });
+            expect(data).to.eql({ json: { test: 'succeed' } });
             resolve();
           })
           .catch(reject);
@@ -103,9 +96,6 @@ describe('fetcher', () => {
       stubs.request.paginate
         .withArgs('https://api.github.com/orgs/snowshoe/teams?per_page=100', 'team')
         .returns(Promise.resolve(object));
-      stubs.rate_notifier
-        .withArgs('test_token', object)
-        .returns(object);
 
       requestStub
         .withArgs('test_token')
@@ -114,8 +104,7 @@ describe('fetcher', () => {
       return new Promise((resolve, reject) => {
         teams('test_token', 'snowshoe')
           .then(data => {
-            expect(stubs.rate_notifier).to.have.been.called;
-            expect(data).to.eql({ test: 'succeed' });
+            expect(data).to.eql({ json: { test: 'succeed' } });
             resolve();
           })
           .catch(reject);
@@ -156,9 +145,6 @@ describe('fetcher', () => {
       stubs.request.paginate
         .withArgs('https://api.github.com/user/repos?per_page=100', 'repository')
         .returns(Promise.resolve(object));
-      stubs.rate_notifier
-        .withArgs('test_token', object)
-        .returns(object);
 
       requestStub
         .withArgs('test_token')
@@ -167,8 +153,7 @@ describe('fetcher', () => {
       return new Promise((resolve, reject) => {
         repositories('test_token', 'user/repos')
           .then(data => {
-            expect(stubs.rate_notifier).to.have.been.called;
-            expect(data).to.eql({ test: 'succeed' });
+            expect(data).to.eql({ json: { test: 'succeed' } });
             resolve();
           })
           .catch(reject);
@@ -212,9 +197,6 @@ describe('fetcher', () => {
       stubs.request.paginate
         .withArgs('https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100', 'pull')
         .returns(Promise.resolve(object));
-      stubs.rate_notifier
-        .withArgs('test_token', object)
-        .returns(object);
 
       requestStub
         .withArgs('test_token')
@@ -223,8 +205,7 @@ describe('fetcher', () => {
       return new Promise((resolve, reject) => {
         pulls('test_token', repository.pulls_url)
           .then(data => {
-            expect(data).to.eql(object.json);
-            expect(stubs.rate_notifier).to.have.been.called;
+            expect(data).to.eql(object);
 
             resolve();
           })
@@ -233,8 +214,8 @@ describe('fetcher', () => {
     });
     it('should not returns locked pull requests', () => {
       const object = fixtures.pulls_with_locked;
-      const expected = [
-        {
+      const expected = {
+        json: [{
           base: {
             repo: {
               name: 'goul-registry',
@@ -251,8 +232,9 @@ describe('fetcher', () => {
             avatar_url: 'https://avatars.githubusercontent.com/u/2995136?v=3',
           },
           html_url: 'https://github.com/ludovic-gonthier/goul-registry/pull/3',
-        },
-      ];
+        }],
+        headers: {},
+      };
       const repository = {
         pulls_url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls{/number}',
       };
@@ -268,9 +250,6 @@ describe('fetcher', () => {
       stubs.request.paginate
         .withArgs('https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100', 'pull')
         .returns(Promise.resolve(object));
-      stubs.rate_notifier
-        .withArgs('test_token', object)
-        .returns(object);
 
       requestStub
         .withArgs('test_token')
@@ -280,7 +259,6 @@ describe('fetcher', () => {
         pulls('test_token', repository.pulls_url)
           .then(data => {
             expect(data).to.eql(expected);
-            expect(stubs.rate_notifier).to.have.been.called;
 
             resolve();
           })
@@ -333,9 +311,6 @@ describe('fetcher', () => {
       stubs.request.paginate
         .withArgs('https://api.github.com/repos/ludovic-gonthier/snowshoe/issues?per_page=100', 'issue')
         .returns(Promise.resolve(fixtures.issues));
-      stubs.rate_notifier
-        .withArgs('test_token', fixtures.issues)
-        .returns(fixtures.issues);
 
       requestStub
         .withArgs('test_token')
@@ -346,8 +321,7 @@ describe('fetcher', () => {
           .then((data) => {
             const filtered = fixtures.issues.json.filter(issue => 'pull_request' in issue);
 
-            expect(data).to.eql(filtered);
-            expect(stubs.rate_notifier).to.have.been.called;
+            expect(data).to.eql({ json: filtered, headers: {} });
 
             resolve();
           })
@@ -408,9 +382,6 @@ describe('fetcher', () => {
             `https://api.github.com/repos/ludovic-gonthier/snowshoe/commits/${item.head.sha}/status`,
             'status'
           ).returns(Promise.resolve(item.stub));
-        stubs.rate_notifier
-          .withArgs('test_token', item.stub)
-          .returns(item.stub);
       });
 
       requestStub
@@ -420,14 +391,22 @@ describe('fetcher', () => {
       return new Promise((resolve, reject) => {
         statuses('test_token', fpulls)
           .then((data) => {
-            expect(stubs.rate_notifier).to.be.calledThrice;
-            expect(data).to.eql([{
-              statuses: [{ state: 'success' }],
-              pull_request: { id: 1 },
-            }, {
-              statuses: [{ state: 'success' }],
-              pull_request: { id: 2 },
-            }]);
+            expect(data).to.eql([
+              {
+                json: {
+                  statuses: [{ state: 'success' }],
+                  pull_request: { id: 1 },
+                },
+                headers: {},
+              }, {
+                json: {
+                  statuses: [{ state: 'success' }],
+                  pull_request: { id: 2 },
+                },
+                headers: {},
+              },
+              null,
+            ]);
 
             resolve();
           })

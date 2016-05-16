@@ -7,19 +7,17 @@ import { Container } from '../components/github/Container';
 import { Header } from '../components/Header';
 import { HomepageJumbotron } from '../components/HomepageJumbotron';
 
-class Application extends Component {
-  render() {
-    const { authenticated, github, page, socket } = this.props;
-    const { emitDataToSocket } = this.props;
+const Application = (props) => {
+  const { authenticated, filters, github, order, page, socket } = props;
+  const { changeOrderDirection, changeOrderField, filterByLabels, emitDataToSocket } = props;
 
-    const {
-      organizations,
-      rate,
-      token,
-      teams,
-      pulls,
-      user,
-    } = github;
+  return (
+    <div>
+      <Header
+        {...{ authenticated, filters, order }}
+        {...{ changeOrderDirection, changeOrderField, filterByLabels, emitDataToSocket }}
+        {...github}
+      />
 
     let Body;
     if (page === 'homepage') {
@@ -27,7 +25,7 @@ class Application extends Component {
     } else {
       Body = (
         <section className="dashboard clearfix">
-          <Container pulls={ pulls } />
+          <Container pulls={github.pulls} filters={filters} order={order} />
         </section>
       );
     }
@@ -37,6 +35,8 @@ class Application extends Component {
         <Header {...{
           authenticated,
           emitDataToSocket,
+          filterByLabels,
+          pulls,
           organizations,
           rate,
           token,
@@ -71,7 +71,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(Application);
 
 Application.propTypes = {
   authenticated: PropTypes.bool.isRequired,
+  changeOrderDirection: PropTypes.func.isRequired,
+  changeOrderField: PropTypes.func.isRequired,
   emitDataToSocket: PropTypes.func.isRequired,
+  filterByLabels: PropTypes.func.isRequired,
   github: PropTypes.shape({
     organizations: PropTypes.array.isRequired,
     pulls: PropTypes.array.isRequired,
@@ -80,8 +83,31 @@ Application.propTypes = {
     token: PropTypes.string.isRequired,
     user: PropTypes.object,
   }),
+  order: PropTypes.shape({
+    direction: PropTypes.string.isRequired,
+    field: PropTypes.string.isRequired,
+  }).isRequired,
   page: PropTypes.string.isRequired,
   socket: PropTypes.shape({
     connected: PropTypes.bool.isRequired,
   }),
+  filters: PropTypes.object.isRequired,
 };
+
+function mapStateToProps(state) {
+  return {
+    filters: state.filters,
+    github: state.github,
+    order: state.order,
+    socket: state.socket,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(actions, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Application);
