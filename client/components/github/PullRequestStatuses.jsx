@@ -6,6 +6,12 @@ const STROKE_WIDTH = 40;
 const IMAGE_RADIUS = RADIUS - (STROKE_WIDTH / 2);
 
 export class PullRequestStatuses extends Component {
+  componentDidUpdate() {
+    const image = this.refs.image;
+
+    image.style.fill = `url(#image-${this.props.pull.user.login})`;
+  }
+
   render() {
     const pull = this.props.pull;
     let number = 0;
@@ -40,7 +46,7 @@ export class PullRequestStatuses extends Component {
 
         <defs>
           <pattern
-            id={`image${pull.id}`}
+            id={`image-${pull.user.login}`}
             x="0%"
             y="0%"
             height="100%"
@@ -57,11 +63,7 @@ export class PullRequestStatuses extends Component {
           </pattern>
         </defs>
 
-        <clipPath id="clipCircle">
-          <circle r={IMAGE_RADIUS} cx="50" cy="50" />
-        </clipPath>
-
-        <circle cx="50" cy="50" r={IMAGE_RADIUS} fill={`url(#image${pull.id})`}>
+        <circle ref="image" cx="50" cy="50" r={IMAGE_RADIUS} fill={`url(#image-${pull.user.login})`}>
           <title>{pull.user.login}</title>
         </circle>
       </svg>

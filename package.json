@@ -1,6 +1,6 @@
 {
   "name": "snowshoe",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "GitHub dashboard to keep tracks on your ongoing PR",
   "author": {
     "name": "Ludovic Gonthier",
@@ -84,6 +84,6 @@
     "webpack": "^1.12.13"
   },
   "engines": {
-    "node": "v4.3.1"
+    "node": "v6.0.0"
   }
 }

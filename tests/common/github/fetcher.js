@@ -384,7 +384,7 @@ describe('fetcher', () => {
     });
   });
 
-  describe.only('.statuses()', () => {
+  describe('.statuses()', () => {
     it('should returns the list of the last pulls statuses', () => {
       const fpulls = [{
         id: 1,
