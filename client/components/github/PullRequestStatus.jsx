@@ -58,6 +58,7 @@ export class PullRequestStatus extends Component {
         d={describeArc(center, center, radius, start, end)}
         stroke={colors[status.state]}
         strokeWidth={strokeWidth}
+        fill="transparent"
         onClick={this.onClick}
       >
         <title>{status.context}</title>

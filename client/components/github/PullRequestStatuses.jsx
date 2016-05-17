@@ -50,9 +50,11 @@ export class PullRequestStatuses extends Component {
           height="80%"
           xlinkHref={pull.user.avatar_url}
           style={{
-            clipPath: `url(#clip-circle)`,
+            clipPath: 'url(#clip-circle)',
           }}
-        />
+        >
+          <title>{pull.user.login}</title>
+        </image>
 
       </svg>
     );
