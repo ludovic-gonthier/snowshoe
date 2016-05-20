@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "amqplib": "^0.4.1",
-    "async": "^1.5.2",
     "babel-cli": "^6.5.1",
     "babel-core": "^6.5.2",
     "babel-loader": "^6.2.3",

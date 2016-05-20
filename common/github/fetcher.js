@@ -1,8 +1,6 @@
 import _ from 'lodash';
-import async from 'async';
 
 import { default as formatter } from './url-formatter';
-import { notifier } from './rate-notifier';
 import { default as requester } from './request';
 
 import { config } from '../../config';
@@ -10,8 +8,7 @@ import { config } from '../../config';
 export function organizations(token) {
   return requester(token)
     .paginate(formatter('/user/orgs', { per_page: 100 }), 'organization')
-    .then(data => Promise.resolve(notifier(token, data)))
-    .then(data => Promise.resolve(data.json))
+    .then(data => Promise.resolve(data))
     .catch(error => {
       console.error(error); // eslint-disable-line no-console
 
@@ -22,8 +19,7 @@ export function organizations(token) {
 export function teams(token, login) {
   return requester(token)
     .paginate(formatter(`orgs/${login}/teams`, { per_page: 100 }), 'team')
-    .then(data => Promise.resolve(notifier(token, data)))
-    .then(data => Promise.resolve(data.json))
+    .then(data => Promise.resolve(data))
     .catch(error => {
       console.error(error); // eslint-disable-line no-console
 
@@ -34,57 +30,59 @@ export function teams(token, login) {
 export function repositories(token, url) {
   return requester(token)
     .paginate(formatter(url, { per_page: 100 }), 'repository')
-    .then(data => Promise.resolve(notifier(token, data)))
-    .then(data => Promise.resolve(data.json));
+    .then(data => Promise.resolve(data));
 }
 
 export function issues(token, url) {
   return requester(token)
     .paginate(formatter(url, { per_page: 100 }), 'issue')
-    .then(data => Promise.resolve(notifier(token, data)))
-    .then(data => Promise.resolve(_.filter(data.json, issue => 'pull_request' in issue)));
+    .then(data => Object.assign(
+      {},
+      data,
+      { json: _.filter(data.json, issue => 'pull_request' in issue) }
+    ));
 }
 
 export function statuses(token, pullsObject) {
-  const results = [];
+  return Promise.all(pullsObject.map((pull) =>
+    requester(token)
+      .call(`${pull.base.repo.url}/commits/${pull.head.sha}/status`, 'status')
+      .then(data => {
+        const status = data.json;
 
-  return new Promise((resolve, reject) => {
-    async.each(pullsObject, (pull, callback) => {
-      requester(token)
-        .call(`${pull.base.repo.url}/commits/${pull.head.sha}/status`, 'status')
-        .then(data => Promise.resolve(notifier(token, data)))
-        .then(data => {
-          const status = data.json;
+        if (_.has(status, 'statuses') && status.statuses.length) {
+          return Object.assign(
+            {},
+            data,
+            {
+              json: Object.assign(
+                {},
+                status,
+                { pull_request: { id: pull.id } }
+              ),
+            }
+          );
+        }
 
-          if (_.has(status, 'statuses') && status.statuses.length) {
-            results.push(Object.assign({}, status, { pull_request: { id: pull.id } }));
-          }
-
-          callback();
-        })
-        .catch(error => callback(error));
-    }, error => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(results);
-      }
-    });
-  });
+        return null;
+      })));
 }
 
 export function pulls(token, url) {
   return requester(token)
     .paginate(formatter(url, { per_page: 100 }), 'pull')
-    .then(data => Promise.resolve(notifier(token, data)))
     .then(data => Promise.resolve(
-      [].concat(data.json)
-        .filter(pull => !pull.locked)
-        .map(pull => Object.assign(
-          {},
-          pull,
-          { isTitleDisplayed: config.get('snowshoe.display_pr_title') }
-        ))
+      Object.assign(
+        {},
+        data,
+        { json: [].concat(data.json)
+            .filter(pull => !pull.locked)
+            .map(pull => Object.assign(
+              {},
+              pull,
+              { isTitleDisplayed: config.get('snowshoe.display_pr_title') }
+            )),
+        }
       )
-    );
+    ));
 }
