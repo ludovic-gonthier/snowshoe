@@ -1,5 +1,4 @@
 import del from 'del';
-import eslint from 'gulp-eslint';
 import gulp from 'gulp';
 import mocha from 'gulp-mocha';
 import util from 'gulp-util';
@@ -21,14 +20,6 @@ const files = [].concat(src).concat(tests);
 gulp.task('clean', () => {
   del(['build/**']);
 });
-
-gulp.task('lint', () => {
-  gulp.src(files)
-    .pipe(eslint())
-    .pipe(eslint.formatEach())
-    .pipe(eslint.failAfterError());
-});
-gulp.task('lint:watch', () => gulp.watch(files, ['lint']));
 
 gulp.task('test', () => {
   process.env.NODE_ENV = 'test';
