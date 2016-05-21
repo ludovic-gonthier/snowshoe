@@ -12,23 +12,21 @@ describe('result-filter', () => {
 
     it('should call filter a data object', () => {
       const expected = { pulls_url: 'my_url' };
-      let filtered;
 
       objectsTub.returns(expected);
 
-      filtered = filter({ foo: 'bar', pulls_url: 'my_url' }, 'repository');
-      expect(filtered).to.eql(expected);
+      expect(
+        filter({ foo: 'bar', pulls_url: 'my_url' }, 'repository')
+      ).to.eql(expected);
     });
 
     it('should call filter a data array', () => {
-      let filtered;
-
       objectsTub.withArgs({ foo: 'bar', pulls_url: 'my_url' })
         .returns({ pulls_url: 'my_url' });
       objectsTub.withArgs({ issues_url: 'issue_url', blah: 'blah' })
         .returns({ issues_url: 'issue_url' });
 
-      filtered = filter([
+      const filtered = filter([
         { foo: 'bar', pulls_url: 'my_url' },
         { issues_url: 'issue_url', blah: 'blah' },
       ], 'repository');

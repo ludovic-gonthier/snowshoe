@@ -50,9 +50,11 @@ export class PullRequestStatuses extends Component {
           height="80%"
           xlinkHref={pull.user.avatar_url}
           style={{
-            clipPath: `url(#clip-circle)`,
+            clipPath: 'url(#clip-circle)',
           }}
-        />
+        >
+          <title>{pull.user.login}</title>
+        </image>
 
       </svg>
     );
@@ -62,9 +64,15 @@ export class PullRequestStatuses extends Component {
 PullRequestStatuses.propTypes = {
   pull: PropTypes.shape({
     status: PropTypes.shape({
-      context: PropTypes.string.isRequired,
-      target_url: PropTypes.string.isRequired,
-      state: PropTypes.string.isRequired,
+      statuses: PropTypes.arrayOf(PropTypes.shape({
+        context: PropTypes.string.isRequired,
+        target_url: PropTypes.string.isRequired,
+        state: PropTypes.string.isRequired,
+      })),
+    }),
+    user: PropTypes.shape({
+      avatar_url: PropTypes.string.isRequired,
+      login: PropTypes.string.isRequired,
     }),
   }),
 };

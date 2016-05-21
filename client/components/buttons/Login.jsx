@@ -1,11 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export class Login extends Component {
-  render() {
-    return (
-      <li>
-        <a href="/auth/github">Log In</a>
-      </li>
-    );
-  }
-}
+export const Login = () => (
+  <li>
+    <a href="/auth/github">Log In</a>
+  </li>
+);

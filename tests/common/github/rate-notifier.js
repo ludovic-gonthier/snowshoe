@@ -7,34 +7,37 @@ const stubs = {
 };
 
 const {
-  notifier,
+  rateNotifier,
 } = proxyquire(`${ROOT_PATH}/common/github/rate-notifier`, {
   lodash: { curry: () => () => stubs.produce },
 });
 
-describe('rate-notifier', () => {
+describe('rate-rateNotifier', () => {
   beforeEach(() => stubs.produce.reset());
 
-  describe('.notifier()', () => {
+  describe('.rateNotifier()', () => {
     it('should send the rate informations to the socket', () => {
-      const data = notifier('test_token', fixtures.complete_headers);
+      const data = rateNotifier('test_token', fixtures.complete_headers);
 
       expect(data).to.eql(fixtures.complete_headers);
       expect(stubs.produce).to.have.been.calledWith(
         JSON.stringify({
-          type: 'rate',
-          token: 'test_token',
-          data: {
-            limit: fixtures.complete_headers.headers['x-ratelimit-limit'],
-            remaining: fixtures.complete_headers.headers['x-ratelimit-remaining'],
-            reset: fixtures.complete_headers.headers['x-ratelimit-reset'],
+          action: {
+            type: 'NOTIFY_RATE',
+            rate: {
+              limit: fixtures.complete_headers.headers['x-ratelimit-limit'],
+              remaining: fixtures.complete_headers.headers['x-ratelimit-remaining'],
+              reset: fixtures.complete_headers.headers['x-ratelimit-reset'],
+            },
           },
+          token: 'test_token',
         })
       );
     });
     it('should send no informations if missing one header key', () => {
-      notifier('test_token', fixtures.missing_headers);
+      const data = rateNotifier('test_token', fixtures.missing_headers);
 
+      expect(data).to.eql(fixtures.missing_headers);
       expect(stubs.produce).to.not.be.called;
     });
   });

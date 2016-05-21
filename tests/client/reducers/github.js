@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-expressions */
 import { default as reducer } from '../../../client/reducers/github';
 import {
-  SOCKET_DATA_RECEIVED,
+  RECEIVED_PULLS,
 } from '../../../client/actions';
 
 describe('reducer', () => {
@@ -10,8 +10,7 @@ describe('reducer', () => {
     it('should add pulls to state', () => {
       const state = {};
       const action = {
-        type: SOCKET_DATA_RECEIVED,
-        message: 'pulls',
+        type: RECEIVED_PULLS,
         data: {
           pulls: [{
             base: { repo: { full_name: 'lemonde/lemonde' } },
@@ -19,10 +18,6 @@ describe('reducer', () => {
             name: 'new 23',
           }],
           repo: 'lemonde/lemonde',
-          sort: {
-            key: 'updated_at',
-            direction: 'asc',
-          },
         },
       };
       const result = reducer(state, action);
@@ -48,8 +43,7 @@ describe('reducer', () => {
         }],
       };
       const action = {
-        type: SOCKET_DATA_RECEIVED,
-        message: 'pulls',
+        type: RECEIVED_PULLS,
         data: {
           pulls: [{
             base: { repo: { full_name: 'lemonde/php-command' } },
@@ -57,10 +51,6 @@ describe('reducer', () => {
             name: 'PHPCOMMAND project 513',
           }],
           repo: 'lemonde/php-command',
-          sort: {
-            key: 'updated_at',
-            direction: 'asc',
-          },
         },
       };
       const result = reducer(state, action);
@@ -90,15 +80,10 @@ describe('reducer', () => {
         }],
       };
       const action = {
-        type: SOCKET_DATA_RECEIVED,
-        message: 'pulls',
+        type: RECEIVED_PULLS,
         data: {
           pulls: [],
           repo: 'lemonde/php-command',
-          sort: {
-            key: 'updated_at',
-            direction: 'asc',
-          },
         },
       };
       const result = reducer(state, action);
@@ -128,8 +113,7 @@ describe('reducer', () => {
         }],
       };
       const action = {
-        type: SOCKET_DATA_RECEIVED,
-        message: 'pulls',
+        type: RECEIVED_PULLS,
         data: {
           pulls: [{
             base: { repo: { full_name: 'lemonde/php-command' } },
@@ -137,10 +121,6 @@ describe('reducer', () => {
             name: 'PHPCOMMAND project 513',
           }],
           repo: 'lemonde/php-command',
-          sort: {
-            key: 'updated_at',
-            direction: 'asc',
-          },
         },
       };
       const result = reducer(state, action);
@@ -174,8 +154,7 @@ describe('reducer', () => {
         }],
       };
       const action = {
-        type: SOCKET_DATA_RECEIVED,
-        message: 'pulls',
+        type: RECEIVED_PULLS,
         data: {
           pulls: [{
             base: { repo: { full_name: 'lemonde/php-command' } },
@@ -187,10 +166,6 @@ describe('reducer', () => {
             name: 'PHPCOMMAND project 511',
           }],
           repo: 'lemonde/php-command',
-          sort: {
-            key: 'updated_at',
-            direction: 'asc',
-          },
         },
       };
       const result = reducer(state, action);
