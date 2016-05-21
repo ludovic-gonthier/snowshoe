@@ -14,10 +14,10 @@ rabbit.consume('snowshoe', 'request', (channel, message) => {
   const { data, token, type } = JSON.parse(message.content.toString());
 
   if (!(type in consumers)) {
-    return console.error(`Unhandled type "${type}"`);
+    return console.error(`Unhandled type "${type}"`); // eslint-disable-line no-console
   }
 
   return consumers[type](token, data)
     .then(() => channel.ack(message))
-    .catch((error) => console.error(error.stack));
+    .catch((error) => console.error(error.stack)); // eslint-disable-line no-console
 });

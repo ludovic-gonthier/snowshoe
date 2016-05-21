@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -19,55 +19,23 @@ const Application = (props) => {
         {...github}
       />
 
-    let Body;
-    if (page === 'homepage') {
-      Body = <HomepageJumbotron />;
-    } else {
-      Body = (
+      {page === 'homepage'
+        ? <HomepageJumbotron />
+        : (
         <section className="dashboard clearfix">
           <Container pulls={github.pulls} filters={filters} order={order} />
         </section>
-      );
-    }
+        )
+      }
 
-    return (
-      <div>
-        <Header {...{
-          authenticated,
-          emitDataToSocket,
-          filterByLabels,
-          pulls,
-          organizations,
-          rate,
-          token,
-          teams,
-          user }}
-        />
-
-        { Body }
-
-        { !socket.connected &&
-          <div className="alert alert-danger socket-closed" role="alert">
-            Connection to the server lost. Refresh the page to have fresh data again!
-          </div>
-        }
-      </div>
-    );
-  }
-}
-
-function mapStateToProps(state) {
-  return {
-    github: state.github,
-    socket: state.socket,
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actions, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Application);
+      {!socket.connected &&
+        <div className="alert alert-danger socket-closed" role="alert">
+          Connection to the server lost. Refresh the page to have fresh data again!
+        </div>
+      }
+    </div>
+  );
+};
 
 Application.propTypes = {
   authenticated: PropTypes.bool.isRequired,

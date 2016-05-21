@@ -64,9 +64,15 @@ export class PullRequestStatuses extends Component {
 PullRequestStatuses.propTypes = {
   pull: PropTypes.shape({
     status: PropTypes.shape({
-      context: PropTypes.string.isRequired,
-      target_url: PropTypes.string.isRequired,
-      state: PropTypes.string.isRequired,
+      statuses: PropTypes.arrayOf(PropTypes.shape({
+        context: PropTypes.string.isRequired,
+        target_url: PropTypes.string.isRequired,
+        state: PropTypes.string.isRequired,
+      })),
+    }),
+    user: PropTypes.shape({
+      avatar_url: PropTypes.string.isRequired,
+      login: PropTypes.string.isRequired,
     }),
   }),
 };

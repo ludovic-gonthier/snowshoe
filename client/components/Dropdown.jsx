@@ -45,6 +45,7 @@ export class Dropdown extends Component {
 }
 
 Dropdown.propTypes = {
-  title: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
   children: PropTypes.node,
+  title: PropTypes.string.isRequired,
 };

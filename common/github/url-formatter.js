@@ -1,6 +1,5 @@
 import _ from 'lodash';
-import { parse } from 'url';
-import { format } from 'url';
+import { format, parse } from 'url';
 import querystring from 'querystring';
 
 const GITHUB_BASE_URL = 'https://api.github.com';
@@ -11,7 +10,6 @@ const regexp = {
 };
 
 export default function (url, options) {
-  let parsed;
   let formatted = url;
 
   if (url.indexOf('http') === -1) {
@@ -24,7 +22,8 @@ export default function (url, options) {
   formatted = formatted.replace(regexp.number, '')
     .replace(regexp.sha, '');
 
-  parsed = parse(formatted);
+  const parsed = parse(formatted);
+
   return format({
     protocol: parsed.protocol,
     hostname: parsed.hostname,

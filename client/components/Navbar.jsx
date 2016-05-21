@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
 import { PullRequestDropdown } from './dropdowns/PullRequestDropdown.jsx';
 import { FilterByDropdown } from './dropdowns/FilterByDropdown.jsx';
@@ -17,18 +17,10 @@ export const Navbar = (props) => {
         <FilterByDropdown {...{ disabled, filterByLabels, filters, pulls }} />
         <OrderByDropdown {...{ changeOrderDirection, changeOrderField, disabled, order }} />
 
-    return (
-      <span>
-        <ul className="nav navbar-nav">
-          <PullRequestDropdown {...{ user, organizations, emitDataToSocket, teams, token }} />
-          <FilterByDropdown {...{ filterByLabels, filters, pulls }} />
-          <OrderByDropdown disabled={disabled} />
-
-        </ul>
-      </span>
-    );
-  }
-}
+      </ul>
+    </span>
+  );
+};
 
 Navbar.propTypes = {
   changeOrderDirection: PropTypes.func.isRequired,

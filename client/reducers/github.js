@@ -50,7 +50,6 @@ export default (state = initialState, action) => {
           teams: action.teams.map((team) => {
             let href = `/teams/${team.slug}/${team.id}`;
 
-            console.log('Is user present in state: %s', !state.user);
             if (!state.user && state.token) {
               href += `?access_token=${state.token}`;
             }

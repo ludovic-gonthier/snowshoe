@@ -13,7 +13,7 @@ export default class Homepage extends Component {
     const innerHtml = () => ({ __html: `window.__INITIAL_STATE__ = ${JSON.stringify(state)};` });
 
     return (
-      <script dangerouslySetInnerHTML={ innerHtml() } />
+      <script dangerouslySetInnerHTML={innerHtml()} />
     );
   }
 
@@ -26,7 +26,7 @@ export default class Homepage extends Component {
     ));
 
     let Module = (
-      <Provider store={ store }>
+      <Provider store={store}>
         <div>
           <Application {...{ authenticated, page }} />
           <DevTools />
@@ -36,7 +36,7 @@ export default class Homepage extends Component {
 
     if (process.env.NODE_ENV === 'production') {
       Module = (
-        <Provider store={ store }>
+        <Provider store={store}>
           <Application {...{ authenticated, page }} />
         </Provider>
       );
@@ -44,10 +44,10 @@ export default class Homepage extends Component {
 
     return (
       <Layout className="page-container" stylesheets={[{ href: '/css/main.css' }]}>
-        { this.injectInitialState(initialState) }
+        {this.injectInitialState(initialState)}
 
         <div id="mount-application">
-          { Module }
+          {Module}
         </div>
 
         <script src="/main.js"></script>

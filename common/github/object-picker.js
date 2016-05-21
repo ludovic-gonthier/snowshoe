@@ -27,6 +27,8 @@ export default function pick(object, schema) {
         } else {
           picked[index] = pick(object[index], value);
         }
+
+        return true;
       });
     } else if (_.has(object, key)) {
       picked = _.assign(picked, _.pick(object, key));

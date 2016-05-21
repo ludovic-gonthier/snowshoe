@@ -22,16 +22,13 @@ export default class Poller {
   }
 
   execute() {
-    let executors;
-
     if (this.processing) {
       return;
     }
 
     this.processing = true;
-    executors = this.registered.map(item => this.callback(item));
 
-    Promise.all(executors)
+    Promise.all(this.registered.map(item => this.callback(item)))
       .catch(console.error.bind(console)) // eslint-disable-line no-console
       .done(() => {
         this.processing = false;
