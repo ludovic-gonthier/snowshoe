@@ -36,8 +36,8 @@ export class RateLimit extends Component {
 
     return (
       <p id="rate-limit" className="navbar-text">
-        <span title={ `Github API calls available. Reset at ${hours}:${minutes}` }>
-          Rate : <span className={ style }>{ rate.remaining }/{ rate.limit }</span>
+        <span title={`Github API calls available. Reset at ${hours}:${minutes}`}>
+          Rate : <span className={style}>{rate.remaining}/{rate.limit}</span>
         </span>
       </p>
     );

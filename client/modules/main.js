@@ -9,7 +9,7 @@ import { default as configureStore } from '../stores';
 import { listen } from '../middlewares/socket';
 import * as actions from '../actions';
 
-const state = window.__INITIAL_STATE__;
+const state = window.__INITIAL_STATE__; // eslint-disable-line no-underscore-dangle
 const store = configureStore(_.omit(state, ['authenticated', 'page', 'repositoriesUrl']));
 
 const { authenticated, page } = state;
@@ -29,7 +29,7 @@ if (state.repositoriesUrl) {
 }
 
 let Module = (
-  <Provider store={ store }>
+  <Provider store={store}>
     <div>
       <Application {...{ authenticated, page }} />
       <DevTools />
@@ -39,7 +39,7 @@ let Module = (
 
 if (process.env.NODE_ENV === 'production') {
   Module = (
-    <Provider store={ store }>
+    <Provider store={store}>
       <Application {...{ authenticated, page }} />
     </Provider>
   );

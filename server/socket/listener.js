@@ -11,10 +11,12 @@ rabbit.consume(
   'snowshoe',
   'response',
   (channel, message) => {
-    const { data, type, token } = JSON.parse(message.content.toString());
+    const { action, token } = JSON.parse(message.content.toString());
 
     if (registry.has(token)) {
-      registry.get(token).forEach((socket) => socket.emit(type, data));
+      registry
+        .get(token)
+        .forEach((socket) => socket.emit('action', action));
     }
 
     channel.ack(message);

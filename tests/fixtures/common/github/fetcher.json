@@ -38,7 +38,7 @@
         "html_url": "https://github.com/ludovic-gonthier/goul-registry/pull/3"
       }
     ],
-    "header": {
+    "headers": {
     }
   },
   "pulls_with_locked": {
@@ -80,7 +80,7 @@
         "html_url": "https://github.com/ludovic-gonthier/goul-registry/pull/3"
       }
     ],
-    "header": {
+    "headers": {
     }
   },
   "issues": {
@@ -111,7 +111,8 @@
         "color": "ff0000"
       }],
       "comments": 1
-    }]
+    }],
+    "headers": {}
   },
   "status_1": {
     "json": {
@@ -119,7 +120,7 @@
         "state": "success"
       }]
     },
-    "header": {}
+    "headers": {}
   },
   "status_2": {
     "json": {
@@ -127,12 +128,12 @@
         "state": "success"
       }]
     },
-    "header": {}
+    "headers": {}
   },
   "status_3": {
     "json": {
       "statuses": []
     },
-    "header": {}
+    "headers": {}
   }
 }

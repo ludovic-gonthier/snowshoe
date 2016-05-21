@@ -7,6 +7,6 @@ export default (router) => {
       return next();
     }
 
-    response.redirect('/login');
+    return response.redirect('/login');
   });
 };

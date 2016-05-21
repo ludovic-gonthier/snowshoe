@@ -31,7 +31,7 @@ export default {
       };
 
       storage.set(id, JSON.stringify(object), 'EX', 3600)
-        .catch((error) => console.error(error));
+        .catch((error) => console.error(error)); // eslint-disable-line no-console
     }
   },
 
@@ -45,6 +45,6 @@ export default {
     storage
       .get(id)
       .then((object) => callback(JSON.parse(object)))
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error)); // eslint-disable-line no-console
   },
 };

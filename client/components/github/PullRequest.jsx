@@ -1,62 +1,49 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { PullRequestStatuses } from './PullRequestStatuses';
+import { Label } from './Label';
 
-export class PullRequest extends Component {
-  computeLabelStyle(labelColor) {
-    const rgb = labelColor.match(/.{2}/g).map((color) => parseInt(color, 16) / 255);
-    const max = Math.max(rgb[0], rgb[1], rgb[2]);
-    const min = Math.min(rgb[0], rgb[1], rgb[2]);
+export const PullRequest = ({ pull }) => {
+  const classes = ['img-circle'];
+  const attributes = {};
 
-    return {
-      color: (max + min) / 2 > 0.6 ? 'black' : 'white',
-      background: `#${labelColor}`,
-    };
+  if (pull.lastStatus) {
+    classes.push(pull.lastStatus.state);
   }
 
-  render() {
-    const { pull } = this.props;
-    const classes = ['img-circle'];
+  if (pull.disabled) {
+    attributes.disabled = 'disabled';
+  }
 
-    if (pull.lastStatus) {
-      classes.push(pull.lastStatus.state);
-    }
+  return (
+    <div className="pull-request thumbnail" {...attributes}>
+      <header
+        className="caption text-center ellipsis"
+        title={pull.base.repo.name}
+      >
+        <strong>{pull.base.repo.name}</strong>
+      </header>
+      <span className="badge">
+        <span className="glyphicon glyphicon-comment pull-left"></span>
+        <span className="github-commemts-number">{pull.comments || 0}</span>
+      </span>
+      <PullRequestStatuses pull={pull} />
 
-    return (
-      <div className="pull-request thumbnail">
-        <header className="caption text-center ellipsis"
-          title={pull.base.repo.name}
-        >
-            <strong>{pull.base.repo.name}</strong>
-        </header>
-        <span className="badge">
-          <span className="glyphicon glyphicon-comment pull-left"></span>
-          <span className="github-commemts-number">{pull.comments || 0}</span>
-        </span>
-        <PullRequestStatuses pull={ pull }/>
-
-        <div className="text-center github-title ellipsis" title={pull.title}>
-          { pull.isTitleDisplayed ? pull.title : '' }
-        </div>
-        <div className="caption text-center github-request-number">
-          <a href={pull.html_url} target="_blank">
-            #{pull.number}
-          </a>
-        </div>
-        {!pull.labels ? '' :
-          pull.labels.map((label, index) => (
-            <div key={index}
-              style={this.computeLabelStyle(label.color)}
-              className="github-label text-center ellipsis"
-              title={label.name}
-            >
-              {label.name}
-            </div>
-          ))
-        }
+      <div className="text-center github-title ellipsis" title={pull.title}>
+        {pull.isTitleDisplayed ? pull.title : ''}
       </div>
-    );
-  }
-}
+      <div className="caption text-center github-request-number">
+        <a href={pull.html_url} target="_blank">
+          #{pull.number}
+        </a>
+      </div>
+      {!pull.labels ? '' :
+        pull.labels.map((label, index) => (
+          <Label key={index} {...label} />
+        ))
+      }
+    </div>
+  );
+};
 
 PullRequest.propTypes = {
   pull: PropTypes.shape({
@@ -66,6 +53,7 @@ PullRequest.propTypes = {
       }),
     }),
     comments: PropTypes.number,
+    disabled: PropTypes.bool,
     html_url: PropTypes.string.isRequired,
     isTItleDisplayed: PropTypes.bool,
     labels: PropTypes.arrayOf(PropTypes.shape({

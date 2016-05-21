@@ -19,16 +19,11 @@ export function listen(store) {
 
   const events = [
     'disconnect',
-    'organizations',
-    'teams',
-    'pulls',
-    'pulls:delete',
-    'pulls:issues',
-    'pulls:status',
-    'rate',
   ];
 
   events.forEach((event) => socket.on(event, (data) =>
     store.dispatch(actions.receivedDataFromSocket(event, data))
   ));
+
+  socket.on('action', store.dispatch);
 }

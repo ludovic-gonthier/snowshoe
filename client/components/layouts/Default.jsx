@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
 const defaults = {
   stylesheets: [{
@@ -12,44 +12,42 @@ const defaults = {
   metas: [],
 };
 
-export class Layout extends Component {
-  render() {
-    const {
-      children,
-      metas,
-      stylesheets,
-      scripts,
-      title,
-    } = this.props;
+export const Layout = (props) => {
+  const {
+    children,
+    metas,
+    stylesheets,
+    scripts,
+    title,
+  } = props;
 
-    return (
-      <html>
-        <head>
-          <title>{title}</title>
+  return (
+    <html>
+      <head>
+        <title>{title}</title>
 
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          {metas.concat(defaults.metas).map((meta, index) => (
-            <meta key={index} {...meta} />
-          ))}
-          {defaults
-            .stylesheets
-            .concat(stylesheets)
-            .map((stylesheet, index) => (
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {metas.concat(defaults.metas).map((meta, index) => (
+          <meta key={index} {...meta} />
+        ))}
+        {defaults
+          .stylesheets
+          .concat(stylesheets)
+          .map((stylesheet, index) => (
             <link rel="stylesheet" key={index} {...stylesheet} />
-          ))}
-          {scripts.concat(defaults.scripts)
-            .map((script, index) => (
+        ))}
+        {scripts.concat(defaults.scripts)
+          .map((script, index) => (
             <script key={index} {...script} />
-          ))}
-          <link rel="icon" type="image/png" href="/favicon.png" />
-        </head>
-        <body>
-          {children}
-        </body>
-      </html>
-    );
-  }
-}
+        ))}
+        <link rel="icon" type="image/png" href="/favicon.png" />
+      </head>
+      <body>
+        {children}
+      </body>
+    </html>
+  );
+};
 
 Layout.propTypes = {
   children: PropTypes.node,
