@@ -1,6 +1,7 @@
-node_modules
-.env
-client/public/main.js*
-client/public/login.js*
-cache
+coverage/
+node_modules/
+
 *.orig
+.env
+client/public/login.js*
+client/public/main.js*
