@@ -8,7 +8,7 @@ You can try the application [here](http://www.snowshoe.report) to see if it fits
 
 ## Build status
 
-[![Build Status](https://travis-ci.org/ludovic-gonthier/snowshoe.svg)](https://travis-ci.org/ludovic-gonthier/snowshoe) [![Coverage Status](https://coveralls.io/repos/ludovic-gonthier/snowshoe/badge.svg?branch=master&service=github)](https://coveralls.io/github/ludovic-gonthier/snowshoe?branch=master)
+[![Build Status](https://travis-ci.org/ludovic-gonthier/snowshoe.svg)](https://travis-ci.org/ludovic-gonthier/snowshoe) [![Coverage Status](https://coveralls.io/repos/ludovic-gonthier/snowshoe/badge.svg?branch=master&service=github)](https://coveralls.io/github/ludovic-gonthier/snowshoe?branch=master) [![bitHound Overall Score](https://www.bithound.io/github/ludovic-gonthier/snowshoe/badges/score.svg)](https://www.bithound.io/github/ludovic-gonthier/snowshoe)
 
 ## Documentation
 
