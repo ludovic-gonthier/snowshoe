@@ -5,13 +5,38 @@ export class Dropdown extends Component {
     super();
 
     this.onClick = this.onClick.bind(this);
+    this.closeOnClickOut = this.closeOnClickOut.bind(this);
     this.state = {
       open: false,
     };
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (!this.state.open && nextState.open) {
+      window.addEventListener('click', this.closeOnClickOut);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.open && !this.state.open) {
+      window.removeEventListener('click', this.closeOnClickOut);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.state.open) {
+      window.removeEventListener('click', this.closeOnClickOut);
+    }
+  }
+
   onClick() {
     this.setState({ open: !this.state.open });
+  }
+
+  closeOnClickOut(event) {
+    if (this.state.open && !this.refs.dropdown.contains(event.target)) {
+      this.setState({ open: false });
+    }
   }
 
   render() {
