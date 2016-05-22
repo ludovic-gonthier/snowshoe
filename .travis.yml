@@ -1,3 +1,7 @@
 language: node_js
+node_js: "6.0"
 
-after_success: ./node_modules/.bin/coveralls --verbose < build/unit-test-coverage/lcov.info
+before_script: cp .env.dist .env
+script: npm run test:coverage
+
+after_success: ./node_modules/.bin/coveralls --verbose < coverage/lcov.info
