@@ -23,11 +23,11 @@ export class PullRequestDropdown extends Component {
 
     return (
       <Dropdown title="Pull Requests">
-        <li role="presentation" className="dropdown-header">{user.login}</li>
-        <li><a href="/user/personal/">My Repositories</a></li>
-        <li><a href="/user/contributing/">Contributing to</a></li>
+        {user && <li role="presentation" className="dropdown-header">{user.login}</li>}
+        {user && <li><a href="/user/personal/">My Repositories</a></li>}
+        {user && <li><a href="/user/contributing/">Contributing to</a></li>}
+        {user && <li role="presentation" className="divider"></li>}
 
-        <li role="presentation" className="divider"></li>
         <li role="presentation" className="dropdown-header">Organizations</li>
         {organizations.map((organization, key) => (
           <li key={key}>
