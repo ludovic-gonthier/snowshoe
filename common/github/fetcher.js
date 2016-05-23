@@ -8,23 +8,13 @@ import { config } from '../../config';
 export function organizations(token) {
   return requester(token)
     .paginate(formatter('/user/orgs', { per_page: 100 }), 'organization')
-    .then(data => Promise.resolve(data))
-    .catch(error => {
-      console.error(error); // eslint-disable-line no-console
-
-      return Promise.resolve([]);
-    });
+    .then(data => Promise.resolve(data));
 }
 
 export function teams(token, login) {
   return requester(token)
     .paginate(formatter(`orgs/${login}/teams`, { per_page: 100 }), 'team')
-    .then(data => Promise.resolve(data))
-    .catch(error => {
-      console.error(error); // eslint-disable-line no-console
-
-      return Promise.resolve([]);
-    });
+    .then(data => Promise.resolve(data));
 }
 
 export function repositories(token, url) {

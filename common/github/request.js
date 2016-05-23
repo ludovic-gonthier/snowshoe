@@ -36,7 +36,7 @@ export default function (token) {
             message += `${response.statusMessage}. `;
             message += JSON.parse(body).message;
 
-            return reject(message);
+            return reject(new Error(message));
           }
           // Store the results
           result.headers = response.headers;
@@ -50,7 +50,7 @@ export default function (token) {
             } catch (error) { // eslint-disable-line no-shadow
               error.message += `. Could not parse body: ${body}`;
 
-              return reject(error);
+              return reject(new Error(error));
             }
           }
 
