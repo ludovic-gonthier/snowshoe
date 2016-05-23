@@ -61,14 +61,13 @@ describe('fetcher', () => {
           .catch(reject);
       });
     });
-    it('should resolve the promise with empty array on error', () => {
+    it('should reject the promise on error', () => {
       stubs.url_formatter
         .withArgs('/user/orgs', { per_page: 100 })
         .returns('https://api.github.com/user/orgs?per_page=100');
       stubs.request.paginate
         .withArgs('https://api.github.com/user/orgs?per_page=100', 'organization')
         .returns(Promise.reject(new Error('Pagination error')));
-      console.error = sinon.stub(); // eslint-disable-line no-console
 
       requestStub
         .withArgs('test_token')
@@ -76,12 +75,8 @@ describe('fetcher', () => {
 
       return new Promise((resolve, reject) => {
         organizations('test_token')
-          .then(data => {
-            expect(console.error).to.have.been.called; // eslint-disable-line no-console
-            expect(data).to.eql([]);
-            resolve();
-          })
-          .catch(reject);
+          .then(() => reject(new Error('Promise should have been rejected')))
+          .catch(resolve);
       });
     });
   });
@@ -117,7 +112,6 @@ describe('fetcher', () => {
       stubs.request.paginate
         .withArgs('https://api.github.com/orgs/snowshoe/teams?per_page=100', 'team')
         .returns(Promise.reject(new Error('Pagination error')));
-      console.error = sinon.stub(); // eslint-disable-line no-console
 
       requestStub
         .withArgs('test_token')
@@ -125,12 +119,9 @@ describe('fetcher', () => {
 
       return new Promise((resolve, reject) => {
         teams('test_token', 'snowshoe')
-          .then(data => {
-            expect(console.error).to.have.been.called; // eslint-disable-line no-console
-            expect(data).to.eql([]);
-            resolve();
-          })
-          .catch(reject);
+          .then(() => reject(new Error('Promise should have been rejected')))
+          .catch(resolve);
+
       });
     });
   });
