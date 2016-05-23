@@ -19,5 +19,8 @@ rabbit.consume('snowshoe', 'request', (channel, message) => {
 
   return consumers[type](token, data)
     .then(() => channel.ack(message))
-    .catch((error) => console.error(error.stack)); // eslint-disable-line no-console
+    .catch((error) => {
+      console.error(error.stack); // eslint-disable-line no-console
+      channel.nack(message, false, false);
+    });
 });
