@@ -65,7 +65,7 @@ function handleIssues(issues, token) {
 
 function handleStatusesAndIssues(promisesResults, token) {
   if (!promisesResults.length) {
-    return Promise.resolve();
+    return Promise.resolve([]);
   }
 
   const promises = promisesResults.map((result) => Promise.all([
@@ -91,9 +91,11 @@ function handleRate(promisesResults, token) {
       }
 
       return rate;
-    });
+    }, {});
 
-  rateNotifier(token, { headers });
+  if (!_.isEmpty(headers)) {
+    rateNotifier(token, { headers });
+  }
 
   return promisesResults;
 }
