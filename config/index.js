@@ -11,7 +11,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 config.set('server.host', process.env.SERVER_HOST);
 config.set('server.port', process.env.SERVER_PORT);
-config.set('server.protocol', process.env.SERVER_POROTOCOL);
+config.set('server.protocol', process.env.SERVER_PROTOCOL);
 config.set('server.secret', process.env.SERVER_SECRET);
 
 config.set('github.client.id', process.env.GITHUB_CLIENT_ID);
