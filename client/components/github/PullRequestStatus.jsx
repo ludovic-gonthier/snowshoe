@@ -46,20 +46,27 @@ export class PullRequestStatus extends Component {
     const center = radius - (strokeWidth / 4);
     const angle = 360 / number;
     const start = index * angle;
+    let pathProps = {}
     let end = (index + 1) * angle;
 
     if (end === 360) {
       end = 359.99;
     }
 
+    if (status.target_url) {
+      pathProps = {
+        className: "cursor-pointer",
+        onClick: this.onClick
+      }
+    }
+
     return (
       <path
-        className="cursor-pointer"
         d={describeArc(center, center, radius, start, end)}
         stroke={colors[status.state]}
         strokeWidth={strokeWidth}
         fill="transparent"
-        onClick={this.onClick}
+        {...pathProps}
       >
         <title>{status.context}</title>
       </path>
