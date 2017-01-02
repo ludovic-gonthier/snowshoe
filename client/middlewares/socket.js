@@ -5,7 +5,7 @@ import * as actions from '../actions';
 let socket;
 
 export function middleware() {
-  return (next) => (action) => {
+  return next => (action) => {
     if (socket && action.type === actions.SOCKET_DATA_EMIT) {
       socket.emit(action.message, action.data);
     }
@@ -21,8 +21,8 @@ export function listen(store) {
     'disconnect',
   ];
 
-  events.forEach((event) => socket.on(event, (data) =>
-    store.dispatch(actions.receivedDataFromSocket(event, data))
+  events.forEach(event => socket.on(event, data =>
+    store.dispatch(actions.receivedDataFromSocket(event, data)),
   ));
 
   socket.on('action', store.dispatch);

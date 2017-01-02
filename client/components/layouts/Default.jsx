@@ -12,7 +12,7 @@ const defaults = {
   metas: [],
 };
 
-export const Layout = (props) => {
+const Layout = (props) => {
   const {
     children,
     metas,
@@ -22,7 +22,7 @@ export const Layout = (props) => {
   } = props;
 
   return (
-    <html>
+    <html lang="en">
       <head>
         <title>{title}</title>
 
@@ -67,3 +67,5 @@ Layout.defaultProps = {
   metas: [],
   title: 'SnowShoe - Github Dashboards',
 };
+
+export default Layout;

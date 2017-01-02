@@ -74,7 +74,7 @@ describe('request', () => {
             .then(reject)
             .catch(resolve);
         });
-      }
+      },
     );
     it(
       'should reject the promise when the response body cannot be parsed to JSON',
@@ -91,7 +91,7 @@ describe('request', () => {
             .then(reject)
             .catch(resolve);
         });
-      }
+      },
     );
     it('should resolve the promise', () => {
       const json = { foo: 'bar' };
@@ -120,7 +120,7 @@ describe('request', () => {
 
       return new Promise((resolve, reject) => {
         request(token).call(url, type)
-          .then(data => {
+          .then((data) => {
             expect(stubs.result_filter).to.be.called;
             expect(data).to.eql(expected);
 
@@ -215,7 +215,7 @@ describe('request', () => {
 
       return new Promise((resolve, reject) => {
         request(token).call(url, type)
-          .then(data => {
+          .then((data) => {
             expect(data).to.eql(expected);
 
             resolve();
@@ -273,7 +273,7 @@ describe('request', () => {
 
       return new Promise((resolve, reject) => {
         request(token).paginate(url, type)
-          .then(data => {
+          .then((data) => {
             expect(stubs.result_filter).to.be.called;
             expect(data).to.eql(expected);
 
@@ -336,7 +336,7 @@ describe('request', () => {
 
       return new Promise((resolve, reject) => {
         request(token).paginate(url, type)
-          .then(data => {
+          .then((data) => {
             expect(stubs.result_filter).to.be.called;
             expect(data).to.eql(expected);
 

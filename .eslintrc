@@ -1,3 +1,10 @@
 {
-    "extends": "airbnb"
+    "extends": "airbnb",
+	"globals": {
+		"document": true,
+		"window": true
+	},
+	"rules": {
+		"jsx-a11y/no-static-element-interactions": false
+	}
 }

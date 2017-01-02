@@ -1,8 +1,7 @@
-import { rabbit } from '../common/rabbit';
-
-import { organizationsConsumer } from './consumers/organizations-consumer.js';
-import { pullsConsumer } from './consumers/pulls-consumer.js';
-import { teamsConsumer } from './consumers/teams-consumer.js';
+import rabbit from '../common/rabbit';
+import organizationsConsumer from './consumers/organizations-consumer';
+import pullsConsumer from './consumers/pulls-consumer';
+import teamsConsumer from './consumers/teams-consumer';
 
 const consumers = {
   organizations: organizationsConsumer,

@@ -1,5 +1,4 @@
 import bodyParser from 'body-parser';
-import { config } from '../config';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
 import engine from 'express-react-views';
@@ -10,9 +9,10 @@ import morgan from 'morgan';
 import session from 'express-session';
 import redisStore from 'connect-redis';
 
-import { default as passport } from './controllers/passport';
-import { default as controllers } from './controllers';
-import { default as listener } from './socket/listener';
+import config from '../config';
+import passport from './controllers/passport';
+import controllers from './controllers';
+import listener from './socket/listener';
 
 const app = express();
 
@@ -54,6 +54,7 @@ app.use(error);
  */
 const server = http.createServer(app);
 const socket = require('socket.io')(server);
+
 server.on('listening', () => {
   const separator = new Array(81).join('=');
 
@@ -64,7 +65,7 @@ server.on('listening', () => {
   console.log(
       "\nInformations:\n\tHostname: %s\n\tPort: %s\n",
       server.address().address,
-      server.address().port
+      server.address().port,
       );
   console.log(separator);
 

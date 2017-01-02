@@ -1,9 +1,8 @@
 import _ from 'lodash';
 
-import { default as formatter } from './url-formatter';
-import { default as requester } from './request';
-
-import { config } from '../../config';
+import config from '../../config';
+import formatter from './url-formatter';
+import requester from './request';
 
 export function organizations(token) {
   return requester(token)
@@ -29,15 +28,15 @@ export function issues(token, url) {
     .then(data => Object.assign(
       {},
       data,
-      { json: _.filter(data.json, issue => 'pull_request' in issue) }
+      { json: _.filter(data.json, issue => 'pull_request' in issue) },
     ));
 }
 
 export function statuses(token, pullsObject) {
-  return Promise.all(pullsObject.map((pull) =>
+  return Promise.all(pullsObject.map(pull =>
     requester(token)
       .call(`${pull.base.repo.url}/commits/${pull.head.sha}/status`, 'status')
-      .then(data => {
+      .then((data) => {
         const status = data.json;
 
         if (_.has(status, 'statuses') && status.statuses.length) {
@@ -48,9 +47,9 @@ export function statuses(token, pullsObject) {
               json: Object.assign(
                 {},
                 status,
-                { pull_request: { id: pull.id } }
+                { pull_request: { id: pull.id } },
               ),
-            }
+            },
           );
         }
 
@@ -70,9 +69,9 @@ export function pulls(token, url) {
             .map(pull => Object.assign(
               {},
               pull,
-              { isTitleDisplayed: config.get('snowshoe.display_pr_title') }
+              { isTitleDisplayed: config.get('snowshoe.display_pr_title') },
             )),
-        }
-      )
+        },
+      ),
     ));
 }

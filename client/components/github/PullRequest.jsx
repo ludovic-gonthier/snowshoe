@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
-import { PullRequestStatuses } from './PullRequestStatuses';
-import { Label } from './Label';
 
-export const PullRequest = ({ pull }) => {
+import PullRequestStatuses from './PullRequestStatuses';
+import Label from './Label';
+
+const PullRequest = ({ pull }) => {
   const classes = ['img-circle'];
   const attributes = {};
 
@@ -23,7 +24,7 @@ export const PullRequest = ({ pull }) => {
         <strong>{pull.base.repo.name}</strong>
       </header>
       <span className="badge">
-        <span className="glyphicon glyphicon-comment pull-left"></span>
+        <span className="glyphicon glyphicon-comment pull-left" />
         <span className="github-commemts-number">{pull.comments || 0}</span>
       </span>
       <PullRequestStatuses pull={pull} />
@@ -32,7 +33,7 @@ export const PullRequest = ({ pull }) => {
         {pull.isTitleDisplayed ? pull.title : ''}
       </div>
       <div className="caption text-center github-request-number">
-        <a href={pull.html_url} target="_blank">
+        <a href={pull.html_url} target="_blank" rel="noopener noreferrer">
           #{pull.number}
         </a>
       </div>
@@ -64,3 +65,5 @@ PullRequest.propTypes = {
     title: PropTypes.string.isReqired,
   }),
 };
+
+export default PullRequest;

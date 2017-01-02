@@ -1,10 +1,10 @@
 /* global beforeEach, describe, expect, it, sinon */
 /* eslint-disable no-unused-expressions */
-import { default as Poller } from '../../server/poller';
+import Poller from '../../server/poller';
 
 describe('poller', () => {
   describe('.start()', () => {
-    it('should start the polling', done => {
+    it('should start the polling', (done) => {
       const poller = new Poller(1);
 
       poller.registered = [

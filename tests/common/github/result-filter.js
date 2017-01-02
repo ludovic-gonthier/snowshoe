@@ -16,7 +16,7 @@ describe('result-filter', () => {
       objectsTub.returns(expected);
 
       expect(
-        filter({ foo: 'bar', pulls_url: 'my_url' }, 'repository')
+        filter({ foo: 'bar', pulls_url: 'my_url' }, 'repository'),
       ).to.eql(expected);
     });
 

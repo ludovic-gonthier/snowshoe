@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 
-export class LoginJumbotron extends Component {
+class LoginJumbotron extends Component {
   constructor() {
     super();
 
@@ -9,7 +9,7 @@ export class LoginJumbotron extends Component {
   }
 
   handleSubmit(e) {
-    const token = findDOMNode(this.refs.access_token).value.trim();
+    const token = this.accessToken.value.trim();
 
     window.location = `/?access_token=${token}`;
 
@@ -29,7 +29,7 @@ export class LoginJumbotron extends Component {
                 <input
                   type="text"
                   className="form-control pull-right"
-                  ref="access_token"
+                  ref={(element) => { this.accessToken = element; }}
                   placeholder="Access token ..."
                 />
               </div>
@@ -47,3 +47,5 @@ export class LoginJumbotron extends Component {
     );
   }
 }
+
+export default LoginJumbotron;

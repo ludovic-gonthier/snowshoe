@@ -2,8 +2,8 @@ import _ from 'lodash';
 import request from 'request';
 import Promise from 'promise';
 
-import { default as etagHandler } from './etag-handler';
-import { default as filter } from './result-filter';
+import etagHandler from './etag-handler';
+import filter from './result-filter';
 
 const regexp = {
   pagination: /<(.*?)>;\s+rel="next"/g,
@@ -21,7 +21,7 @@ export default function (token) {
     const result = {};
 
     return new Promise((resolve, reject) => {
-      etagHandler.getEtag(url + token, etag => {
+      etagHandler.getEtag(url + token, (etag) => {
         const options = _.assign(defaults, { url });
         const onResponse = (error, response, body) => {
           let message;
@@ -70,7 +70,7 @@ export default function (token) {
     return new Promise((resolve, reject) => {
       const pager = (pageUrl, pageType, result) => {
         call(pageUrl, pageType)
-          .then(data => {
+          .then((data) => {
             const resolved = Object.assign({}, result);
 
             if (!resolved.headers) {

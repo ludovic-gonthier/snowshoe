@@ -2,7 +2,7 @@ import passport from 'passport';
 import url from 'url';
 import { Strategy } from 'passport-github';
 
-import { config } from '../../config';
+import config from '../../config';
 
 export default passport;
 
@@ -36,5 +36,5 @@ passport.use(new Strategy({
       // and return that user instead.
       return done(null, profile);
     });
-  }
+  },
 ));

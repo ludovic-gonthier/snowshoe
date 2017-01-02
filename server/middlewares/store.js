@@ -1,8 +1,7 @@
 import { createStore } from 'redux';
 
-import { config } from '../../config';
-
-import { default as reducer } from '../../client/reducers';
+import config from '../../config';
+import reducer from '../../client/reducers';
 import { initialState } from '../../client/reducers/github';
 
 /* eslint-disable no-param-reassign */

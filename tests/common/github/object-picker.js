@@ -43,7 +43,7 @@ describe('object-picker', () => {
         };
 
         expect(picker(object, map)).to.eql(expected);
-      }
+      },
     );
 
     it(
@@ -111,7 +111,7 @@ describe('object-picker', () => {
         };
 
         expect(picker(object, map)).to.eql(expected);
-      }
+      },
     );
   });
 });

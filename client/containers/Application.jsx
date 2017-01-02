@@ -3,9 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-import { Container } from '../components/github/Container';
-import { Header } from '../components/Header';
-import { HomepageJumbotron } from '../components/HomepageJumbotron';
+import Container from '../components/github/Container';
+import Header from '../components/Header';
+import HomepageJumbotron from '../components/HomepageJumbotron';
 
 const Application = (props) => {
   const { authenticated, filters, github, order, page, socket } = props;
@@ -22,9 +22,9 @@ const Application = (props) => {
       {page === 'homepage'
         ? <HomepageJumbotron />
         : (
-        <section className="dashboard clearfix">
-          <Container pulls={github.pulls} filters={filters} order={order} />
-        </section>
+          <section className="dashboard clearfix">
+            <Container pulls={github.pulls} filters={filters} order={order} />
+          </section>
         )
       }
 
@@ -59,7 +59,9 @@ Application.propTypes = {
   socket: PropTypes.shape({
     connected: PropTypes.bool.isRequired,
   }),
-  filters: PropTypes.object.isRequired,
+  filters: PropTypes.shape({
+    labels: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }),
 };
 
 function mapStateToProps(state) {
@@ -77,5 +79,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Application);

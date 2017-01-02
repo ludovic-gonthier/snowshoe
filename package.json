@@ -59,7 +59,8 @@
     "request": "^2.69.0",
     "socket.io": "^1.4.6",
     "socket.io-client": "^1.4.6",
-    "style-loader": "^0.13.0"
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.13"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -76,8 +77,7 @@
     "redux-devtools-dock-monitor": "^1.1.0",
     "redux-devtools-log-monitor": "^1.0.4",
     "sinon": "^1.17.3",
-    "sinon-chai": "^2.8.0",
-    "webpack": "^1.12.13"
+    "sinon-chai": "^2.8.0"
   },
   "engines": {
     "node": "v6.0.0"

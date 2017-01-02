@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
-import { Dropdown } from '../Dropdown';
 
-export const OrderByDropdown = ({
+import Dropdown from '../Dropdown';
+
+const OrderByDropdown = ({
   changeOrderDirection,
   changeOrderField,
   disabled,
@@ -10,13 +11,13 @@ export const OrderByDropdown = ({
   <Dropdown title="Order By" disabled={disabled}>
     <li role="presentation" className="dropdown-header">Field</li>
     <li className={order.field === 'created_at' ? 'selected' : ''}>
-      <a onClick={() => changeOrderField('created_at')}>Creation time</a>
+    <a onClick={() => changeOrderField('created_at')}>Creation time</a>
     </li>
     <li className={order.field === 'updated_at' ? 'selected' : ''}>
       <a onClick={() => changeOrderField('updated_at')}>Update time</a>
     </li>
 
-    <li role="presentation" className="divider"></li>
+    <li role="presentation" className="divider" />
     <li role="presentation" className="dropdown-header">Direction</li>
     <li className={order.direction === 'asc' ? 'selected' : ''}>
       <a onClick={() => changeOrderDirection('asc')}>Older first</a>
@@ -36,3 +37,5 @@ OrderByDropdown.propTypes = {
     field: PropTypes.string.isRequired,
   }),
 };
+
+export default OrderByDropdown;

@@ -7,9 +7,9 @@ import {
   RECEIVED_TEAMS,
 } from '../actions';
 
-import { pulls } from './github/pulls';
-import { pullsIssues } from './github/pulls-issues';
-import { pullsStatuses } from './github/pulls-statuses';
+import pulls from './github/pulls';
+import pullsIssues from './github/pulls-issues';
+import pullsStatuses from './github/pulls-statuses';
 
 export const initialState = {
   organizations: [],
@@ -30,9 +30,9 @@ export default (state = initialState, action) => {
           rate: Object.assign(
             {},
             action.rate,
-            { reset: new Date(action.rate.reset * 1000) }
+            { reset: new Date(action.rate.reset * 1000) },
           ),
-        }
+        },
       );
     case RECEIVED_ORGANIZATIONS:
       return Object.assign({}, state, { organizations: action.organizations });
@@ -56,7 +56,7 @@ export default (state = initialState, action) => {
 
             return Object.assign({}, team, { href });
           }),
-        }
+        },
       );
     default:
       return state;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Logout = () => (
+export default () => (
   <li>
     <a href="/logout">Log Out</a>
   </li>

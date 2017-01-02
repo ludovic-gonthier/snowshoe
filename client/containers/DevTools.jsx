@@ -1,7 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react';
-
 import { createDevTools } from 'redux-devtools';
-
 import LogMonitor from 'redux-devtools-log-monitor';
 import DockMonitor from 'redux-devtools-dock-monitor';
 
@@ -14,7 +13,7 @@ const DevTools = createDevTools(
     changePositionKey="ctrl-q"
   >
     <LogMonitor theme="tomorrow" />
-  </DockMonitor>
+  </DockMonitor>,
 );
 
 export default DevTools;

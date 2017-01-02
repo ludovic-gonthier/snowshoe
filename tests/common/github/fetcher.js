@@ -98,7 +98,7 @@ describe('fetcher', () => {
 
       return new Promise((resolve, reject) => {
         teams('test_token', 'snowshoe')
-          .then(data => {
+          .then((data) => {
             expect(data).to.eql({ json: { test: 'succeed' } });
             resolve();
           })
@@ -121,7 +121,6 @@ describe('fetcher', () => {
         teams('test_token', 'snowshoe')
           .then(() => reject(new Error('Promise should have been rejected')))
           .catch(resolve);
-
       });
     });
   });
@@ -143,7 +142,7 @@ describe('fetcher', () => {
 
       return new Promise((resolve, reject) => {
         repositories('test_token', 'user/repos')
-          .then(data => {
+          .then((data) => {
             expect(data).to.eql({ json: { test: 'succeed' } });
             resolve();
           })
@@ -180,10 +179,10 @@ describe('fetcher', () => {
       stubs.url_formatter
         .withArgs(
           'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls{/number}',
-          { per_page: 100 }
+          { per_page: 100 },
         )
         .returns(
-        'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100'
+        'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100',
       );
       stubs.request.paginate
         .withArgs('https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100', 'pull')
@@ -195,7 +194,7 @@ describe('fetcher', () => {
 
       return new Promise((resolve, reject) => {
         pulls('test_token', repository.pulls_url)
-          .then(data => {
+          .then((data) => {
             expect(data).to.eql(object);
 
             resolve();
@@ -233,10 +232,10 @@ describe('fetcher', () => {
       stubs.url_formatter
         .withArgs(
           'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls{/number}',
-          { per_page: 100 }
+          { per_page: 100 },
         )
         .returns(
-        'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100'
+        'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100',
       );
       stubs.request.paginate
         .withArgs('https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100', 'pull')
@@ -248,7 +247,7 @@ describe('fetcher', () => {
 
       return new Promise((resolve, reject) => {
         pulls('test_token', repository.pulls_url)
-          .then(data => {
+          .then((data) => {
             expect(data).to.eql(expected);
 
             resolve();
@@ -264,10 +263,10 @@ describe('fetcher', () => {
       stubs.url_formatter
         .withArgs(
           'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls{/number}',
-          { per_page: 100 }
+          { per_page: 100 },
         )
         .returns(
-        'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100'
+        'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100',
       );
       stubs.request.paginate
         .withArgs('https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100', 'pull')
@@ -294,10 +293,10 @@ describe('fetcher', () => {
       stubs.url_formatter
         .withArgs(
           'https://api.github.com/repos/ludovic-gonthier/snowshoe/issues{/number}',
-          { per_page: 100 }
+          { per_page: 100 },
         )
         .returns(
-          'https://api.github.com/repos/ludovic-gonthier/snowshoe/issues?per_page=100'
+          'https://api.github.com/repos/ludovic-gonthier/snowshoe/issues?per_page=100',
         );
       stubs.request.paginate
         .withArgs('https://api.github.com/repos/ludovic-gonthier/snowshoe/issues?per_page=100', 'issue')
@@ -328,10 +327,10 @@ describe('fetcher', () => {
       stubs.url_formatter
         .withArgs(
           'https://api.github.com/repos/ludovic-gonthier/snowshoe/issues',
-          { per_page: 100 }
+          { per_page: 100 },
         )
         .returns(
-          'https://api.github.com/repos/ludovic-gonthier/snowshoe/issues?per_page=100'
+          'https://api.github.com/repos/ludovic-gonthier/snowshoe/issues?per_page=100',
         );
       stubs.request.paginate
         .withArgs('https://api.github.com/repos/ludovic-gonthier/snowshoe/issues?per_page=100', 'issue')
@@ -371,7 +370,7 @@ describe('fetcher', () => {
       fpulls.forEach((item) => {
         stubs.request.call.withArgs(
             `https://api.github.com/repos/ludovic-gonthier/snowshoe/commits/${item.head.sha}/status`,
-            'status'
+            'status',
           ).returns(Promise.resolve(item.stub));
       });
 
@@ -401,7 +400,7 @@ describe('fetcher', () => {
 
             resolve();
           })
-          .catch(error => { reject(error.stack.split(`\n`)); });
+          .catch((error) => { reject(error.stack.split('\n')); });
       });
     });
     it('should reject the promise on error', () => {
@@ -412,7 +411,7 @@ describe('fetcher', () => {
       stubs.request.call
         .withArgs(
           'https://api.github.com/repos/ludovic-gonthier/snowshoe/commits/67sd687ad4adsd6/status',
-          'status'
+          'status',
         )
         .returns(Promise.reject(new Error('Pagination error')));
 

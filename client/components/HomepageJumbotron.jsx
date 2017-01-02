@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const HomepageJumbotron = () => {
+const HomepageJumbotron = () => {
   const classes = [
     'jumbotron',
     'homepage-jumbotron',
@@ -37,3 +37,5 @@ export const HomepageJumbotron = () => {
     </div>
   );
 };
+
+export default HomepageJumbotron;

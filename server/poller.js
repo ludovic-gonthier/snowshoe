@@ -45,7 +45,7 @@ export default class Poller {
   }
 
   has(token) {
-    return !! this.registered.filter(register => register.token === token).length;
+    return !!this.registered.filter(register => register.token === token).length;
   }
 
   unregister(token) {

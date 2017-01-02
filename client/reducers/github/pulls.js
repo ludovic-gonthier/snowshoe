@@ -1,14 +1,14 @@
-import { default as _ } from 'lodash';
+import _ from 'lodash';
 
 import { initialState } from '../github';
 
-export function pulls(state = initialState.pulls, action) {
+export default function pulls(state = initialState.pulls, action) {
   const updated = _.filter(state, (stpull) => {
     if (action.data.repo !== stpull.base.repo.full_name) {
       return true;
     }
 
-    return !!_.filter(action.data.pulls, (acpull) => acpull.id === stpull.id).length;
+    return !!_.filter(action.data.pulls, acpull => acpull.id === stpull.id).length;
   });
   const ids = _.map(updated, 'id');
 

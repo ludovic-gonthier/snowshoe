@@ -6,11 +6,9 @@ const stubs = {
   produce: sinon.stub(),
 };
 
-const {
-  rateNotifier,
-} = proxyquire(`${ROOT_PATH}/common/github/rate-notifier`, {
+const rateNotifier = proxyquire(`${ROOT_PATH}/common/github/rate-notifier`, {
   lodash: { curry: () => () => stubs.produce },
-});
+}).default;
 
 describe('rate-rateNotifier', () => {
   beforeEach(() => stubs.produce.reset());
@@ -31,7 +29,7 @@ describe('rate-rateNotifier', () => {
             },
           },
           token: 'test_token',
-        })
+        }),
       );
     });
     it('should send no informations if missing one header key', () => {

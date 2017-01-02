@@ -30,7 +30,7 @@ function describeArc(x, y, radius, startAngle, endAngle) {
   ].join(' ');
 }
 
-export class PullRequestStatus extends Component {
+class PullRequestStatus extends Component {
   constructor() {
     super();
 
@@ -46,7 +46,7 @@ export class PullRequestStatus extends Component {
     const center = radius - (strokeWidth / 4);
     const angle = 360 / number;
     const start = index * angle;
-    let pathProps = {}
+    let pathProps = {};
     let end = (index + 1) * angle;
 
     if (end === 360) {
@@ -55,9 +55,9 @@ export class PullRequestStatus extends Component {
 
     if (status.target_url) {
       pathProps = {
-        className: "cursor-pointer",
-        onClick: this.onClick
-      }
+        className: 'cursor-pointer',
+        onClick: this.onClick,
+      };
     }
 
     return (
@@ -85,3 +85,5 @@ PullRequestStatus.propTypes = {
   }),
   strokeWidth: PropTypes.number.isRequired,
 };
+
+export default PullRequestStatus;

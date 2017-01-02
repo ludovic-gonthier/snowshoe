@@ -5,10 +5,9 @@ const root = `${__dirname}/../`;
 
 dotenv.load({ path: `${root}.env` });
 
-export const config = new Map();
+const config = new Map();
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
 config.set('server.host', process.env.SERVER_HOST);
 config.set('server.port', process.env.SERVER_PORT);
 config.set('server.protocol', process.env.SERVER_PROTOCOL);
@@ -36,3 +35,5 @@ config.set('redis.password', process.env.REDIS_PASSWORD);
 config.set('root', root);
 config.set('webpack.client.entry', path.resolve(root, 'client', 'modules'));
 config.set('webpack.client.output', path.resolve(root, 'client', 'public'));
+
+export default config;

@@ -1,6 +1,6 @@
 /* global beforeEach, describe, expect, it, sinon */
 /* eslint-disable no-unused-expressions */
-import { default as reducer } from '../../../client/reducers/github';
+import reducer from '../../../client/reducers/github';
 import {
   RECEIVED_PULLS,
 } from '../../../client/actions';

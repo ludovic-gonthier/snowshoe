@@ -1,8 +1,7 @@
 import amqp from 'amqplib/callback_api';
-
 import { format } from 'url';
 
-import { config } from '../config';
+import config from '../config';
 
 let connection = null;
 
@@ -24,7 +23,8 @@ const connect = () => new Promise((resolve) => {
       auth: `${config.get('rabbitmq.user')}:${config.get('rabbitmq.password')}`,
     }), (error, con) => {
       if (error) {
-        if (retries++ >= config.get('rabbitmq.retry.max_retry')) {
+        retries += 1;
+        if (retries >= config.get('rabbitmq.retry.max_retry')) {
           throw error;
         }
 
@@ -49,7 +49,7 @@ const createChannel = () => new Promise((resolve, reject) => {
   });
 });
 
-export const rabbit = {
+export default {
   consume(exchange, queue, callback) {
     connect()
       .then(createChannel)
@@ -67,7 +67,7 @@ export const rabbit = {
           return channel.consume(mq.queue, message => callback(channel, message));
         });
       })
-      .catch((error) => console.error(error)); // eslint-disable-line no-console
+      .catch(error => console.error(error)); // eslint-disable-line no-console
   },
 
   produce(exchange, queue, message) {
@@ -79,6 +79,6 @@ export const rabbit = {
         channel.publish(exchange, queue, new Buffer(message));
         channel.close();
       })
-      .catch((error) => console.error(error)); // eslint-disable-line no-console
+      .catch(error => console.error(error)); // eslint-disable-line no-console
   },
 };

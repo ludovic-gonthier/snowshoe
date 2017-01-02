@@ -5,15 +5,15 @@ import {
   receivedPullsIssues,
   receivedPullsStatuses,
 } from '../../client/actions';
-import { rabbit } from '../../common/rabbit';
-import { config } from '../../config';
+import config from '../../config';
+import rabbit from '../../common/rabbit';
 import {
   issues as fetchIssues,
   pulls as fetchPulls,
   repositories as fetchRepositories,
   statuses as fetchStatuses,
 } from '../../common/github/fetcher';
-import { rateNotifier } from '../../common/github/rate-notifier';
+import rateNotifier from '../../common/github/rate-notifier';
 
 const producer = _.curry(rabbit.produce)('snowshoe', 'response');
 
@@ -25,7 +25,7 @@ const pullSortConfiguration = {
 function handleRepositoriesAndPulls(repositories, token) {
   return Promise.all(
     repositories.map(
-      (repository) => fetchPulls(token, repository.pulls_url)
+      repository => fetchPulls(token, repository.pulls_url)
         .then((data) => {
           if (data.json.length) {
             producer(JSON.stringify(receivedPulls({
@@ -37,18 +37,18 @@ function handleRepositoriesAndPulls(repositories, token) {
 
           return data.json;
         })
-        .then((pulls) => pulls.length && { pulls, repository })
-    )
+        .then(pulls => pulls.length && { pulls, repository }),
+    ),
   );
 }
 
 function handleStatuses(statuses, token) {
-  const filtered = statuses.filter((value) => !!value);
+  const filtered = statuses.filter(value => !!value);
 
   if (filtered.length) {
     producer(JSON.stringify(receivedPullsStatuses(
-      filtered.map((status) => status.json),
-      token
+      filtered.map(status => status.json),
+      token,
     )));
   }
 
@@ -68,10 +68,10 @@ function handleStatusesAndIssues(promisesResults, token) {
     return Promise.resolve([]);
   }
 
-  const promises = promisesResults.map((result) => Promise.all([
+  const promises = promisesResults.map(result => Promise.all([
     fetchStatuses(token, result.pulls),
     fetchIssues(token, result.repository.issues_url),
-  ]).then((data) => [
+  ]).then(data => [
     handleStatuses(data[0], token),
     handleIssues(data[1], token),
   ]));
@@ -82,9 +82,9 @@ function handleStatusesAndIssues(promisesResults, token) {
 function handleRate(promisesResults, token) {
   const headers = promisesResults
     .reduce((data, result) =>
-      data.concat(result.filter((value) => !!value).map((value) => value.headers))
+      data.concat(result.filter(value => !!value).map(value => value.headers))
     , [])
-    .filter((value) => !!value)
+    .filter(value => !!value)
     .reduce((rate, data) => {
       if (!rate || data['x-ratelimit-remaining'] < rate['x-ratelimit-remaining']) {
         return data;
@@ -100,10 +100,10 @@ function handleRate(promisesResults, token) {
   return promisesResults;
 }
 
-export function pullsConsumer(token, url) {
+export default function pullsConsumer(token, url) {
   return fetchRepositories(token, url)
-    .then((data) => handleRepositoriesAndPulls(data.json, token))
-    .then((promisesResults) => promisesResults.filter((result) => !!result))
-    .then((promiseResults) => handleStatusesAndIssues(promiseResults, token))
-    .then((promisesResults) => handleRate(promisesResults, token));
+    .then(data => handleRepositoriesAndPulls(data.json, token))
+    .then(promisesResults => promisesResults.filter(result => !!result))
+    .then(promiseResults => handleStatusesAndIssues(promiseResults, token))
+    .then(promisesResults => handleRate(promisesResults, token));
 }

@@ -64,7 +64,7 @@ export default function (data, type) {
   }
 
   if (_.isArray(data)) {
-    _.forEach(data, value => {
+    _.forEach(data, (value) => {
       picked.push(picker(value, schemas[type]));
     });
 

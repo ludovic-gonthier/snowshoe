@@ -1,12 +1,12 @@
 import webpack from 'webpack';
 
-import { config } from './config';
+import config from './config';
 
 const webpackConfig = {
   devtool: process.env.NODE_ENV === 'production' ? 'cheap-module-source-map' : 'source-map',
   entry: {
-    main: `${config.get('webpack.client.entry')}/main.js`,
-    login: `${config.get('webpack.client.entry')}/login.js`,
+    main: `${config.get('webpack.client.entry')}/main.jsx`,
+    login: `${config.get('webpack.client.entry')}/login.jsx`,
   },
   module: {
     loaders: [
