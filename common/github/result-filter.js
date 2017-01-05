@@ -43,6 +43,9 @@ const schemas = {
     'url',
     'locked',
   ],
+  user: [
+    'login',
+  ],
 };
 
 /**

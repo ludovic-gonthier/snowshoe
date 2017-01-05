@@ -1,6 +1,7 @@
 import { createStore } from 'redux';
 
 import config from '../../config';
+import filter from '../../common/github/result-filter';
 import reducer from '../../client/reducers';
 import { initialState } from '../../client/reducers/github';
 
@@ -20,7 +21,7 @@ export default function (request, response, next) {
     state.token = query.access_token;
   }
 
-  state.user = user ? user._json : null; // eslint-disable-line no-underscore-dangle
+  state.user = user ? filter(user._json, 'user') : null; // eslint-disable-line no-underscore-dangle
 
   response.state = createStore(reducer, { github: state, order }).getState();
 
