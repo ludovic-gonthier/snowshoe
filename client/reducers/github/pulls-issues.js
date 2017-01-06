@@ -1,9 +1,7 @@
 import _ from 'lodash';
 
-import { initialState } from '../github';
-
-export default function pullsIssues(state = initialState.pulls, action) {
-  const urls = _.map(action.issues, issue => issue.pull_request.url);
+export default function pullsIssues(state, action) {
+  const urls = _.map(action.issues, (issue) => issue.pull_request.url);
 
   return _.map(state, (pull) => {
     const index = urls.indexOf(pull.url);

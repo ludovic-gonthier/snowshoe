@@ -5,11 +5,11 @@ import {
   RECEIVED_PULLS_ISSUES,
   RECEIVED_PULLS_STATUSES,
   RECEIVED_TEAMS,
-} from '../actions';
+} from 'actions';
 
-import pulls from './github/pulls';
-import pullsIssues from './github/pulls-issues';
-import pullsStatuses from './github/pulls-statuses';
+import pulls from 'reducers/github/pulls';
+import pullsIssues from 'reducers/github/pulls-issues';
+import pullsStatuses from 'reducers/github/pulls-statuses';
 
 export const initialState = {
   organizations: [],

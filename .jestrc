@@ -1,0 +1,22 @@
+{
+	"collectCoverageFrom": [
+		"{client,common,server,worker}/**/*.{js,jsx}",
+		"!client/public/**/*.js"
+	],
+	"transformIgnorePatterns": [
+      "/node_modules/(?!o-.*)/"
+    ],
+	"moduleNameMapper": {
+      "^actions(.*)": "<rootDir>/client/actions$1",
+      "^components(.*)": "<rootDir>/client/components$1",
+      "^constants(.*)": "<rootDir>/client/constants$1",
+      "^containers(.*)": "<rootDir>/client/containers$1",
+      "^reducers(.*)": "<rootDir>/client/reducers$1",
+      "^stores(.*)": "<rootDir>/client/stores$1",
+      "^views(.*)": "<rootDir>/client/views$1"
+    },
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/config/",
+      "<rootDir>/node_modules/"
+    ]
+}

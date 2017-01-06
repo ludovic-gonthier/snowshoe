@@ -18,6 +18,6 @@ router.use(storeMiddleware);
   pulls,
   authentification,
   error,
-].forEach(callback => callback(router));
+].forEach((callback) => callback(router));
 
 export default router;

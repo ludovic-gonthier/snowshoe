@@ -41,16 +41,15 @@ const webpackConfig = {
   resolve: {
     root: config.get('root'),
     extensions: ['', '.js', '.jsx'],
-    alias: [
-      'actions',
-      'components',
-      'constants',
-      'containers',
-      'reducers',
-      'stores',
-      'views',
-    ],
-    modulesDirectories: ['node_modules', 'client'],
+    alias: {
+      actions: 'client/actions',
+      components: 'client/components',
+      constants: 'client/constants',
+      containers: 'client/containers',
+      reducers: 'client/reducers',
+      stores: 'client/stores',
+    },
+    modules: ['node_modules'],
   },
   target: 'web',
 };

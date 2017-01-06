@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 function computeLabelStyle(labelColor) {
-  const rgb = labelColor.match(/.{2}/g).map(color => parseInt(color, 16) / 255);
+  const rgb = labelColor.match(/.{2}/g).map((color) => parseInt(color, 16) / 255);
   const max = Math.max(rgb[0], rgb[1], rgb[2]);
   const min = Math.min(rgb[0], rgb[1], rgb[2]);
 

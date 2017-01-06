@@ -14,5 +14,5 @@ export default function teamsConsumer(token, login) {
 
       return data;
     })
-    .then(data => rateNotifier(token, data));
+    .then((data) => rateNotifier(token, data));
 }

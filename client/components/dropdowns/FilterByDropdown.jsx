@@ -8,7 +8,7 @@ function sortedLabels(pulls) {
   return _.sortedUniqBy(
     _.sortBy(
       pulls
-        .filter(pull => !!pull.labels)
+        .filter((pull) => !!pull.labels)
         .reduce((labels, pull) => labels.concat(pull.labels), []),
       'name',
     ),

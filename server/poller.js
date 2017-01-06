@@ -3,7 +3,7 @@ import Promise from 'promise';
 export default class Poller {
   constructor(delay) {
     this.registered = [];
-    this.timeout = null;
+    this.interval = null;
     this.delay = delay;
     this.callback = null;
     this.started = false;
@@ -28,7 +28,7 @@ export default class Poller {
 
     this.processing = true;
 
-    Promise.all(this.registered.map(item => this.callback(item)))
+    Promise.all(this.registered.map((item) => this.callback(item)))
       .catch(console.error.bind(console)) // eslint-disable-line no-console
       .done(() => {
         this.processing = false;
@@ -39,18 +39,18 @@ export default class Poller {
     // Register the socket
     this.registered.push(data);
 
-    if (!this.started) {
+    if (this.started === false) {
       this.start();
     }
   }
 
   has(token) {
-    return !!this.registered.filter(register => register.token === token).length;
+    return !!this.registered.filter((register) => register.token === token).length;
   }
 
   unregister(token) {
     // Unregister the socket
-    this.registered = this.registered.filter(item => (token !== item.token));
+    this.registered = this.registered.filter((item) => (token !== item.token));
 
     if (this.registered.length === 0) {
       this.stop();

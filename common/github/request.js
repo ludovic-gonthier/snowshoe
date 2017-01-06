@@ -1,6 +1,4 @@
-import _ from 'lodash';
 import request from 'request';
-import Promise from 'promise';
 
 import etagHandler from './etag-handler';
 import filter from './result-filter';
@@ -22,7 +20,7 @@ export default function (token) {
 
     return new Promise((resolve, reject) => {
       etagHandler.getEtag(url + token, (etag) => {
-        const options = _.assign(defaults, { url });
+        const options = Object.assign({}, defaults, { url });
         const onResponse = (error, response, body) => {
           let message;
 
@@ -88,7 +86,7 @@ export default function (token) {
             // Only resolve if we have no next pages left
             return resolve(resolved);
           })
-          .catch(error => reject(error));
+          .catch((error) => reject(error));
       };
 
       pager(url, type, { json: [] });
