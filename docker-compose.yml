@@ -1,5 +1,5 @@
 application:
-  image: ludovicgonthier/snowshoe:1.0.0
+  image: ludovicgonthier/snowshoe:1.1.0
   env_file: .env
   links:
     - rabbitmq:mq.snowshoe.dev
@@ -10,7 +10,7 @@ application:
     - .:/opt/snowshoe
 
 worker:
-  image: ludovicgonthier/snowshoe:1.0.0
+  image: ludovicgonthier/snowshoe:1.1.0
   command: npm run nodemon:worker
   env_file: .env
   links:
