@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== 'test') {
     db: 1,
   });
 
-  storage.on('error', error => console.error(error.stack)); // eslint-disable-line no-console
+  storage.on('error', (error) => console.error(error.stack)); // eslint-disable-line no-console
 }
 
 export default {
@@ -32,7 +32,7 @@ export default {
       };
 
       storage.set(id, JSON.stringify(object), 'EX', 3600)
-        .catch(error => console.error(error)); // eslint-disable-line no-console
+        .catch((error) => console.error(error)); // eslint-disable-line no-console
     }
   },
 
@@ -45,7 +45,7 @@ export default {
   getEtag(id, callback) {
     storage
       .get(id)
-      .then(object => callback(JSON.parse(object)))
-      .catch(error => console.error(error)); // eslint-disable-line no-console
+      .then((object) => callback(JSON.parse(object)))
+      .catch((error) => console.error(error)); // eslint-disable-line no-console
   },
 };

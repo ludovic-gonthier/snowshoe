@@ -10,7 +10,7 @@ function filterPulls(pulls, filters) {
     }
 
     return pull.labels
-      .filter(label => filters.labels.indexOf(label.name) !== -1)
+      .filter((label) => filters.labels.indexOf(label.name) !== -1)
       .length === 0;
   });
 }

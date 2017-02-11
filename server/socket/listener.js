@@ -16,7 +16,7 @@ rabbit.consume(
     if (registry.has(token)) {
       registry
         .get(token)
-        .forEach(socket => socket.emit('action', action));
+        .forEach((socket) => socket.emit('action', action));
     }
 
     channel.ack(message);
@@ -34,7 +34,7 @@ poller.callback = (data) => {
 
 export default function (socket) {
   socket.on('disconnect', () => {
-    registry.set(socket.token, _.filter(registry.get(socket.token), soc => socket.id !== soc.id));
+    registry.set(socket.token, _.filter(registry.get(socket.token), (soc) => socket.id !== soc.id));
 
     if (!registry.get(socket.token).length) {
       registry.delete(socket.token);

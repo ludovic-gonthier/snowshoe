@@ -5,13 +5,9 @@ import config from '../config';
 
 let connection = null;
 
-const connect = () => new Promise((resolve) => {
+const connect = () => new Promise((resolve, reject) => {
   if (connection) {
     return resolve(connection);
-  }
-
-  if (process.env.NODE_ENV === 'test') {
-    return null;
   }
 
   let retries = 0;
@@ -25,10 +21,12 @@ const connect = () => new Promise((resolve) => {
       if (error) {
         retries += 1;
         if (retries >= config.get('rabbitmq.retry.max_retry')) {
-          throw error;
+          reject(error);
         }
 
-        return setTimeout(retry, config.get('rabbitmq.retry.interval'));
+        setTimeout(retry, config.get('rabbitmq.retry.interval'));
+
+        return true;
       }
 
       connection = con;
@@ -39,8 +37,8 @@ const connect = () => new Promise((resolve) => {
 });
 
 
-const createChannel = () => new Promise((resolve, reject) => {
-  connection.createChannel((error, chan) => {
+const createChannel = (conn) => new Promise((resolve, reject) => {
+  conn.createChannel((error, chan) => {
     if (error) {
       return reject(error);
     }
@@ -51,34 +49,36 @@ const createChannel = () => new Promise((resolve, reject) => {
 
 export default {
   consume(exchange, queue, callback) {
-    connect()
+    return connect()
       .then(createChannel)
       .then((channel) => {
         channel.prefetch(10);
         channel.assertExchange(exchange, 'direct', { durable: true });
 
-        channel.assertQueue(queue, {}, (error, mq) => {
+        return channel.assertQueue(queue, {}, (error, mq) => {
           if (error) {
+            channel.close();
+
             return console.error(error); // eslint-disable-line no-console
           }
 
           channel.bindQueue(mq.queue, exchange, queue);
 
-          return channel.consume(mq.queue, message => callback(channel, message));
+          return channel.consume(mq.queue, (message) => callback(channel, message));
         });
       })
-      .catch(error => console.error(error)); // eslint-disable-line no-console
+      .catch(console.error); // eslint-disable-line no-console
   },
 
   produce(exchange, queue, message) {
-    connect()
+    return connect()
       .then(createChannel)
       .then((channel) => {
         channel.assertExchange(exchange, 'direct', { durable: true });
 
         channel.publish(exchange, queue, new Buffer(message));
-        channel.close();
+        return channel.close();
       })
-      .catch(error => console.error(error)); // eslint-disable-line no-console
+      .catch(console.error); // eslint-disable-line no-console
   },
 };

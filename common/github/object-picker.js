@@ -19,18 +19,15 @@ export default function pick(object, schema) {
         }
 
         if (_.isArray(object[index])) {
-          picked[index] = [];
-
-          _.forEach(object[index], (innerObject) => {
-            picked[index].push(pick(innerObject, value));
-          });
+          picked[index] = object[index].map((inner) => pick(inner, value));
         } else {
           picked[index] = pick(object[index], value);
         }
 
         return true;
       });
-    } else if (_.has(object, key)) {
+    }
+    if (_.has(object, key)) {
       picked = _.assign(picked, _.pick(object, key));
     }
   });

@@ -11,7 +11,7 @@ const OrderByDropdown = ({
   <Dropdown title="Order By" disabled={disabled}>
     <li role="presentation" className="dropdown-header">Field</li>
     <li className={order.field === 'created_at' ? 'selected' : ''}>
-    <a onClick={() => changeOrderField('created_at')}>Creation time</a>
+      <a onClick={() => changeOrderField('created_at')}>Creation time</a>
     </li>
     <li className={order.field === 'updated_at' ? 'selected' : ''}>
       <a onClick={() => changeOrderField('updated_at')}>Update time</a>

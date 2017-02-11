@@ -17,9 +17,9 @@
   },
   "scripts": {
     "lint": "eslint **/*.{js,jsx}",
-    "test": "NODE_ENV=test _mocha --compilers js:babel-register -- tests/**/*.{js,jsx}",
-    "test:coverage": "NODE_ENV=test istanbul cover -- _mocha --compilers js:babel-register -- tests/**/*.{js,jsx}",
-    "test:watch": "NODE_ENV=test _mocha --watch --compilers js:babel-register -- tests/**/*.{js,jsx}",
+    "test": "jest --config .jestrc",
+    "test:coverage": "jest  --config .jestrc --coverage",
+    "test:watch": "jest  --config .jestrc --watch",
     "build": "webpack --progress -p",
     "build:development": "webpack -d --progress --devtool source-map --watch",
     "start": "babel-node --presets es2015 --presets react -- server/application.js",
@@ -63,21 +63,21 @@
     "webpack": "^1.12.13"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
     "coveralls": "^2.11.9",
+    "enzyme": "^2.7.1",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
+    "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
     "istanbul": "^0.4.5",
-    "mocha": "^3.2.0",
-    "proxyquire": "^1.7.4",
+    "jest": "^18.1.0",
+    "react-test-renderer": "^15.4.2",
     "redux-devtools": "^3.1.1",
     "redux-devtools-dock-monitor": "^1.1.0",
     "redux-devtools-log-monitor": "^1.0.4",
-    "sinon": "^1.17.3",
-    "sinon-chai": "^2.8.0"
+    "supertest": "^2.0.1"
   },
   "engines": {
     "node": "v6.0.0"
