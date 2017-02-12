@@ -437,6 +437,77 @@ describe('[Reducers - github]', () => {
             status: {
               pull_request: { id: 512 },
               status: 'new status',
+              statuses: [],
+            },
+          }, {
+            base: { repo: { full_name: 'lemonde/lemonde' } },
+            id: 23,
+            name: 'new 23',
+          }],
+          rate: {
+            remaining: 5000,
+            reset: '',
+            limit: 5000,
+          },
+          teams: [{ label: 'team1' }],
+          token: '123456789',
+          user: {
+            login: 'test',
+          },
+        });
+    });
+
+    it('should sort the status by context', () => {
+      const pulls = [{
+        base: { repo: { full_name: 'lemonde/php-command' } },
+        id: 513,
+        name: 'PHPCOMMAND project 513',
+      }, {
+        base: { repo: { full_name: 'lemonde/php-command' } },
+        id: 512,
+        name: 'PHPCOMMAND project 512',
+      }, {
+        base: { repo: { full_name: 'lemonde/lemonde' } },
+        id: 23,
+        name: 'new 23',
+      }];
+      const action = {
+        type: RECEIVED_PULLS_STATUSES,
+        statuses: [{
+          pull_request: { id: 512 },
+          status: 'new status',
+          statuses: [{
+            context: 'CI B',
+          }, {
+            context: 'CI A',
+          }, {
+            context: 'CI C',
+          }],
+        }]
+      };
+      const result = reducer(Object.assign({}, state, { pulls }), action);
+
+      expect(result)
+        .toEqual({
+          organizations: [],
+          pulls: [{
+            base: { repo: { full_name: 'lemonde/php-command' } },
+            id: 513,
+            name: 'PHPCOMMAND project 513',
+          }, {
+            base: { repo: { full_name: 'lemonde/php-command' } },
+            id: 512,
+            name: 'PHPCOMMAND project 512',
+            status: {
+              pull_request: { id: 512 },
+              status: 'new status',
+              statuses: [{
+                context: 'CI A',
+              }, {
+                context: 'CI B',
+              }, {
+                context: 'CI C',
+              }],
             },
           }, {
             base: { repo: { full_name: 'lemonde/lemonde' } },
