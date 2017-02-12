@@ -1,3 +1,14 @@
 {
-    "presets": ["es2015", "react"]
+	"presets": ["es2015", "react"],
+	"plugins": [
+		["module-resolver", {
+			"alias": {
+				"actions": "./client/actions",
+				"components": "./client/components",
+				"constants": "./client/constants",
+				"reducers": "./client/reducers",
+				"stores": "./client/stores",
+			},
+		}],
+	],
 }
