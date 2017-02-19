@@ -3,6 +3,7 @@ import _ from 'lodash';
 import {
   receivedPulls,
   receivedPullsIssues,
+  receivedPullsReviews,
   receivedPullsStatuses,
 } from '../../../client/actions';
 import '../../../config';
@@ -11,6 +12,7 @@ import {
   issues as fetchIssues,
   pulls as fetchPulls,
   repositories as fetchRepositories,
+  reviews as fetchReviews,
   statuses as fetchStatuses,
 } from '../../../common/github/fetcher';
 import rateNotifier from '../../../common/github/rate-notifier';
@@ -31,6 +33,7 @@ jest.mock('lodash', () => {
 jest.mock('../../../client/actions', () => ({
   receivedPulls: jest.fn(),
   receivedPullsIssues: jest.fn(),
+  receivedPullsReviews: jest.fn(),
   receivedPullsStatuses: jest.fn(),
 }));
 jest.mock('../../../config', () => ({
@@ -49,6 +52,7 @@ jest.mock('../../../common/github/fetcher', () => ({
   issues: jest.fn(),
   pulls: jest.fn(),
   repositories: jest.fn(),
+  reviews: jest.fn(),
   statuses: jest.fn(),
 }));
 jest.mock('../../../common/github/rate-notifier', () => jest.fn());
@@ -101,6 +105,7 @@ describe('[Consumers - pulls]', () => {
       }));
       fetchStatuses.mockImplementationOnce(() => Promise.resolve([]));
       fetchIssues.mockImplementationOnce(() => Promise.resolve({ json: [] }));
+      fetchReviews.mockImplementationOnce(() => Promise.resolve([]));
       receivedPulls.mockImplementationOnce((json) => json);
 
       const data = {
@@ -148,6 +153,7 @@ describe('[Consumers - pulls]', () => {
           'x-ratelimit-remaining': 4800,
         },
       }]));
+      fetchReviews.mockImplementationOnce(() => Promise.resolve([{}]));
       fetchIssues.mockImplementationOnce(() => Promise.resolve({ json: [] }));
       receivedPulls.mockImplementationOnce((json) => json);
       receivedPullsStatuses.mockImplementationOnce((json) => json);
@@ -188,6 +194,7 @@ describe('[Consumers - pulls]', () => {
               }, {
                 json: [],
               },
+              {},
             ]);
         });
     });
@@ -204,6 +211,7 @@ describe('[Consumers - pulls]', () => {
       }));
       fetchStatuses.mockImplementationOnce(() => Promise.resolve([{
       }]));
+      fetchReviews.mockImplementationOnce(() => Promise.resolve([{}]));
       fetchIssues.mockImplementationOnce(() => Promise.resolve({ json: [] }));
       receivedPulls.mockImplementationOnce((json) => json);
       receivedPullsStatuses.mockImplementationOnce((json) => json);
@@ -231,6 +239,7 @@ describe('[Consumers - pulls]', () => {
               {
                 json: [],
               },
+              {},
             ]);
         });
     });
@@ -249,6 +258,7 @@ describe('[Consumers - pulls]', () => {
       }));
       fetchStatuses.mockImplementationOnce(() => Promise.resolve([{
       }]));
+      fetchReviews.mockImplementationOnce(() => Promise.resolve([{}]));
       fetchIssues.mockImplementationOnce(() => Promise.resolve({
         headers: {
           'x-ratelimit-remaining': 4500,
@@ -279,7 +289,7 @@ describe('[Consumers - pulls]', () => {
                 'x-ratelimit-remaining': 4500
               },
               json: [{ label: 'issue_1' }],
-            }]);
+            }, {}]);
         });
     });
   });
@@ -306,6 +316,12 @@ describe('[Consumers - pulls]', () => {
         },
         json: {},
       }]));
+      fetchReviews.mockImplementationOnce(() => Promise.resolve([{
+        headers: {
+          'x-ratelimit-remaining': 4600,
+        },
+        json: {},
+      }]));
       fetchIssues.mockImplementationOnce(() => Promise.resolve({
         headers: {
           'x-ratelimit-remaining': 4500,
@@ -327,13 +343,18 @@ describe('[Consumers - pulls]', () => {
           expect(rate)
             .toEqual([{
               headers: {
-                'x-ratelimit-remaining': 4800
+                'x-ratelimit-remaining': 4800,
               },
               json: {},
             }, {
               headers: {
-                'x-ratelimit-remaining': 4500
+                'x-ratelimit-remaining': 4500,
               },
+            }, {
+              headers: {
+                'x-ratelimit-remaining': 4600,
+              },
+              json: {},
             }]);
         });
     });
@@ -352,6 +373,7 @@ describe('[Consumers - pulls]', () => {
       }]));
       fetchIssues.mockImplementationOnce(() => Promise.resolve({
       }));
+      fetchReviews.mockImplementationOnce(() => Promise.resolve([{}]));
       receivedPulls.mockImplementationOnce((json) => json);
 
       return consumer(token, url)

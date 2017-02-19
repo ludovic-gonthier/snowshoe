@@ -11,6 +11,7 @@ export default function (token) {
   const defaults = {
     headers: {
       'User-Agent': 'request',
+      Accept: 'application/vnd.github.black-cat-preview+json',
       Authorization: `token ${token}`,
     },
   };

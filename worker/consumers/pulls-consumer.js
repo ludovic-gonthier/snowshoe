@@ -3,6 +3,7 @@ import _ from 'lodash';
 import {
   receivedPulls,
   receivedPullsIssues,
+  receivedPullsReviews,
   receivedPullsStatuses,
 } from '../../client/actions';
 import config from '../../config';
@@ -11,6 +12,7 @@ import {
   issues as fetchIssues,
   pulls as fetchPulls,
   repositories as fetchRepositories,
+  reviews as fetchReviews,
   statuses as fetchStatuses,
 } from '../../common/github/fetcher';
 import rateNotifier from '../../common/github/rate-notifier';
@@ -65,6 +67,21 @@ function handleIssues(issues, token) {
   return issues;
 }
 
+function handleReviews(reviews, token) {
+  const filtered = reviews
+    .filter((value) => !!value)
+    .filter((review) => !!review.json);
+
+  if (filtered.length) {
+    producer(JSON.stringify(receivedPullsReviews(
+      filtered.map((review) => review.json),
+      token,
+    )));
+  }
+
+  return filtered.pop() || {};
+}
+
 function handleStatusesAndIssues(promisesResults, token) {
   if (!promisesResults.length) {
     return Promise.resolve([]);
@@ -74,9 +91,11 @@ function handleStatusesAndIssues(promisesResults, token) {
     promisesResults.map((result) => Promise.all([
       fetchStatuses(token, result.pulls),
       fetchIssues(token, result.repository.issues_url),
+      fetchReviews(token, result.pulls),
     ]).then((data) => [
       handleStatuses(data[0], token),
       handleIssues(data[1], token),
+      handleReviews(data[2], token),
     ]))
   );
 }

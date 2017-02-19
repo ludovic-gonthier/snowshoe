@@ -21,6 +21,7 @@ describe('request', () => {
     headers: {
       'User-Agent': 'request',
       Authorization: `token ${token}`,
+      Accept: 'application/vnd.github.black-cat-preview+json',
       'If-None-Match': etag,
     },
     url,
@@ -113,6 +114,7 @@ describe('request', () => {
         headers: {
           'User-Agent': 'request',
           Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.black-cat-preview+json',
         },
         url,
       };
@@ -171,6 +173,7 @@ describe('request', () => {
           'User-Agent': 'request',
           Authorization: `token ${token}`,
           'If-None-Match': etag,
+          Accept: 'application/vnd.github.black-cat-preview+json',
         },
         url,
       };
@@ -213,6 +216,7 @@ describe('request', () => {
           'User-Agent': 'request',
           Authorization: `token ${token}`,
           'If-None-Match': etag,
+          Accept: 'application/vnd.github.black-cat-preview+json',
         },
         url,
       };
@@ -275,6 +279,7 @@ describe('request', () => {
         headers: {
           'User-Agent': 'request',
           Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.black-cat-preview+json',
         },
         url,
       };
@@ -317,6 +322,7 @@ describe('request', () => {
         headers: {
           'User-Agent': 'request',
           Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.black-cat-preview+json',
         },
         url,
       };
@@ -352,6 +358,7 @@ describe('request', () => {
               headers: {
                 'User-Agent': 'request',
                 Authorization: `token ${token}`,
+                Accept: 'application/vnd.github.black-cat-preview+json',
               },
               url,
             }, expect.any(Function)]);
@@ -360,6 +367,7 @@ describe('request', () => {
               headers: {
                 'User-Agent': 'request',
                 Authorization: `token ${token}`,
+                Accept: 'application/vnd.github.black-cat-preview+json',
               },
               url: nextUrl,
             }, expect.any(Function)]);

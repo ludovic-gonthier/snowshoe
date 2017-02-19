@@ -79,6 +79,17 @@ export function receivedPullsIssues(issues, token) {
   };
 }
 
+export const RECEIVED_PULLS_REVIEWS = 'RECEIVED_PULLS_REVIEWS';
+export function receivedPullsReviews(reviews, token) {
+  return {
+    action: {
+      type: RECEIVED_PULLS_REVIEWS,
+      reviews,
+    },
+    token,
+  };
+}
+
 export const NOTIFY_RATE = 'NOTIFY_RATE';
 export function notifyRate(rate, token) {
   return {

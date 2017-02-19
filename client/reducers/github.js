@@ -4,12 +4,14 @@ import {
   RECEIVED_PULLS,
   RECEIVED_PULLS_ISSUES,
   RECEIVED_PULLS_STATUSES,
+  RECEIVED_PULLS_REVIEWS,
   RECEIVED_TEAMS,
 } from 'actions';
 
 import pulls from 'reducers/github/pulls';
 import pullsIssues from 'reducers/github/pulls-issues';
 import pullsStatuses from 'reducers/github/pulls-statuses';
+import pullsReviews from 'reducers/github/pulls-reviews';
 
 export const initialState = {
   organizations: [],
@@ -42,6 +44,8 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, { pulls: pullsIssues(state.pulls, action) });
     case RECEIVED_PULLS_STATUSES:
       return Object.assign({}, state, { pulls: pullsStatuses(state.pulls, action) });
+    case RECEIVED_PULLS_REVIEWS:
+      return Object.assign({}, state, { pulls: pullsReviews(state.pulls, action, state.user) });
     case RECEIVED_TEAMS:
       return Object.assign(
         {},
