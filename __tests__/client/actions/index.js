@@ -113,6 +113,21 @@ describe('actions', () => {
       });
   });
 
+  it('.receivedPullsReviews() return correct data', () => {
+    const reviews = { reviews: [] };
+    const token = 'test_token';
+    const result = actions.receivedPullsReviews(reviews, token);
+
+    expect(result)
+      .toEqual({
+        action: {
+          type: actions.RECEIVED_PULLS_REVIEWS,
+          reviews,
+        },
+        token,
+      });
+  });
+
   it('.notifyRate() return correct data', () => {
     const rate = { limit: 0 };
     const token = 'test_token';

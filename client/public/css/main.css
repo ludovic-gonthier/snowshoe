@@ -54,6 +54,19 @@ body {
   width: 0;
 }
 
+.badge-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 9px;
+}
+.badge {
+  line-height: 14px;
+  font-size: 14px;
+  background: none;
+}
+.badge.wrapper {
+  width: 50%;
+}
 .thumbnail {
   width: 50%;
   margin: 0;
@@ -85,10 +98,6 @@ body {
   }
 }
 
-.thumbnail .badge {
-    float: left;
-    position: absolute;
-}
 .thumbnail .img-circle {
     margin-top: 10px;
     margin-left: auto;
@@ -131,12 +140,6 @@ li > .github-label[disabled] {
 }
 .github-request-number {
     font-size: 36px;
-}
-.github-commemts-number {
-    display: block;
-    float: right;
-    margin-top: 1px;
-    margin-left: 5px;
 }
 
 .success {

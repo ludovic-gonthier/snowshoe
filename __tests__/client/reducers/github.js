@@ -3,14 +3,20 @@ import {
   RECEIVED_ORGANIZATIONS,
   RECEIVED_PULLS,
   RECEIVED_PULLS_ISSUES,
+  RECEIVED_PULLS_REVIEWS,
   RECEIVED_PULLS_STATUSES,
   RECEIVED_TEAMS,
 } from 'actions';
 
 import reducer from 'reducers/github';
 
+jest.mock('../../../config/front', () => ({
+  get: jest.fn(() => 2),
+}));
+
 /**
  * @covers 'reducers/github/pulls-issues'
+ * @covers 'reducers/github/pulls-reviews'
  * @covers 'reducers/github/pulls-statuses'
  * @covers 'reducers/github/pulls'
  */
@@ -591,6 +597,205 @@ describe('[Reducers - github]', () => {
           }],
           token: '123456789',
           user: null,
+        });
+    });
+  });
+
+  describe(`on ${RECEIVED_PULLS_REVIEWS}`, () => {
+    it('should set PR as mergeable when APPROVED by the right number of user', () => {
+      const pulls = [{
+        base: { repo: { full_name: 'lemonde/php-command' } },
+        id: 513,
+        name: 'PHPCOMMAND project 513',
+      }, {
+        base: { repo: { full_name: 'lemonde/php-co' } },
+        id: 514,
+        name: 'PHPCOMMAND project 514',
+      }];
+      const action = {
+        type: RECEIVED_PULLS_REVIEWS,
+        reviews: [{
+          pull_request: { id: 513 },
+          reviews: [{
+            id: 1,
+            user: { login: 'user_1' },
+            state: 'COMMENTED',
+            submitted_at: '2017-03-01T08:40:19Z',
+          }, {
+            id: 2,
+            user: { login: 'user_1' },
+            state: 'APPROVED',
+            submitted_at: '2017-03-01T08:47:14Z',
+          }, {
+            id: 3,
+            user: { login: 'user_1' },
+            state: 'APPROVED',
+            submitted_at: '2017-04-01T08:47:14Z',
+          }, {
+            id: 4,
+            user: { login: 'user_2' },
+            state: 'APPROVED',
+            submitted_at: '2017-03-01T08:47:14Z',
+          }],
+        }],
+      };
+
+      const updated = reducer(Object.assign({}, state, { pulls }), action);
+
+      expect(updated)
+        .toEqual({
+          organizations: [],
+          pulls: [{
+            base: {
+              repo: {
+                full_name: 'lemonde/php-command',
+              },
+            },
+            id: 513,
+            mergeable: true,
+            name: 'PHPCOMMAND project 513',
+            viewed: false,
+          }, {
+            base: {
+              repo: {
+                full_name: 'lemonde/php-co',
+              },
+            },
+            id: 514,
+            name: 'PHPCOMMAND project 514',
+          }],
+          rate: {
+            limit: 5000,
+            remaining: 5000,
+            reset: '',
+          },
+          teams: [{
+            label: 'team1',
+          }],
+          token: '123456789',
+          user: {
+            login: 'test',
+          },
+        });
+    });
+
+    it('should set PR as non-mergeable when CHANGES_REQUESTED by one user, even if right number of APPROVED', () => {
+      const pulls = [{
+        base: { repo: { full_name: 'lemonde/php-command' } },
+        id: 513,
+        name: 'PHPCOMMAND project 513',
+      }];
+      const action = {
+        type: RECEIVED_PULLS_REVIEWS,
+        reviews: [{
+          pull_request: { id: 513 },
+          reviews: [{
+            id: 1,
+            user: { login: 'user_1' },
+            state: 'COMMENTED',
+            submitted_at: '2017-03-01T08:40:19Z',
+          }, {
+            id: 2,
+            user: { login: 'user_1' },
+            state: 'APPROVED',
+            submitted_at: '2017-03-01T08:47:14Z',
+          }, {
+            id: 3,
+            user: { login: 'user_1' },
+            state: 'APPROVED',
+            submitted_at: '2017-04-01T08:47:14Z',
+          }, {
+            id: 4,
+            user: { login: 'user_2' },
+            state: 'APPROVED',
+            submitted_at: '2017-03-01T08:47:14Z',
+          }, {
+            id: 5,
+            user: { login: 'user_3' },
+            state: 'CHANGES_REQUESTED',
+            submitted_at: '2017-03-01T08:47:14Z',
+          }],
+        }],
+      };
+
+      const updated = reducer(Object.assign({}, state, { pulls }), action);
+
+      expect(updated)
+        .toEqual({
+          organizations: [],
+          pulls: [{
+            base: {
+              repo: {
+                full_name: 'lemonde/php-command',
+              },
+            },
+            id: 513,
+            mergeable: false,
+            name: 'PHPCOMMAND project 513',
+            viewed: false,
+          }],
+          rate: {
+            limit: 5000,
+            remaining: 5000,
+            reset: '',
+          },
+          teams: [{
+            label: 'team1',
+          }],
+          token: '123456789',
+          user: {
+            login: 'test',
+          },
+        });
+    });
+
+    it('should set the PR as viewed if the current user made a review', () => {
+      const pulls = [{
+        base: { repo: { full_name: 'lemonde/php-command' } },
+        id: 513,
+        name: 'PHPCOMMAND project 513',
+      }];
+      const action = {
+        type: RECEIVED_PULLS_REVIEWS,
+        reviews: [{
+          pull_request: { id: 513 },
+          reviews: [{
+            id: 1,
+            user: { login: 'test' },
+            state: 'COMMENTED',
+            submitted_at: '2017-03-01T08:40:19Z',
+          }],
+        }],
+      };
+
+      const updated = reducer(Object.assign({}, state, { pulls }), action);
+
+      expect(updated)
+        .toEqual({
+          organizations: [],
+          pulls: [{
+            base: {
+              repo: {
+                full_name: 'lemonde/php-command',
+              },
+            },
+            id: 513,
+            mergeable: false,
+            name: 'PHPCOMMAND project 513',
+            viewed: true,
+          }],
+          rate: {
+            limit: 5000,
+            remaining: 5000,
+            reset: '',
+          },
+          teams: [{
+            label: 'team1',
+          }],
+          token: '123456789',
+          user: {
+            login: 'test',
+          },
         });
     });
   });

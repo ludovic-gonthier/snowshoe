@@ -72,3 +72,20 @@ export function pulls(token, url) {
       ),
     ));
 }
+
+export function reviews(token, pullsObject) {
+  return Promise.all(pullsObject.map((pull) =>
+    requester(token)
+      .call(`${pull.base.repo.url}/pulls/${pull.number}/reviews`, 'review')
+      .then((data) => Object.assign(
+        {},
+        data,
+        {
+          json: {
+            pull_request: { id: pull.id },
+            reviews: data.json,
+          },
+        },
+      ))
+    ));
+}

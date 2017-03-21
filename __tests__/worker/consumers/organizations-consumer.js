@@ -26,7 +26,7 @@ describe('[Consumers - organization]', () => {
   it('should fetch organizations', () => {
     fetchOrganizations.mockImplementationOnce(() => Promise.resolve({}));
 
-    consumer(token)
+    return consumer(token)
       .then(() => {
         expect(fetchOrganizations)
           .toHaveBeenCalledWith(token);
@@ -37,7 +37,7 @@ describe('[Consumers - organization]', () => {
     fetchOrganizations.mockImplementationOnce(() => Promise.resolve({ json: {} }));
     receivedOrgnizations.mockImplementationOnce((json) => json);
 
-    consumer(token)
+    return consumer(token)
       .then(() => {
         expect(rabbit.produce)
           .toHaveBeenCalledWith('snowshoe', 'response', '{}');
@@ -48,7 +48,7 @@ describe('[Consumers - organization]', () => {
     fetchOrganizations.mockImplementationOnce(() => Promise.resolve({ json: {} }));
     receivedOrgnizations.mockImplementationOnce((json) => json);
 
-    consumer(token)
+    return consumer(token)
       .then(() => {
         expect(rateNotifier)
           .toHaveBeenCalledWith(token, { json: {} });

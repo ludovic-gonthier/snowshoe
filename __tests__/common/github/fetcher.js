@@ -10,6 +10,7 @@ import {
   repositories,
   pulls,
   issues,
+  reviews,
   statuses,
 } from '../../../common/github/fetcher';
 
@@ -345,5 +346,86 @@ describe('fetcher', () => {
       });
     });
   });
-});
 
+  describe('.reviews()', () => {
+    it('should return th pull request reviews', () => {
+      const fpulls = [{
+        id: 1,
+        number: 11,
+        base: { repo: { url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe' } },
+        head: { sha: '67sd687ad4adsd6' },
+        stub: fixtures.reviews_1,
+      }, {
+        id: 2,
+        number: 12,
+        base: { repo: { url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe' } },
+        head: { sha: '09u1423knwe0' },
+        stub: fixtures.reviews_2,
+      }, {
+        id: 3,
+        number: 13,
+        base: { repo: { url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe' } },
+        head: { sha: '09123231m813209n' },
+        stub: fixtures.reviews_3,
+      }];
+
+      fpulls.forEach((item) => {
+        stubs.call
+          .mockImplementationOnce(() => Promise.resolve(item.stub));
+      });
+      const expected = [
+        {
+          headers: {},
+          json: {
+            pull_request: {
+              id: 1,
+            },
+            reviews: fpulls[0].stub.json,
+          },
+        },
+        {
+          headers: {},
+          json: {
+            pull_request: {
+              id: 2,
+            },
+            reviews: fpulls[1].stub.json,
+          },
+        },
+        {
+          headers: {},
+          json: {
+            pull_request: {
+              id: 3,
+            },
+            reviews: fpulls[2].stub.json,
+          },
+        },
+      ];
+
+      return reviews('test_token', fpulls)
+        .then((data) => {
+          expect(data).toEqual(expected);
+
+          fpulls.forEach((item, index) => expect(stubs.call.mock.calls[index])
+            .toEqual([`${item.base.repo.url}/pulls/${item.number}/reviews`, 'review']));
+        });
+    });
+
+    it('should reject the promise on error', () => {
+      const fpulls = [{
+        base: { repo: { url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe' } },
+        head: { sha: '67sd687ad4adsd6' },
+      }];
+
+      stubs.call
+        .mockImplementationOnce(() => Promise.reject(new Error('Pagination error')));
+
+      return new Promise((resolve, reject) => {
+        reviews('test_token', fpulls)
+          .then(() => reject(new Error('Promise should have been rejected')))
+          .catch(resolve);
+      });
+    });
+  });
+});
