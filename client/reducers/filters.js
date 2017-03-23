@@ -11,7 +11,11 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case FILTER_BY_LABELS:
-      return Object.assign({}, state, { labels: _.without(state.labels, action.label) });
+      return Object.assign(
+        {},
+        state,
+        { labels: _.xor(state.labels, [action.label]) }
+      );
     default:
       return state;
   }
