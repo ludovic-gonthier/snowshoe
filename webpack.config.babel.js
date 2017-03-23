@@ -5,7 +5,11 @@ import config from './config';
 const webpackConfig = {
   devtool: process.env.NODE_ENV === 'production' ? 'cheap-module-source-map' : 'source-map',
   entry: {
-    main: `${config.get('webpack.client.entry')}/main.jsx`,
+    main: [
+      'core-js/es6/object',
+      'core-js/es6/promise',
+      `${config.get('webpack.client.entry')}/main.jsx`,
+    ],
     login: `${config.get('webpack.client.entry')}/login.jsx`,
   },
   module: {
