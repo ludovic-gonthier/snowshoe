@@ -3,7 +3,7 @@ import passport from './passport';
 const scope = [
   'read:org',
   'repo',
-  'user',
+  'read:user',
 ];
 
 export default (router) => {
