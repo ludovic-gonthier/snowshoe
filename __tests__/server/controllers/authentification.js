@@ -71,7 +71,7 @@ describe('Controllers - authentification', () => {
         authentification(router);
 
         expect(passport.authenticate)
-          .toHaveBeenCalledWith('github', { scope: ['read:org', 'repo', 'user'] });
+          .toHaveBeenCalledWith('github', { scope: ['read:org', 'repo', 'read:user'] });
         expect(passport.authenticate.controller)
           .toHaveBeenCalledWith(request, response);
       });
