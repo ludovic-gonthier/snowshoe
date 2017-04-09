@@ -70,7 +70,7 @@ export default function (data, type) {
   const picked = [];
 
   if (schemas[type] === undefined) {
-    throw new Error(`No "${type} schema defined in "config/object/"`);
+    throw new Error(`No "${type}" schema defined in "config/object/"`);
   }
 
   if (_.isArray(data)) {

@@ -2,6 +2,8 @@ import Redis from 'ioredis';
 
 import config from '../../config';
 
+const STORAGE_TTL = 3600; // One hour storage
+
 let storage;
 
 if (process.env.NODE_ENV !== 'test') {
@@ -21,31 +23,31 @@ export default {
    * @param  string id        ID in which to store the ETag
    * @param  json   json      The response json parsed body
    * @param  array  headers   The response headers
+   * @return Promise
    */
   store(id, json, headers) {
-    if (headers.etag) {
-      const object = {
+    return storage.set(
+      id,
+      JSON.stringify({
         _id: id,
         etag: headers.etag,
         json,
         inserted_at: Date.now(),
-      };
-
-      storage.set(id, JSON.stringify(object), 'EX', 3600)
-        .catch((error) => console.error(error)); // eslint-disable-line no-console
-    }
+      }),
+      'EX',
+      STORAGE_TTL
+    );
   },
 
   /**
    * Return the stored ETag for the given ID
    *
    * @param  string id           ID of the stored ETag
-   * @return json|undefined      The requested ETag object or undefined
+   * @return Promise
    */
-  getEtag(id, callback) {
-    storage
+  retrieve(id) {
+    return storage
       .get(id)
-      .then((object) => callback(JSON.parse(object)))
-      .catch((error) => console.error(error)); // eslint-disable-line no-console
+      .then((object) => JSON.parse(object));
   },
 };
