@@ -2,6 +2,11 @@ import config from '../../../config/front';
 
 export default function pullsReviews(state, action, user) {
   const ids = action.reviews.map((review) => review.pull_request.id);
+  let login = '';
+
+  if (user && user.login) {
+    login = user.login;
+  }
 
   return state.map((pull) => {
     const index = ids.indexOf(pull.id);
@@ -40,7 +45,7 @@ export default function pullsReviews(state, action, user) {
       pull,
       {
         mergeable: reviewByState.CHANGES_REQUESTED === 0 && reviewByState.APPROVED >= config.get('snowshow.review_required'),
-        viewed: reviews.filter((review) => review.user.login === user.login).length > 0,
+        viewed: reviews.filter((review) => review.user.login === login).length > 0,
       }
     );
   });
