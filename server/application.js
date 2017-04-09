@@ -39,6 +39,7 @@ app.use(session({
     port: config.get('redis.port'),
     pass: config.get('redis.password'),
     db: 2,
+    disableTtl: true,
   }),
 }));
 
