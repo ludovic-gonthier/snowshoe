@@ -1,7 +1,7 @@
 import {
   CHANGE_ORDER_DIRECTION,
   CHANGE_ORDER_FIELD,
-} from '../actions';
+} from 'actions';
 
 const initialState = {
   field: 'updated_at',

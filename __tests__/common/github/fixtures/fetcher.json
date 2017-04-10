@@ -135,5 +135,31 @@
       "statuses": []
     },
     "headers": {}
+  },
+  "reviews_1": {
+    "json": {
+      "reviews": []
+    },
+    "headers": {}
+  },
+  "reviews_2": {
+    "json": {
+      "reviews": [{
+        "state": "APPROVED"
+      }]
+    },
+    "headers": {}
+  },
+  "reviews_3": {
+    "json": {
+      "reviews": [{
+        "state": "APPROVED"
+      }, {
+        "state": "COMMENTED"
+      }, {
+        "state": "REQUESTED_CHANGES"
+      }]
+    },
+    "headers": {}
   }
 }

@@ -1,6 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 
-export class Label extends Component {
+function computeLabelStyle(labelColor) {
+  const rgb = labelColor.match(/.{2}/g).map((color) => parseInt(color, 16) / 255);
+  const max = Math.max(rgb[0], rgb[1], rgb[2]);
+  const min = Math.min(rgb[0], rgb[1], rgb[2]);
+
+  return {
+    color: (max + min) / 2 > 0.6 ? 'black' : 'white',
+    background: `#${labelColor}`,
+  };
+}
+
+class Label extends Component {
   constructor() {
     super();
 
@@ -17,16 +28,6 @@ export class Label extends Component {
     this.props.filterByLabels(this.props.name);
   }
 
-  computeLabelStyle(labelColor) {
-    const rgb = labelColor.match(/.{2}/g).map((color) => parseInt(color, 16) / 255);
-    const max = Math.max(rgb[0], rgb[1], rgb[2]);
-    const min = Math.min(rgb[0], rgb[1], rgb[2]);
-
-    return {
-      color: (max + min) / 2 > 0.6 ? 'black' : 'white',
-      background: `#${labelColor}`,
-    };
-  }
 
   render() {
     const { color, disabled, filterable, name } = this.props;
@@ -42,7 +43,7 @@ export class Label extends Component {
 
     return (
       <div
-        style={this.computeLabelStyle(color)}
+        style={computeLabelStyle(color)}
         className="github-label text-center ellipsis"
         title={name}
         {...attributes}
@@ -60,3 +61,5 @@ Label.propTypes = {
   filterByLabels: PropTypes.func,
   name: PropTypes.string.isRequired,
 };
+
+export default Label;

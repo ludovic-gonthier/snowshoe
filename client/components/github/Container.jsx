@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { PropTypes } from 'react';
 
-import { PullRequest } from './PullRequest.jsx';
+import PullRequest from './PullRequest';
 
 function filterPulls(pulls, filters) {
   return pulls.filter((pull) => {
@@ -19,7 +19,7 @@ function orderPulls(pulls, order) {
   return _.orderBy(pulls, order.field, order.direction);
 }
 
-export const Container = ({ filters, order, pulls }) => (
+const Container = ({ filters, order, pulls }) => (
   <div className="pull-container container-fluid">
     {orderPulls(filterPulls(pulls, filters), order).map((pull, index) => (
       <PullRequest key={index} pull={pull} />
@@ -35,5 +35,7 @@ Container.propTypes = {
     direction: PropTypes.string.isRequired,
     field: PropTypes.string.isRequired,
   }),
-  pulls: PropTypes.array.isRequired,
+  pulls: PropTypes.arrayOf(PropTypes.shape(PullRequest.propTypes)).isRequired,
 };
+
+export default Container;

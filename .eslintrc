@@ -1,3 +1,24 @@
 {
-    "extends": "airbnb"
+    "extends": "airbnb",
+	"env": {
+		"browser": true,
+		"node": true,
+		"jest": true
+	},
+	"settings": {
+		"import/resolver": {
+			"webpack": { "config": "webpack.config.babel.js" }
+		},
+	},
+	"rules": {
+		"arrow-parens": ["error", "always"],
+		"comma-dangle": ["error", {
+			"arrays": "only-multiline",
+			"exports": "only-multiline",
+			"function": "never",
+			"imports": "only-multiline",
+			"objects": "only-multiline"
+		}],
+		"jsx-a11y/no-static-element-interactions": 0
+	}
 }

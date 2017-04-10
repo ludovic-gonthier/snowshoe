@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
-import { default as filters } from './filters';
-import { default as github } from './github';
-import { default as order } from './order';
-import { default as socket } from './socket';
+import filters from 'reducers/filters';
+import github from 'reducers/github';
+import order from 'reducers/order';
+import socket from 'reducers/socket';
 
 export default combineReducers({ filters, github, order, socket });

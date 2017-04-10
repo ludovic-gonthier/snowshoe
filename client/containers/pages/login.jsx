@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Layout } from '../../components/layouts/Default.jsx';
-import { Header } from '../../components/Header.jsx';
-import { LoginJumbotron } from '../../components/LoginJumbotron.jsx';
+import Layout from '../../components/layouts/Default';
+import Header from '../../components/Header';
+import LoginJumbotron from '../../components/LoginJumbotron';
 
 export default () => (
   <Layout stylesheets={[{ href: '/css/login.css' }]}>
@@ -11,6 +11,6 @@ export default () => (
       <LoginJumbotron />
     </div>
 
-    <script src="/login.js"></script>
+    <script src="/login.js" />
   </Layout>
 );

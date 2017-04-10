@@ -3,7 +3,7 @@ export default (router) => {
     const state = Object.assign(
       {},
       response.state,
-      { authenticated: request.isAuthenticated(), page: 'homepage' }
+      { authenticated: request.isAuthenticated(), page: 'homepage' },
     );
 
     response.render('pages/homepage', { initialState: state });

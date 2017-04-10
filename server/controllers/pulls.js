@@ -33,7 +33,7 @@ export default (router) => {
     const state = Object.assign(
       {},
       response.state,
-      { authenticated: request.isAuthenticated() }
+      { authenticated: request.isAuthenticated() },
     );
 
     // Setting cookie to retrieve data on the client side

@@ -1,8 +1,6 @@
-import { default as _ } from 'lodash';
+import _ from 'lodash';
 
-import { initialState } from '../github';
-
-export function pulls(state = initialState.pulls, action) {
+export default function pulls(state, action) {
   const updated = _.filter(state, (stpull) => {
     if (action.data.repo !== stpull.base.repo.full_name) {
       return true;

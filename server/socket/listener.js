@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-import { config } from '../../config';
+import config from '../../config';
 import Poller from '../poller';
-import { rabbit } from '../../common/rabbit';
+import rabbit from '../../common/rabbit';
 
 const registry = new Map();
 const producer = _.curry(rabbit.produce)('snowshoe', 'request');
@@ -20,7 +20,7 @@ rabbit.consume(
     }
 
     channel.ack(message);
-  }
+  },
 );
 
 const poller = new Poller(config.get('snowshoe.refresh.rate'));
@@ -52,7 +52,7 @@ export default function (socket) {
     /* eslint-enable no-console */
   });
 
-  socket.on('user', data => {
+  socket.on('user', (data) => {
     const token = data.accessToken;
 
     if (!registry.has(token)) {
@@ -62,7 +62,7 @@ export default function (socket) {
     registry.get(token).push(socket);
 
     socket.token = token; // eslint-disable-line no-param-reassign
-    socket.on('pulls', url => {
+    socket.on('pulls', (url) => {
       const object = {
         url,
         token,
@@ -80,7 +80,7 @@ export default function (socket) {
       type: 'organizations',
     }));
 
-    socket.on('teams', organizationLogin => {
+    socket.on('teams', (organizationLogin) => {
       producer(JSON.stringify({
         data: organizationLogin,
         token,

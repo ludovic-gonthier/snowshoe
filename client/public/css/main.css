@@ -54,6 +54,19 @@ body {
   width: 0;
 }
 
+.badge-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 9px;
+}
+.badge {
+  line-height: 14px;
+  font-size: 14px;
+  background: none;
+}
+.badge.wrapper {
+  width: 50%;
+}
 .thumbnail {
   width: 50%;
   margin: 0;
@@ -85,10 +98,6 @@ body {
   }
 }
 
-.thumbnail .badge {
-    float: left;
-    position: absolute;
-}
 .thumbnail .img-circle {
     margin-top: 10px;
     margin-left: auto;
@@ -132,12 +141,6 @@ li > .github-label[disabled] {
 .github-request-number {
     font-size: 36px;
 }
-.github-commemts-number {
-    display: block;
-    float: right;
-    margin-top: 1px;
-    margin-left: 5px;
-}
 
 .success {
   border: 10px solid #6cc644;
@@ -163,3 +166,19 @@ ul li a,
   cursor: pointer;
 }
 
+/* Scrollbar in menu */
+.scrollable-menu {
+  height: auto;
+  max-height: 600px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.scrollable-menu::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 4px;
+}
+.scrollable-menu::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: lightgray;
+  -webkit-box-shadow: 0 0 1px rgba(255,255,255,.75);
+}

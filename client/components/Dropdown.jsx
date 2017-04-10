@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-export class Dropdown extends Component {
+class Dropdown extends Component {
   constructor() {
     super();
 
@@ -34,7 +34,7 @@ export class Dropdown extends Component {
   }
 
   closeOnClickOut(event) {
-    if (this.state.open && !this.refs.dropdown.contains(event.target)) {
+    if (this.state.open && !this.dropdown.contains(event.target)) {
       this.setState({ open: false });
     }
   }
@@ -52,17 +52,17 @@ export class Dropdown extends Component {
     }
 
     return (
-      <li ref="dropdown" className={classes.join(' ')}>
+      <li ref={(element) => { this.dropdown = element; }} className={classes.join(' ')}>
         <a
           className="btn dropdown-toggle"
           onClick={this.onClick}
           {...attributes}
         >
           {this.props.title}
-          <span className="caret"></span>
+          <span className="caret" />
         </a>
-        <ul className="dropdown-menu">
-        {this.props.children}
+        <ul className="scrollable-menu dropdown-menu">
+          {this.props.children}
         </ul>
       </li>
     );
@@ -74,3 +74,5 @@ Dropdown.propTypes = {
   children: PropTypes.node,
   title: PropTypes.string.isRequired,
 };
+
+export default Dropdown;

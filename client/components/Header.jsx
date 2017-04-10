@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
 
-import { Navbar } from './Navbar.jsx';
-import { Login } from './buttons/Login.jsx';
-import { Logout } from './buttons/Logout.jsx';
-import { RateLimit } from './github/RateLimit.jsx';
+import Navbar from './Navbar';
+import Login from './buttons/Login';
+import Logout from './buttons/Logout';
+import RateLimit from './github/RateLimit';
 
-export const Header = (props) => {
+const Header = (props) => {
   const {
     authenticated,
     rate,
@@ -31,9 +31,9 @@ export const Header = (props) => {
             aria-expanded="false"
           >
             <span className="sr-only">Toggle navigation</span>
-            <span className="icon-bar"></span>
-            <span className="icon-bar"></span>
-            <span className="icon-bar"></span>
+            <span className="icon-bar" />
+            <span className="icon-bar" />
+            <span className="icon-bar" />
           </button>
           <a className="navbar-brand" href="/">
             <img src="/img/logo.svg" role="presentation" width="40" height="40" />
@@ -59,11 +59,9 @@ export const Header = (props) => {
 
 Header.propTypes = {
   authenticated: PropTypes.bool,
-  emitDataToSocket: PropTypes.func,
-  organizations: PropTypes.array,
-  pulls: PropTypes.array,
-  rate: PropTypes.object,
-  teams: PropTypes.array,
+  rate: PropTypes.shape(RateLimit.propTypes),
   token: PropTypes.string,
-  user: PropTypes.object,
+  filters: Navbar.propTypes.filters, // eslint-disable-line react/no-unused-prop-types
 };
+
+export default Header;

@@ -1,11 +1,11 @@
-import { default as _ } from 'lodash';
+import _ from 'lodash';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 
-import { default as Application } from '../containers/Application';
-import { default as DevTools } from '../containers/DevTools';
-import { default as configureStore } from '../stores';
+import Application from '../containers/Application';
+import DevTools from '../containers/DevTools';
+import configureStore from '../stores';
 import { listen } from '../middlewares/socket';
 import * as actions from '../actions';
 
@@ -18,13 +18,13 @@ listen(store);
 
 store.dispatch(actions.emitDataToSocket(
   'user',
-  { user: state.github.user, accessToken: state.github.token }
+  { user: state.github.user, accessToken: state.github.token },
 ));
 
 if (state.repositoriesUrl) {
   store.dispatch(actions.emitDataToSocket(
     'pulls',
-    state.repositoriesUrl
+    state.repositoriesUrl,
   ));
 }
 

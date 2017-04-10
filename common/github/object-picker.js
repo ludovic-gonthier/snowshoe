@@ -11,7 +11,7 @@ import _ from 'lodash';
 export default function pick(object, schema) {
   let picked = {};
 
-  _.forEach([].concat(schema), key => {
+  _.forEach([].concat(schema), (key) => {
     if (_.isObject(key)) {
       _.forEach(key, (value, index) => {
         if (!_.has(object, index)) {
@@ -19,18 +19,15 @@ export default function pick(object, schema) {
         }
 
         if (_.isArray(object[index])) {
-          picked[index] = [];
-
-          _.forEach(object[index], innerObject => {
-            picked[index].push(pick(innerObject, value));
-          });
+          picked[index] = object[index].map((inner) => pick(inner, value));
         } else {
           picked[index] = pick(object[index], value);
         }
 
         return true;
       });
-    } else if (_.has(object, key)) {
+    }
+    if (_.has(object, key)) {
       picked = _.assign(picked, _.pick(object, key));
     }
   });

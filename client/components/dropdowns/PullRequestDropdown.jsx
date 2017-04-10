@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { Dropdown } from '../Dropdown';
 
-export class PullRequestDropdown extends Component {
+import Dropdown from '../Dropdown';
+
+class PullRequestDropdown extends Component {
   constructor() {
     super();
 
@@ -26,7 +27,7 @@ export class PullRequestDropdown extends Component {
         {user && <li role="presentation" className="dropdown-header">{user.login}</li>}
         {user && <li><a href="/user/personal/">My Repositories</a></li>}
         {user && <li><a href="/user/contributing/">Contributing to</a></li>}
-        {user && <li role="presentation" className="divider"></li>}
+        {user && <li role="presentation" className="divider" />}
 
         <li role="presentation" className="dropdown-header">Organizations</li>
         {organizations.map((organization, key) => (
@@ -37,7 +38,7 @@ export class PullRequestDropdown extends Component {
           </li>
         ))}
 
-        <li role="presentation" className="divider"></li>
+        <li role="presentation" className="divider" />
         <li role="presentation" className="dropdown-header">Teams</li>
         {this.state.loadgin
           ? <li><a>Loading…</a></li>
@@ -61,8 +62,9 @@ PullRequestDropdown.propTypes = {
     name: PropTypes.string.isRequired,
     href: PropTypes.string.isRequired,
   })),
-  token: PropTypes.string,
   user: PropTypes.shape({
     login: PropTypes.string.isRequired,
   }),
 };
+
+export default PullRequestDropdown;

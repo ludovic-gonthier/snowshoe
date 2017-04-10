@@ -1,11 +1,11 @@
 import { curry } from 'lodash';
-import { rabbit } from '../rabbit';
 
+import rabbit from '../rabbit';
 import { notifyRate } from '../../client/actions';
 
 const producer = curry(rabbit.produce)('snowshoe', 'response');
 
-export function rateNotifier(token, data) {
+export default function rateNotifier(token, data) {
   if (data.headers['x-ratelimit-limit']
      && data.headers['x-ratelimit-remaining']
      && data.headers['x-ratelimit-reset']) {

@@ -1,5 +1,4 @@
 import _ from 'lodash';
-
 import picker from './object-picker';
 
 const schemas = {
@@ -43,6 +42,17 @@ const schemas = {
     'url',
     'locked',
   ],
+  review: [
+    {
+      user: ['login'],
+    },
+    'state',
+    'submitted_at',
+  ],
+  user: [
+    'login',
+    'repos_url',
+  ],
 };
 
 /**
@@ -64,7 +74,7 @@ export default function (data, type) {
   }
 
   if (_.isArray(data)) {
-    _.forEach(data, value => {
+    data.forEach((value) => {
       picked.push(picker(value, schemas[type]));
     });
 

@@ -1,12 +1,12 @@
 import express from 'express';
 
-import { default as storeMiddleware } from '../middlewares/store';
+import storeMiddleware from '../middlewares/store';
 
-import { default as firewall } from './firewall';
-import { default as homepage } from './homepage';
-import { default as pulls } from './pulls';
-import { default as authentification } from './authentification';
-import { default as error } from './error';
+import firewall from './firewall';
+import homepage from './homepage';
+import pulls from './pulls';
+import authentification from './authentification';
+import error from './error';
 
 const router = new express.Router();
 

@@ -1,12 +1,16 @@
 import webpack from 'webpack';
 
-import { config } from './config';
+import config from './config';
 
 const webpackConfig = {
   devtool: process.env.NODE_ENV === 'production' ? 'cheap-module-source-map' : 'source-map',
   entry: {
-    main: `${config.get('webpack.client.entry')}/main.js`,
-    login: `${config.get('webpack.client.entry')}/login.js`,
+    main: [
+      'core-js/es6/object',
+      'core-js/es6/promise',
+      `${config.get('webpack.client.entry')}/main.jsx`,
+    ],
+    login: `${config.get('webpack.client.entry')}/login.jsx`,
   },
   module: {
     loaders: [
@@ -41,16 +45,15 @@ const webpackConfig = {
   resolve: {
     root: config.get('root'),
     extensions: ['', '.js', '.jsx'],
-    alias: [
-      'actions',
-      'components',
-      'constants',
-      'containers',
-      'reducers',
-      'stores',
-      'views',
-    ],
-    modulesDirectories: ['node_modules', 'client'],
+    alias: {
+      actions: 'client/actions',
+      components: 'client/components',
+      constants: 'client/constants',
+      containers: 'client/containers',
+      reducers: 'client/reducers',
+      stores: 'client/stores',
+    },
+    modules: ['node_modules'],
   },
   target: 'web',
 };

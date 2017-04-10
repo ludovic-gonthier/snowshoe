@@ -1,9 +1,9 @@
-import { default as passport } from './passport';
+import passport from './passport';
 
 const scope = [
   'read:org',
   'repo',
-  'user',
+  'read:user',
 ];
 
 export default (router) => {
@@ -17,7 +17,7 @@ export default (router) => {
   router.get(
     '/auth/github/callback',
     passport.authenticate('github', { failureRedirect: '/login' }),
-    (request, response) => response.redirect('/')
+    (request, response) => response.redirect('/'),
   );
 
   router.get('/logout', (request, response) => {

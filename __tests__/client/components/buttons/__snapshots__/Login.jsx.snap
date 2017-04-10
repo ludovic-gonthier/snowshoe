@@ -1,0 +1,8 @@
+exports[`Button - Login should render correctly 1`] = `
+<li>
+  <a
+    href="/auth/github">
+    Log In
+  </a>
+</li>
+`;

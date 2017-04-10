@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 
-import { PullRequestDropdown } from './dropdowns/PullRequestDropdown.jsx';
-import { FilterByDropdown } from './dropdowns/FilterByDropdown.jsx';
-import { OrderByDropdown } from './dropdowns/OrderByDropdown.jsx';
+import PullRequestDropdown from './dropdowns/PullRequestDropdown';
+import FilterByDropdown from './dropdowns/FilterByDropdown';
+import OrderByDropdown from './dropdowns/OrderByDropdown';
 
-export const Navbar = (props) => {
+const Navbar = (props) => {
   const { filters, pulls, organizations, teams, token, user, order } = props;
   const { changeOrderDirection, changeOrderField, emitDataToSocket, filterByLabels } = props;
 
@@ -30,13 +30,15 @@ Navbar.propTypes = {
   filters: PropTypes.shape({
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
   }),
-  organizations: PropTypes.array.isRequired,
+  organizations: PullRequestDropdown.propTypes.organizations,
   order: PropTypes.shape({
     direction: PropTypes.string.isRequired,
     field: PropTypes.string.isRequired,
   }).isRequired,
-  teams: PropTypes.array.isRequired,
-  pulls: PropTypes.array.isRequired,
+  teams: PullRequestDropdown.propTypes.teams,
+  pulls: FilterByDropdown.propTypes.pulls,
   token: PropTypes.string.isRequired,
-  user: PropTypes.object,
+  user: PullRequestDropdown.propTypes.user,
 };
+
+export default Navbar;

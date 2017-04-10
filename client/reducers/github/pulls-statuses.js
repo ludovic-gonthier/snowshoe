@@ -1,15 +1,23 @@
-import _ from 'lodash';
+export default function pullsStatuses(state, action) {
+  const ids = action.statuses.map((status) => status.pull_request.id);
 
-import { initialState } from '../github';
-
-export function pullsStatuses(state = initialState.pulls, action) {
-  const ids = _.map(action.statuses, (status) => status.pull_request.id);
-
-  return _.map(state, (pull) => {
+  return state.map((pull) => {
     const index = ids.indexOf(pull.id);
 
     if (index !== -1) {
-      return Object.assign({}, pull, { status: action.statuses[index] });
+      const statuses = action.statuses[index].statuses || [];
+
+      return Object.assign(
+        {},
+        pull,
+        {
+          status: Object.assign(
+            {},
+            action.statuses[index],
+            { statuses: statuses.sort((a, b) => a.context >= b.context) }
+          ),
+        }
+      );
     }
 
     return pull;

@@ -1,29 +1,30 @@
 import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
-import { Dropdown } from '../Dropdown';
-import { Label } from '../github/Label';
 
-export class FilterByDropdown extends Component {
+import Dropdown from '../Dropdown';
+import Label from '../github/Label';
+
+function sortedLabels(pulls) {
+  return _.sortedUniqBy(
+    _.sortBy(
+      pulls
+        .filter((pull) => !!pull.labels)
+        .reduce((labels, pull) => labels.concat(pull.labels), []),
+      'name',
+    ),
+    'name',
+  );
+}
+
+class FilterByDropdown extends Component {
   shouldComponentUpdate(nextProps) {
-    const currentLabels = this.labels(this.props.pulls);
-    const nextLabels = this.labels(nextProps.pulls);
+    const currentLabels = sortedLabels(this.props.pulls);
+    const nextLabels = sortedLabels(nextProps.pulls);
 
     return currentLabels.length !== nextLabels.length
       || _.difference(nextLabels, currentLabels).length !== 0
       || this.props.filters.labels.length !== nextProps.filters.labels.length
       || _.difference(nextProps.filters.labels, this.props.filters.labels).length !== 0;
-  }
-
-  labels(pulls) {
-    return _.sortedUniqBy(
-      _.sortBy(
-        pulls
-          .filter((pull) => !!pull.labels)
-          .reduce((labels, pull) => labels.concat(pull.labels), []),
-        'name'
-      ),
-      'name'
-    );
   }
 
   render() {
@@ -32,8 +33,8 @@ export class FilterByDropdown extends Component {
         <li role="presentation" className="dropdown-header">
           Labels
         </li>
-        <li role="presentation" className="divider"></li>
-        {this.labels(this.props.pulls).map((label, index) => (
+        <li role="presentation" className="divider" />
+        {sortedLabels(this.props.pulls).map((label, index) => (
           <li key={index}>
             <Label
               filterable
@@ -60,6 +61,8 @@ FilterByDropdown.propTypes = {
         name: PropTypes.string.isRequired,
         color: PropTypes.string.isRequired,
       })),
-    })
+    }),
   ).isRequired,
 };
+
+export default FilterByDropdown;
