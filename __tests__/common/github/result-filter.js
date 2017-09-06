@@ -12,7 +12,7 @@ describe('result-filter', () => {
 
     it('should throws error if no schema type defined.', () => {
       expect(() => filter({}, 'undefined'))
-        .toThrowError('No "undefined schema defined in "config/object/"');
+        .toThrowError('No "undefined" schema defined in "config/object/"');
     });
 
     it('should call filter a data object', () => {

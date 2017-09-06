@@ -1,380 +1,400 @@
-import request from 'request';
+import request from 'request-promise-native';
 
 import etagHandler from '../../../common/github/etag-handler';
 import filter from '../../../common/github/result-filter';
 
-import requester from '../../../common/github/request';
+import { call, paginate } from '../../../common/github/request';
 
-jest.mock('request', () => jest.fn());
+jest.mock('request-promise-native', () => ({
+  get: jest.fn(),
+}));
 jest.mock('../../../common/github/etag-handler', () => ({
-  getEtag: jest.fn(),
+  retrieve: jest.fn(),
   store: jest.fn(),
 }));
 jest.mock('../../../common/github/result-filter', () => jest.fn());
 
-describe('request', () => {
-  const token = 'mytoken';
-  const url = '/foo';
-  const etag = 'myetag';
-  const type = 'mytype';
-  let options = {
-    headers: {
-      'User-Agent': 'request',
-      Authorization: `token ${token}`,
-      Accept: 'application/vnd.github.black-cat-preview+json',
-      'If-None-Match': etag,
-    },
-    url,
-  };
+const TOKEN = 'test_token';
+const TYPE = 'foo';
+const URL = '/foo';
 
-  beforeEach(() => {
-    jest.resetAllMocks();
+describe.only('request', () => {
+  const headers = (token, etag) => ({
+    headers: {
+      'If-None-Match': `${etag}`,
+      'User-Agent': 'application-snowshoe',
+      Accept: 'application/vnd.github.black-cat-preview+json',
+      Authorization: `token ${token}`,
+    },
+    json: true,
+    resolveWithFullResponse: true,
   });
 
+  beforeEach(jest.resetAllMocks);
+
   describe('.call()', () => {
-    it('should return a promise', () => {
-      expect(requester(token).call(url, type))
-        .toBeInstanceOf(Promise);
+    it('should try to retrieve a cached data', () => {
+      etagHandler.retrieve.mockImplementationOnce(() => Promise.reject({}));
+
+      expect.assertions(1);
+
+      return call(URL, TYPE, TOKEN)
+        .catch(() => {
+          expect(etagHandler.retrieve)
+            .toHaveBeenCalledWith(`${URL}::${TOKEN}`);
+        });
     });
 
-    describe('should reject the promise', () => {
-      beforeEach(() => {
-        etagHandler.getEtag
-          .mockImplementationOnce((_, callback) => callback({ etag }));
-      });
+    it('should make the request with the good header', () => {
+      etagHandler.retrieve
+        .mockImplementationOnce(() => Promise.resolve({}));
+      request.get
+        .mockImplementationOnce(() => Promise.reject({}));
 
-      test('when the request fails', () => {
-        request
-          .mockImplementationOnce((_, callback) => {
-            callback(new Error('Request fails'));
+      expect.assertions(1);
+
+      return call(URL, TYPE, TOKEN)
+        .catch(() => {
+          expect(request.get)
+            .toHaveBeenCalledWith(URL, headers(TOKEN, ''));
+        });
+    });
+
+    describe('when request fails', () => {
+      it('should return the request error', () => {
+        etagHandler.retrieve
+          .mockImplementationOnce(() => Promise.resolve({}));
+        request.get
+          .mockImplementationOnce(() => Promise.reject(new Error('Request error')));
+
+        expect.assertions(2);
+
+        return call(URL, TYPE, TOKEN)
+          .catch((error) => {
+            expect(error)
+              .toBeInstanceOf(Error);
+            expect(error.message)
+              .toBe('Request error');
           });
-
-        return new Promise((resolve, reject) => {
-          requester(token).call(url, type)
-            .then(() => reject(new Error('Should have failed')))
-            .catch(() => {
-              expect(etagHandler.getEtag)
-                .toBeCalledWith(url + token, expect.any(Function));
-              expect(request)
-                .toBeCalledWith(options, expect.any(Function));
-              resolve();
-            });
-        });
-      });
-
-      test('when the status code is 200 < status && status >= 400', () => {
-        const response = { statusCode: 403 };
-        const body = JSON.stringify('{message: "Authorization fails"');
-
-        request
-          .mockImplementationOnce((_, callback) => callback(null, response, body));
-
-        return new Promise((resolve, reject) => {
-          requester(token).call(url, type)
-            .then(() => reject(new Error('Should have failed')))
-            .catch(() => {
-              expect(etagHandler.getEtag)
-                .toBeCalledWith(url + token, expect.any(Function));
-              expect(request)
-                .toBeCalledWith(options, expect.any(Function));
-
-              resolve();
-            });
-        });
-      });
-
-      test('when the response body cannot be parsed to JSON', () => {
-        const response = { statusCode: 200 };
-
-        request
-          .mockImplementationOnce((_, callback) => callback(null, response));
-
-        return new Promise((resolve, reject) => {
-          requester(token).call(url, type)
-            .then(() => reject(new Error('Should have failed')))
-            .catch(() => {
-              expect(etagHandler.getEtag)
-                .toBeCalledWith(url + token, expect.any(Function));
-              expect(request)
-                .toBeCalledWith(options, expect.any(Function));
-              resolve();
-            });
-        });
       });
     });
 
-    it('should resolve the promise', () => {
-      const json = { foo: 'bar' };
-      const headers = {};
-      const expected = {
-        json,
-        headers,
-      };
-      options = {
-        headers: {
-          'User-Agent': 'request',
-          Authorization: `token ${token}`,
-          Accept: 'application/vnd.github.black-cat-preview+json',
-        },
-        url,
-      };
-      etagHandler.getEtag
-        .mockImplementationOnce((_, callback) => callback());
-      request
-        .mockImplementationOnce((_, callback) => {
-          callback(null, { headers }, JSON.stringify(json));
-        });
-      filter
-        .mockImplementationOnce(() => json);
+    describe('when status code in error range', () => {
+      it('should return an error', () => {
+        etagHandler.retrieve
+          .mockImplementationOnce(() => Promise.resolve({}));
+        request.get
+          .mockImplementationOnce(() => Promise.resolve({
+            statusCode: 500,
+            statusMessage: '',
+            body: {},
+          }));
 
-      return requester(token).call(url, type)
-        .then((data) => {
-          expect(data)
-            .toEqual(expected);
+        expect.assertions(2);
 
-          expect(filter)
-            .toHaveBeenCalledWith(json, type);
-          expect(request)
-            .toBeCalledWith(options, expect.any(Function));
-          expect(etagHandler.getEtag)
-            .toBeCalledWith(url + token, expect.any(Function));
-        });
+        return call(URL, TYPE, TOKEN)
+          .catch((error) => {
+            expect(error)
+              .toBeInstanceOf(Error);
+            expect(error.message)
+              .toContain('Github API Error:');
+          });
+      });
     });
 
-    it('should stores the response ETag', () => {
-      const json = { foo: 'bar' };
-      const headers = {};
+    describe('when request succeed', () => {
+      describe('with 304 code', () => {
+        describe('with no cache found', () => {
+          it('should return an error', () => {
+            etagHandler.retrieve
+              .mockImplementationOnce(() => Promise.resolve({}));
+            request.get
+              .mockImplementationOnce(() => Promise.resolve({
+                statusCode: 304,
+                statusMessage: '',
+                body: {},
+              }));
 
-      etagHandler.getEtag
-        .mockImplementationOnce((_, callback) => callback());
-      request
-        .mockImplementationOnce((_, callback) => {
-          callback(null, { headers }, JSON.stringify(json));
-        });
-      filter
-        .mockImplementationOnce(() => json);
+            expect.assertions(2);
 
-      return requester(token).call(url, type)
-        .then(() => {
-          expect(etagHandler.store)
-            .toHaveBeenCalledWith(url + token, json, headers);
-          expect(etagHandler.getEtag)
-            .toHaveBeenCalledWith(url + token, expect.any(Function));
-          expect(filter)
-            .toHaveBeenCalledWith(json, type);
-          expect(request)
-            .toBeCalled();
-        });
-    });
-
-    it('should provide the request header with ETag', () => {
-      options = {
-        headers: {
-          'User-Agent': 'request',
-          Authorization: `token ${token}`,
-          'If-None-Match': etag,
-          Accept: 'application/vnd.github.black-cat-preview+json',
-        },
-        url,
-      };
-
-      etagHandler.getEtag
-        .mockImplementationOnce((_, callback) => callback({ etag }));
-      request
-        .mockImplementationOnce((_, callback) => {
-          callback(null, { headers: {} }, JSON.stringify({}));
+            return call(URL, TYPE, TOKEN)
+              .catch((error) => {
+                expect(error)
+                  .toBeInstanceOf(Error);
+                expect(error.message)
+                  .toContain('Not-Modified header');
+              });
+          });
         });
 
-      return requester(token).call(url, type)
-        .then(() => {
-          expect(request)
-            .toHaveBeenCalled();
-          expect(etagHandler.getEtag)
-            .toBeCalledWith(url + token, expect.any(Function));
-          expect(request)
-            .toBeCalledWith(options, expect.any(Function));
+        describe('with cache found', () => {
+          it('should return the cached data', () => {
+            etagHandler.retrieve
+              .mockImplementationOnce(() => Promise.resolve({
+                json: 'the-cached-data',
+              }));
+            request.get
+              .mockImplementationOnce(() => Promise.resolve({
+                statusCode: 304,
+                statusMessage: '',
+                body: {},
+              }));
+
+            return call(URL, TYPE, TOKEN)
+              .then((data) => {
+                expect(data)
+                  .toEqual({
+                    headers: {},
+                    json: 'the-cached-data',
+                  });
+              });
+          });
         });
-    });
+      });
 
-    it('should use the stored body if response status code is 304', () => {
-      const stored = {
-        etag,
-        json: { foo: 'bar' },
-      };
-      const headers = {};
-      const response = {
-        statusCode: 304,
-        headers,
-      };
-      const expected = {
-        json: stored.json,
-        headers,
-      };
+      describe('with no etag header', () => {
+        const response = {
+          statusCode: 200,
+          statusMessage: '',
+          body: { foo: 'bar' },
+        };
+        const expected = {
+          headers: {},
+          json: response.body,
+        };
 
-      options = {
-        headers: {
-          'User-Agent': 'request',
-          Authorization: `token ${token}`,
-          'If-None-Match': etag,
-          Accept: 'application/vnd.github.black-cat-preview+json',
-        },
-        url,
-      };
-
-      etagHandler.getEtag
-        .mockImplementationOnce((_, callback) => callback(stored));
-      request
-        .mockImplementationOnce((_, callback) => {
-          callback(null, response, JSON.stringify({}));
+        beforeEach(() => {
+          etagHandler.retrieve
+            .mockImplementationOnce(() => Promise.resolve({
+              json: 'the-cached-data',
+            }));
+          request.get
+            .mockImplementationOnce(() => Promise.resolve(response));
+          filter.mockImplementationOnce((json) => json);
         });
 
-      return requester(token).call(url, type)
-        .then((data) => {
-          expect(data)
-            .toEqual(expected);
-          expect(etagHandler.getEtag)
-            .toBeCalledWith(url + token, expect.any(Function));
-          expect(request)
-            .toBeCalledWith(options, expect.any(Function));
+        it('should not store in cache the response', () =>
+          call(URL, TYPE, TOKEN)
+            .then(() => {
+              expect(etagHandler.store)
+                .not
+                .toHaveBeenCalled();
+            })
+        );
+
+        it('should filter the data for the correct type', () =>
+          call(URL, TYPE, TOKEN)
+            .then(() => {
+              expect(filter)
+                .toHaveBeenCalledWith(response.body, TYPE);
+            })
+        );
+
+        it('should return a resolved Promise', () =>
+          call(URL, TYPE, TOKEN)
+            .then((data) => {
+              expect(data)
+                .toEqual(expected);
+            })
+        );
+      });
+
+      describe('with an etag header', () => {
+        const response = {
+          body: { foo: 'bar' },
+          headers: {
+            etag: 'the-etag',
+          },
+          statusCode: 200,
+          statusMessage: '',
+        };
+        const expected = {
+          headers: {
+            etag: 'the-etag',
+          },
+          json: response.body,
+        };
+
+        beforeEach(() => {
+          etagHandler.retrieve
+            .mockImplementationOnce(() => Promise.resolve({
+              json: 'the-cached-data',
+            }));
+          request.get
+            .mockImplementationOnce(() => Promise.resolve(response));
+          filter.mockImplementationOnce((json) => json);
         });
+
+        it('should try to store the response', () => {
+          etagHandler.store
+            .mockImplementationOnce(() => Promise.resolve({}));
+
+          return call(URL, TYPE, TOKEN)
+            .then(() => {
+              expect(etagHandler.store)
+                .toHaveBeenCalledWith(`${URL}::${TOKEN}`, expected.json, expected.headers);
+            });
+        });
+
+        describe('on storage failure', () => {
+          it('should return the storage error', () => {
+            etagHandler.store
+              .mockImplementationOnce(() => Promise.reject(new Error('Storage error')));
+
+            expect.assertions(2);
+
+            return call(URL, TYPE, TOKEN)
+              .catch((error) => {
+                expect(error)
+                  .toBeInstanceOf(Error);
+                expect(error.message)
+                  .toContain('Storage error');
+              });
+          });
+        });
+
+        describe('on storage success', () => {
+          it('should return the data', () => {
+            etagHandler.store
+              .mockImplementationOnce(() => Promise.resolve({}));
+
+            return call(URL, TYPE, TOKEN)
+              .then((data) => {
+                expect(data)
+                  .toEqual(expected);
+              });
+          });
+        });
+      });
     });
   });
 
   describe('.paginate()', () => {
-    it('should return a promise', () => {
-      expect(requester(token).call(url, type))
-        .toBeInstanceOf(Promise);
-    });
+    describe('when call fails', () => {
+      it('should return a rejected Promise', () => {
+        // Make .call() fail early
+        etagHandler.retrieve
+          .mockImplementationOnce(() => Promise.reject(new Error('Call Error')));
 
-    it('should reject the promise when a call fails', () => {
-      etagHandler.getEtag
-        .mockImplementationOnce((_, callback) => callback({ etag }));
-      request
-        .mockImplementationOnce((_, callback) => {
-          callback(new Error('Request fails'));
-        });
+        expect.assertions(1);
 
-      return new Promise((resolve, reject) => {
-        requester(token).paginate(url, type)
-          .then(() => reject('Should have failed'))
-          .catch(() => {
-            expect(etagHandler.getEtag)
-              .toBeCalledWith(url + token, expect.any(Function));
-            expect(request)
-              .toBeCalledWith(options, expect.any(Function));
-
-            resolve();
+        return paginate(URL, TYPE, TOKEN)
+          .catch((error) => {
+            expect(error.message)
+              .toEqual('Call Error');
           });
       });
     });
 
-    it('should handle requests without pagination', () => {
-      const json = { foo: 'bar' };
-      const headers = {};
-      const expected = {
-        json: [json],
-        headers,
-      };
-      options = {
-        headers: {
-          'User-Agent': 'request',
-          Authorization: `token ${token}`,
-          Accept: 'application/vnd.github.black-cat-preview+json',
-        },
-        url,
+    describe('when call succeed', () => {
+      const baseResponse = {
+        body: { foo: 'bar' },
+        statusCode: 200,
       };
 
-      etagHandler.getEtag
-        .mockImplementationOnce((_, callback) => callback());
-      request
-        .mockImplementationOnce((_, callback) => {
-          callback(null, { headers }, JSON.stringify(json));
+      beforeEach(() => {
+        etagHandler.retrieve
+          .mockImplementation(() => Promise.resolve({
+            json: 'the-cached-data',
+          }));
+        filter.mockImplementation((json) => json);
+      });
+
+      describe('with no link header', () => {
+        it('should return a resolved Promise with the aggregated data', () => {
+          const response = Object.assign({}, baseResponse);
+          const expected = {
+            json: [response.body],
+            headers: {},
+          };
+
+          request.get
+            .mockImplementationOnce(() => Promise.resolve(response));
+
+          return paginate(URL, TYPE, TOKEN)
+            .then((data) => {
+              expect(data)
+                .toEqual(expected);
+            });
         });
-      filter.mockImplementationOnce(() => json);
+      });
 
-      return requester(token).paginate(url, type)
-        .then((data) => {
-          expect(data)
-            .toEqual(expected);
-          expect(etagHandler.getEtag)
-            .toBeCalledWith(url + token, expect.any(Function));
-          expect(request)
-            .toBeCalledWith(options, expect.any(Function));
-          expect(filter)
-            .toHaveBeenCalledWith(json, type);
+      describe('with a link header with no next page', () => {
+        it('should return a resolved Promise with the aggregated data', () => {
+          const response = Object.assign(
+            {},
+            baseResponse,
+            {
+              headers: Object.assign(
+                {},
+                baseResponse.headers,
+                {
+                  link: `<${URL}?page=2>; rel="prev"`,
+                }
+              ),
+            }
+          );
+          const expected = {
+            json: [response.body],
+            headers: response.headers,
+          };
+
+          request.get
+            .mockImplementationOnce(() => Promise.resolve(response));
+
+          return paginate(URL, TYPE, TOKEN)
+            .then((data) => {
+              expect(data)
+                .toEqual(expected);
+            });
         });
-    });
+      });
 
-    it('should handle requests with pagination', () => {
-      const json = [
-        { foo: 'bar' },
-        { foo: 'foo' },
-      ];
-      const nextUrl = `${url}?page=2`;
-      const headers = {
-        link: `<${nextUrl}>; rel="next"`,
-      };
-      const expected = {
-        json,
-        headers,
-      };
-      options = {
-        headers: {
-          'User-Agent': 'request',
-          Authorization: `token ${token}`,
-          Accept: 'application/vnd.github.black-cat-preview+json',
-        },
-        url,
-      };
+      describe('with a link header with a next page', () => {
+        it('should make the call to the next URL and return aggregated data', () => {
+          const expected = {
+            json: [{ foo: 'bar' }, { foo: 'foo' }],
+            headers: Object.assign(
+              {},
+              baseResponse.headers,
+              {
+                link: `<${URL}?page=2>; rel="next"`,
+              }
+            ),
+          };
 
-      etagHandler.getEtag
-        .mockImplementation((_, callback) => callback());
-      etagHandler.getEtag
-        .mockImplementation((_, callback) => callback());
-      request
-        .mockImplementationOnce((_, callback) => {
-          callback(null, { headers }, JSON.stringify(json[0]));
+          request.get
+            .mockImplementationOnce(() => Promise.resolve(Object.assign(
+              {},
+              baseResponse,
+              {
+                body: { foo: 'bar' },
+                headers: Object.assign(
+                  {},
+                  baseResponse.headers,
+                  {
+                    link: `<${URL}?page=2>; rel="next"`,
+                  }
+                ),
+              }
+            )));
+          request.get
+            .mockImplementationOnce(() => Promise.resolve(Object.assign(
+              {},
+              baseResponse,
+              {
+                body: { foo: 'foo' },
+                headers: baseResponse.headers,
+              }
+            )));
+
+          return paginate(URL, TYPE, TOKEN)
+            .then((data) => {
+              expect(data)
+                .toEqual(expected);
+            });
         });
-      request
-        .mockImplementationOnce((_, callback) => {
-          callback(null, { headers }, JSON.stringify(json[1]));
-        });
-      filter
-        .mockImplementation((object) => object);
-
-      return requester(token).paginate(url, type)
-        .then((data) => {
-          expect(data)
-            .toEqual(expected);
-
-          expect(etagHandler.getEtag.mock.calls[0])
-            .toEqual([url + token, expect.any(Function)]);
-          expect(etagHandler.getEtag.mock.calls[1])
-            .toEqual([nextUrl + token, expect.any(Function)]);
-
-          expect(request).toHaveBeenCalledTimes(2);
-          expect(request.mock.calls[0])
-            .toEqual([{
-              headers: {
-                'User-Agent': 'request',
-                Authorization: `token ${token}`,
-                Accept: 'application/vnd.github.black-cat-preview+json',
-              },
-              url,
-            }, expect.any(Function)]);
-          expect(request.mock.calls[1])
-            .toEqual([{
-              headers: {
-                'User-Agent': 'request',
-                Authorization: `token ${token}`,
-                Accept: 'application/vnd.github.black-cat-preview+json',
-              },
-              url: nextUrl,
-            }, expect.any(Function)]);
-
-          expect(filter)
-            .toHaveBeenCalledTimes(2);
-        });
+      });
     });
   });
 });
