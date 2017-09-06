@@ -1,4 +1,4 @@
-import '../../../config';
+import config from '../../../config';
 import formatter from '../../../common/github/url-formatter';
 import request from '../../../common/github/request';
 
@@ -15,29 +15,17 @@ import {
 } from '../../../common/github/fetcher';
 
 jest.mock('../../../common/github/url-formatter', () => jest.fn());
-jest.mock('../../../common/github/request', () => jest.fn());
-jest.mock('../../../config', () => ({
-  get: jest.fn((key) => {
-    switch (key) {
-      case 'snowshoe.display_pr_title':
-        return true;
-      default: return '';
-    }
-  }),
-}));
-
-const stubs = {
+jest.mock('../../../common/github/request', () => ({
   call: jest.fn(),
   paginate: jest.fn(),
-};
+}));
+jest.mock('../../../config', () => ({
+  get: jest.fn(),
+}));
 
 describe('fetcher', () => {
   beforeEach(() => {
-    formatter.mockReset();
-    stubs.call.mockReset();
-    stubs.paginate.mockReset();
-
-    request.mockImplementation(() => stubs);
+    jest.resetAllMocks();
   });
 
   describe('.organizations()', () => {
@@ -46,7 +34,7 @@ describe('fetcher', () => {
 
       formatter
         .mockImplementationOnce(() => 'https://api.github.com/user/orgs?per_page=100');
-      stubs.paginate
+      request.paginate
         .mockImplementationOnce(() => Promise.resolve(object));
 
       return organizations('test_token')
@@ -55,21 +43,25 @@ describe('fetcher', () => {
             .toEqual({ json: { test: 'succeed' } });
           expect(formatter)
             .toBeCalledWith('/user/orgs', { per_page: 100 });
-          expect(stubs.paginate)
-            .toBeCalledWith('https://api.github.com/user/orgs?per_page=100', 'organization');
+          expect(request.paginate)
+            .toBeCalledWith(
+                'https://api.github.com/user/orgs?per_page=100',
+                'organization',
+                'test_token'
+                );
         });
     });
 
     it('should reject the promise on error', () => {
       formatter
         .mockImplementationOnce(() => 'https://api.github.com/user/orgs?per_page=100');
-      stubs.paginate
+      request.paginate
         .mockImplementationOnce(() => Promise.reject(new Error('Pagination error')));
 
       return new Promise((resolve, reject) => {
         organizations('test_token')
-        .then(() => reject(Error('Promise should have been rejected')))
-        .catch(resolve);
+          .then(() => reject(Error('Promise should have been rejected')))
+          .catch(resolve);
       });
     });
   });
@@ -80,7 +72,7 @@ describe('fetcher', () => {
 
       formatter
         .mockImplementationOnce(() => 'https://api.github.com/orgs/snowshoe/teams?per_page=100');
-      stubs.paginate
+      request.paginate
         .mockImplementationOnce(() => Promise.resolve(object));
 
       return teams('test_token', 'snowshoe')
@@ -90,15 +82,19 @@ describe('fetcher', () => {
 
           expect(formatter)
             .toBeCalledWith('orgs/snowshoe/teams', { per_page: 100 });
-          expect(stubs.paginate)
-            .toBeCalledWith('https://api.github.com/orgs/snowshoe/teams?per_page=100', 'team');
+          expect(request.paginate)
+            .toBeCalledWith(
+                'https://api.github.com/orgs/snowshoe/teams?per_page=100',
+                'team',
+                'test_token'
+                );
         });
     });
 
     it('should reject the promise on error', () => {
       formatter
         .mockImplementationOnce(() => 'https://api.github.com/orgs/snowshoe/teams?per_page=100');
-      stubs.paginate
+      request.paginate
         .mockImplementationOnce(() => Promise.reject(new Error('Pagination error')));
 
       return new Promise((resolve, reject) => {
@@ -115,7 +111,7 @@ describe('fetcher', () => {
 
       formatter
         .mockImplementationOnce(() => 'https://api.github.com/user/repos?per_page=100');
-      stubs.paginate
+      request.paginate
         .mockImplementationOnce(() => Promise.resolve(object));
 
       return repositories('test_token', 'user/repos')
@@ -125,14 +121,18 @@ describe('fetcher', () => {
 
           expect(formatter)
             .toBeCalledWith('user/repos', { per_page: 100 });
-          expect(stubs.paginate)
-            .toBeCalledWith('https://api.github.com/user/repos?per_page=100', 'repository');
+          expect(request.paginate)
+            .toBeCalledWith(
+                'https://api.github.com/user/repos?per_page=100',
+                'repository',
+                'test_token'
+                );
         });
     });
     it('should reject the promise on error', () => {
       formatter
         .mockImplementationOnce(() => 'https://api.github.com/user/repos?per_page=100');
-      stubs.paginate
+      request.paginate
         .mockImplementationOnce(() => Promise.reject(new Error('Pagination error')));
 
       return new Promise((resolve, reject) => {
@@ -144,6 +144,16 @@ describe('fetcher', () => {
   });
 
   describe('.pulls()', () => {
+    beforeEach(() => {
+      config.get.mockImplementation((key) => {
+        switch (key) {
+          case 'snowshoe.display_pr_title':
+            return true;
+          default: return '';
+        }
+      });
+    });
+
     it('should returns a list of pull request', () => {
       const object = fixtures.pulls_simple;
       const repository = {
@@ -152,8 +162,9 @@ describe('fetcher', () => {
 
       formatter
         .mockImplementationOnce(() => 'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100');
-      stubs.paginate
+      request.paginate
         .mockImplementationOnce(() => Promise.resolve(object));
+
 
       return pulls('test_token', repository.pulls_url)
         .then((data) => {
@@ -162,11 +173,15 @@ describe('fetcher', () => {
 
           expect(formatter)
             .toBeCalledWith(
-              'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls{/number}',
-              { per_page: 100 }
-            );
-          expect(stubs.paginate)
-            .toBeCalledWith('https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100', 'pull');
+                'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls{/number}',
+                { per_page: 100 }
+                );
+          expect(request.paginate)
+            .toBeCalledWith(
+                'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100',
+                'pull',
+                'test_token'
+                );
         });
     });
 
@@ -199,21 +214,25 @@ describe('fetcher', () => {
 
       formatter
         .mockImplementationOnce(() => 'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100');
-      stubs.paginate
+      request.paginate
         .mockImplementationOnce(() => Promise.resolve(object));
 
-      pulls('test_token', repository.pulls_url)
+      return pulls('test_token', repository.pulls_url)
         .then((data) => {
           expect(data)
             .toEqual(expected);
 
           expect(formatter)
             .toBeCalledWith(
-              'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls{/number}',
-              { per_page: 100 }
-            );
-          expect(stubs.paginate)
-            .toBeCalledWith('https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100', 'pull');
+                'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls{/number}',
+                { per_page: 100 }
+                );
+          expect(request.paginate)
+            .toBeCalledWith(
+                'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100',
+                'pull',
+                'test_token'
+                );
         });
     });
     it('should reject the promise on error', () => {
@@ -223,7 +242,7 @@ describe('fetcher', () => {
 
       formatter
         .mockImplementationOnce(() => 'https://api.github.com/repos/ludovic-gonthier/snowshoe/pulls?per_page=100');
-      stubs.paginate
+      request.paginate
         .mockImplementationOnce(() => Promise.reject(new Error('Pagination error')));
 
       return new Promise((resolve, reject) => {
@@ -243,7 +262,7 @@ describe('fetcher', () => {
       formatter
         .mockImplementationOnce(() => 'https://api.github.com/repos/ludovic-gonthier/snowshoe/issues?per_page=100');
 
-      stubs.paginate
+      request.paginate
         .mockImplementationOnce(() => Promise.resolve(fixtures.issues));
 
       return issues('test_token', repository.issues_url)
@@ -255,11 +274,15 @@ describe('fetcher', () => {
 
           expect(formatter)
             .toBeCalledWith(
-              'https://api.github.com/repos/ludovic-gonthier/snowshoe/issues{/number}',
-              { per_page: 100 }
-            );
-          expect(stubs.paginate)
-            .toBeCalledWith('https://api.github.com/repos/ludovic-gonthier/snowshoe/issues?per_page=100', 'issue');
+                'https://api.github.com/repos/ludovic-gonthier/snowshoe/issues{/number}',
+                { per_page: 100 }
+                );
+          expect(request.paginate)
+            .toBeCalledWith(
+                'https://api.github.com/repos/ludovic-gonthier/snowshoe/issues?per_page=100',
+                'issue',
+                'test_token'
+                );
         });
     });
 
@@ -271,7 +294,7 @@ describe('fetcher', () => {
       formatter
         .mockImplementationOnce(() => 'https://api.github.com/repos/ludovic-gonthier/snowshoe/issues?per_page=100');
 
-      stubs.paginate
+      request.paginate
         .mockImplementationOnce(() => Promise.reject(new Error('Pagination error')));
 
       return new Promise((resolve, reject) => {
@@ -302,7 +325,7 @@ describe('fetcher', () => {
       }];
 
       fpulls.forEach((item) => {
-        stubs.call
+        request.call
           .mockImplementationOnce(() => Promise.resolve(item.stub));
       });
 
@@ -326,8 +349,12 @@ describe('fetcher', () => {
           ]);
 
           fpulls.forEach((item, index) => {
-            expect(stubs.call.mock.calls[index])
-              .toEqual([`https://api.github.com/repos/ludovic-gonthier/snowshoe/commits/${item.head.sha}/status`, 'status']);
+            expect(request.call.mock.calls[index])
+              .toEqual([
+                `https://api.github.com/repos/ludovic-gonthier/snowshoe/commits/${item.head.sha}/status`,
+                'status',
+                'test_token'
+              ]);
           });
         });
     });
@@ -336,7 +363,7 @@ describe('fetcher', () => {
         base: { repo: { url: 'https://api.github.com/repos/ludovic-gonthier/snowshoe' } },
         head: { sha: '67sd687ad4adsd6' },
       }];
-      stubs.call
+      request.call
         .mockImplementationOnce(() => Promise.reject(new Error('Pagination error')));
 
       return new Promise((resolve, reject) => {
@@ -370,45 +397,45 @@ describe('fetcher', () => {
       }];
 
       fpulls.forEach((item) => {
-        stubs.call
+        request.call
           .mockImplementationOnce(() => Promise.resolve(item.stub));
       });
-      const expected = [
-        {
-          headers: {},
-          json: {
-            pull_request: {
-              id: 1,
-            },
-            reviews: fpulls[0].stub.json,
+      const expected = [{
+        headers: {},
+        json: {
+          pull_request: {
+            id: 1,
           },
+          reviews: fpulls[0].stub.json,
         },
-        {
-          headers: {},
-          json: {
-            pull_request: {
-              id: 2,
-            },
-            reviews: fpulls[1].stub.json,
+      }, {
+        headers: {},
+        json: {
+          pull_request: {
+            id: 2,
           },
+          reviews: fpulls[1].stub.json,
         },
-        {
-          headers: {},
-          json: {
-            pull_request: {
-              id: 3,
-            },
-            reviews: fpulls[2].stub.json,
+      }, {
+        headers: {},
+        json: {
+          pull_request: {
+            id: 3,
           },
+          reviews: fpulls[2].stub.json,
         },
-      ];
+      }];
 
       return reviews('test_token', fpulls)
         .then((data) => {
           expect(data).toEqual(expected);
 
-          fpulls.forEach((item, index) => expect(stubs.call.mock.calls[index])
-            .toEqual([`${item.base.repo.url}/pulls/${item.number}/reviews`, 'review']));
+          fpulls.forEach((item, index) => expect(request.call.mock.calls[index])
+              .toEqual([
+                `${item.base.repo.url}/pulls/${item.number}/reviews`,
+                'review',
+                'test_token',
+              ]));
         });
     });
 
@@ -418,7 +445,7 @@ describe('fetcher', () => {
         head: { sha: '67sd687ad4adsd6' },
       }];
 
-      stubs.call
+      request.call
         .mockImplementationOnce(() => Promise.reject(new Error('Pagination error')));
 
       return new Promise((resolve, reject) => {
