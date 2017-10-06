@@ -109,7 +109,7 @@ describe.only('request', () => {
             etagHandler.retrieve
               .mockImplementationOnce(() => Promise.resolve({}));
             request.get
-              .mockImplementationOnce(() => Promise.resolve({
+              .mockImplementationOnce(() => Promise.reject({
                 statusCode: 304,
                 statusMessage: '',
                 body: {},
@@ -134,17 +134,24 @@ describe.only('request', () => {
                 json: 'the-cached-data',
               }));
             request.get
-              .mockImplementationOnce(() => Promise.resolve({
+              .mockImplementationOnce(() => Promise.reject({
                 statusCode: 304,
                 statusMessage: '',
                 body: {},
+                options: {
+                  headers: {
+                    ETag: '1234',
+                  },
+                },
               }));
 
             return call(URL, TYPE, TOKEN)
               .then((data) => {
                 expect(data)
                   .toEqual({
-                    headers: {},
+                    headers: {
+                      ETag: '1234',
+                    },
                     json: 'the-cached-data',
                   });
               });
