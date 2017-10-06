@@ -31,18 +31,7 @@ function handleErrorResponse(response) {
 
 /**
  */
-function handleSuccessResponse({ body, headers = {}, statusCode }, cached, type, storageKey) {
-  if (statusCode === 304) {
-    if (isEmpty(cached) === true) {
-      throw new Error('Not-Modified header with empty cached ETag.');
-    }
-
-    return {
-      headers,
-      json: cached.json
-    };
-  }
-
+function handleSuccessResponse({ body, headers = {}, statusCode }, type, storageKey) {
   const json = filter(body, type);
 
   if (isEmpty(headers.etag) === true) {
@@ -51,6 +40,21 @@ function handleSuccessResponse({ body, headers = {}, statusCode }, cached, type,
 
   return etagHandler.store(storageKey, json, headers)
     .then(() => ({ headers, json }));
+}
+
+function handle304NotModified(error, cached) {
+  if (error.statusCode === 304) {
+    if (isEmpty(cached) === true) {
+      throw new Error('Not-Modified header with empty cached ETag.');
+    }
+
+    return {
+      headers: error.options.headers || {},
+      json: cached.json
+    };
+  }
+
+  throw error;
 }
 
 /**
@@ -71,7 +75,8 @@ function call(url, type, token) {
         resolveWithFullResponse: true,
       })
       .then(handleErrorResponse)
-      .then(partialRight(handleSuccessResponse, cached, type, storageKey))
+      .then(partialRight(handleSuccessResponse, type, storageKey))
+      .catch(partialRight(handle304NotModified, cached))
     );
 }
 
