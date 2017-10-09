@@ -32,8 +32,13 @@ poller.callback = (data) => {
   }));
 };
 
+export let SOCKET_CONNECTION = 0;
+
 export default function (socket) {
+  SOCKET_CONNECTION++;
+
   socket.on('disconnect', () => {
+    SOCKET_CONNECTION--;
     registry.set(socket.token, _.filter(registry.get(socket.token), (soc) => socket.id !== soc.id));
 
     if (!registry.get(socket.token).length) {
