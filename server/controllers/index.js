@@ -7,6 +7,7 @@ import homepage from './homepage';
 import pulls from './pulls';
 import authentification from './authentification';
 import error from './error';
+import status from './status';
 
 const router = new express.Router();
 
@@ -17,6 +18,7 @@ router.use(storeMiddleware);
   homepage,
   pulls,
   authentification,
+  status,
   error,
 ].forEach((callback) => callback(router));
 
