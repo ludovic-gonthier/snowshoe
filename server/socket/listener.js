@@ -45,9 +45,12 @@ export default function (socket) {
     registry.set(socket.token, _.filter(registry.get(socket.token), (soc) => socket.id !== soc.id));
 
     if (!registry.get(socket.token).length) {
-      connection.user -= 1;
       registry.delete(socket.token);
       poller.unregister(socket.token);
+    }
+
+    if (!registry.has(socket.token)) {
+      connection.user -= 1;
     }
 
     socket = null; // eslint-disable-line no-param-reassign
