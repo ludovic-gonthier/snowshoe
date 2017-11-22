@@ -32,11 +32,20 @@ poller.callback = (data) => {
   }));
 };
 
+export const connection = {
+  socket: 0,
+  user: 0,
+};
+
 export default function (socket) {
+  connection.socket += 1;
+
   socket.on('disconnect', () => {
+    connection.socket -= 1;
     registry.set(socket.token, _.filter(registry.get(socket.token), (soc) => socket.id !== soc.id));
 
     if (!registry.get(socket.token).length) {
+      connection.user -= 1;
       registry.delete(socket.token);
       poller.unregister(socket.token);
     }
@@ -56,6 +65,7 @@ export default function (socket) {
     const token = data.accessToken;
 
     if (!registry.has(token)) {
+      connection.user += 1;
       registry.set(token, []);
     }
 
