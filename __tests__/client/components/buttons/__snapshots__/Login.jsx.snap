@@ -1,7 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
 exports[`Button - Login should render correctly 1`] = `
 <li>
   <a
-    href="/auth/github">
+    href="/auth/github"
+  >
     Log In
   </a>
 </li>
