@@ -13,7 +13,7 @@ import pullsIssues from 'reducers/github/pulls-issues';
 import pullsStatuses from 'reducers/github/pulls-statuses';
 import pullsReviews from 'reducers/github/pulls-reviews';
 
-export const initialState = {
+export const INITIAL_STATE = {
   organizations: [],
   pulls: [],
   rate: {},
@@ -22,7 +22,7 @@ export const initialState = {
   user: null,
 };
 
-export default (state = initialState, action) => {
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case NOTIFY_RATE:
       return Object.assign(
