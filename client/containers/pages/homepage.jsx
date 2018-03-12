@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
 import Layout from '../../components/layouts/Default';
 
 import Application from '../Application';
-import configureStore from '../../stores';
+import reducer from '../../reducers';
 
 function injectInitialState(state) {
   const innerHtml = () => ({ __html: `window.__INITIAL_STATE__ = ${JSON.stringify(state)};` });
@@ -19,7 +20,7 @@ function injectInitialState(state) {
 
 const Homepage = ({ initialState }) => {
   const { authenticated, page } = initialState;
-  const store = configureStore(_.omit(
+  const store = createStore(reducer, _.omit(
     initialState,
     ['authenticated', 'page', 'repositoriesUrl'],
   ));
