@@ -78,9 +78,6 @@
     "istanbul": "^0.4.5",
     "jest": "^22.4.0",
     "react-test-renderer": "^15.4.2",
-    "redux-devtools": "^3.3.2",
-    "redux-devtools-dock-monitor": "^1.1.0",
-    "redux-devtools-log-monitor": "^1.0.4",
     "supertest": "^2.0.1"
   },
   "engines": {

@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 
 import Application from '../containers/Application';
-import DevTools from '../containers/DevTools';
 import configureStore from '../stores';
 import { listen } from '../middlewares/socket';
 import * as actions from '../actions';
@@ -28,21 +27,10 @@ if (state.repositoriesUrl) {
   ));
 }
 
-let Module = (
+const Module = (
   <Provider store={store}>
-    <div>
-      <Application {...{ authenticated, page }} />
-      <DevTools />
-    </div>
+    <Application {...{ authenticated, page }} />
   </Provider>
 );
-
-if (process.env.NODE_ENV === 'production') {
-  Module = (
-    <Provider store={store}>
-      <Application {...{ authenticated, page }} />
-    </Provider>
-  );
-}
 
 render(Module, document.getElementById('mount-application'));
