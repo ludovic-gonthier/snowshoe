@@ -1,7 +1,6 @@
 language: node_js
-node_js: "6.0"
 
 before_script: cp .env.dist .env
-script: npm run test:coverage
+script: npm run test:coverage -- --maxWorkers=4
 
 after_success: ./node_modules/.bin/coveralls --verbose < coverage/lcov.info

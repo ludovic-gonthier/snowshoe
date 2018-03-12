@@ -2,7 +2,7 @@ export default (router) => {
   router.get('/', (request, response) => {
     const state = Object.assign(
       {},
-      response.state,
+      response.locals.state,
       { authenticated: request.isAuthenticated(), page: 'homepage' },
     );
 

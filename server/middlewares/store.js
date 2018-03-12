@@ -1,30 +1,30 @@
-import { createStore } from 'redux';
-
 import config from '../../config';
 import filter from '../../common/github/result-filter';
-import reducer from '../../client/reducers';
-import { initialState } from '../../client/reducers/github';
+import { INITIAL_STATE } from '../../client/reducers/github';
 
-/* eslint-disable no-param-reassign */
 export default function (request, response, next) {
   const { query, user } = request;
-  const state = Object.assign({}, initialState);
-  const order = {
-    direction: config.get('snowshoe.pulls.sort.direction'),
-    field: config.get('snowshoe.pulls.sort.key'),
-  };
 
-  if (request.isAuthenticated()) {
-    state.token = user.accessToken;
-  }
-  if (query.access_token) {
-    state.token = query.access_token;
-  }
-
-  state.user = user ? filter(user._json, 'user') : null; // eslint-disable-line no-underscore-dangle
-
-  response.state = createStore(reducer, { github: state, order }).getState();
+  // eslint-disable-next-line no-param-reassign
+  response.locals.state = Object.assign(
+    {},
+    {
+      filters: {
+        labels: [].concat(query.filter).filter((value) => !!value),
+      },
+      github: Object.assign(
+        {},
+        INITIAL_STATE,
+        {
+          token: request.isAuthenticated() ? user.accessToken : query.access_token || '',
+          user: user ? filter(user._json, 'user') : null, // eslint-disable-line no-underscore-dangle
+        }
+      ),
+      order: {
+        direction: query.order_direction || config.get('snowshoe.pulls.sort.direction'),
+        field: query.order_field || config.get('snowshoe.pulls.sort.key'),
+      },
+    });
 
   next();
 }
-/* eslint-enable no-param-reassign */
