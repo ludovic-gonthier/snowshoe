@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
 import Layout from '../../components/layouts/Default';
 
 import Application from '../Application';
-import DevTools from '../DevTools';
-import configureStore from '../../stores';
+import reducer from '../../reducers';
 
 function injectInitialState(state) {
   const innerHtml = () => ({ __html: `window.__INITIAL_STATE__ = ${JSON.stringify(state)};` });
@@ -20,34 +20,19 @@ function injectInitialState(state) {
 
 const Homepage = ({ initialState }) => {
   const { authenticated, page } = initialState;
-  const store = configureStore(_.omit(
+  const store = createStore(reducer, _.omit(
     initialState,
     ['authenticated', 'page', 'repositoriesUrl'],
   ));
-
-  let Module = (
-    <Provider store={store}>
-      <div>
-        <Application {...{ authenticated, page }} />
-        <DevTools />
-      </div>
-    </Provider>
-  );
-
-  if (process.env.NODE_ENV === 'production') {
-    Module = (
-      <Provider store={store}>
-        <Application {...{ authenticated, page }} />
-      </Provider>
-    );
-  }
 
   return (
     <Layout className="page-container" stylesheets={[{ href: '/css/main.css' }]}>
       {injectInitialState(initialState)}
 
       <div id="mount-application">
-        {Module}
+        <Provider store={store}>
+          <Application {...{ authenticated, page }} />
+        </Provider>
       </div>
 
       <script src="/main.js" />
